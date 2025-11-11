@@ -1,0 +1,15 @@
+{
+  "@@locale": "en",
+  "appTitle": "Fikr Less",
+  "login": "Login",
+  "signup": "Sign Up",
+  "forgotPassword": "Forgot Password?",
+  "emailHint": "Enter your email",
+  "passwordHint": "Enter your password",
+  "otp_sent": "OTP sent successfully!",
+  "routeNotFound": "Route not found",
+  "getStarted": "Get Started",
+  "loginTitle": "Your Safe Space for",
+  "loginSubtitle": "Mental Wellness",
+  "loginDescription": "FikrLess helps you track your mood, connect with support, and practice self-care in a stigma-free environment."
+}

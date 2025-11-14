@@ -2,19 +2,23 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'reset_sucessfully.dart';
+import '../../../theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart'; // ✅ Import AppLocalizations
 
 class ResetPasswordScreen extends StatefulWidget {
-  final String contactValue; // ✅ email or phone
+  final String contactValue; // email or phone
   final bool isPhone;
   final String userId;
-  final String token; // ✅ now receiving token from OTP screen
+  final String token;
+  final Locale locale; // ✅ HIGHLIGHT: accept locale
 
   const ResetPasswordScreen({
     super.key,
     required this.contactValue,
     required this.isPhone,
     required this.userId,
-    required this.token, // 👈 added token
+    required this.token,
+    required this.locale, // ✅ HIGHLIGHT: pass locale
   });
 
   @override
@@ -41,12 +45,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   Future<void> _changePassword() async {
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     final String newPassword = _newPasswordController.text.trim();
-    _confirmPasswordController.text.trim();
 
     final Uri url = Uri.parse(
       "https://stalagmitical-millie-unhomiletic.ngrok-free.dev/change-password",
@@ -54,7 +55,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     final Map<String, dynamic> requestData = {
       "new_password": newPassword,
-      "token": widget.token, // ✅ include token in body
+      "token": widget.token,
     };
 
     try {
@@ -62,30 +63,36 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${widget.token}', // ✅ also send token header
+          'Authorization': 'Bearer ${widget.token}',
         },
         body: jsonEncode(requestData),
       );
 
-      debugPrint("🔹 Change Password Response: ${response.body}");
       final responseData = jsonDecode(response.body);
+
+      final loc = AppLocalizations.of(
+        context,
+      )!; // ✅ HIGHLIGHT: localized strings
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              responseData['message'] ?? "Password changed successfully!",
+              responseData['message'] ?? loc.passwordResetSuccessMessage,
               style: TextStyle(fontSize: _f(16), fontWeight: FontWeight.bold),
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppColors.successGreen,
             behavior: SnackBarBehavior.floating,
           ),
         );
 
-        // ✅ Navigate to success screen
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const reset_sucessfully()),
+          MaterialPageRoute(
+            builder: (context) => ResetSuccessfully(
+              locale: widget.locale, // ✅ HIGHLIGHT: pass locale to next screen
+            ),
+          ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -94,27 +101,25 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               responseData['message'] ?? "Failed to change password!",
               style: TextStyle(fontSize: _f(16), fontWeight: FontWeight.bold),
             ),
-            backgroundColor: Colors.redAccent,
+            backgroundColor: AppColors.errorRed,
             behavior: SnackBarBehavior.floating,
           ),
         );
       }
     } catch (e) {
-      debugPrint("❌ Change Password Error: $e");
+      final loc = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Network error: $e",
+            "${loc.networkError} $e",
             style: TextStyle(fontSize: _f(16), fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: AppColors.errorRed,
           behavior: SnackBarBehavior.floating,
         ),
       );
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() => _isLoading = false);
     }
   }
 
@@ -128,28 +133,28 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final confirmPassword = _confirmPasswordController.text.trim();
 
     bool hasError = false;
+    final local = AppLocalizations.of(context)!;
 
     if (newPassword.isEmpty) {
-      _newPasswordError = "Please enter your new password";
+      _newPasswordError = local.newPasswordErrorEmpty;
       hasError = true;
     } else if (!_isStrongPassword(newPassword)) {
-      _newPasswordError =
-          "Password must have 4+ chars, 1 uppercase, 1 number, and 1 special char";
+      _newPasswordError = local.newPasswordErrorWeak;
       hasError = true;
     }
 
     if (confirmPassword.isEmpty) {
-      _confirmPasswordError = "Please confirm your password";
+      _confirmPasswordError = local.confirmPasswordErrorEmpty;
       hasError = true;
     } else if (confirmPassword != newPassword) {
-      _confirmPasswordError = "Passwords do not match";
+      _confirmPasswordError = local.confirmPasswordErrorMismatch;
       hasError = true;
     }
 
     if (!hasError) {
-      _changePassword(); // ✅ Call backend
+      _changePassword();
     } else {
-      setState(() {}); // Refresh UI for validation messages
+      setState(() {});
     }
   }
 
@@ -159,214 +164,242 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   double _h(double value) => _screenHeight * value;
   double _w(double value) => _screenWidth * value;
-  double _f(double value) => _screenWidth * value / 375; // scale font
+  double _f(double value) => _screenWidth * value / 375;
 
   @override
   Widget build(BuildContext context) {
     _screenHeight = MediaQuery.of(context).size.height;
     _screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: _w(0.064)), // ~24px
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: _h(0.022)), // ~20px
-                  Text(
-                    "Reset Password",
-                    style: TextStyle(
-                      fontSize: _f(36),
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF01394F),
-                    ),
-                  ),
-                  SizedBox(height: _h(0.006)), // ~10px
-                  Text(
-                    "Resetting password for ${widget.contactValue}",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: _f(17),
-                      height: 1.4,
-                    ),
-                  ),
-                  SizedBox(height: _h(0.08)), // ~30px
-                  // 🔹 New Password Field
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "New Password",
-                      style: TextStyle(
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w600,
-                        fontSize: _f(14),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: _h(0.021)), // ~8px
-                  TextField(
-                    controller: _newPasswordController,
-                    obscureText: _obscureNewPassword,
-                    decoration: InputDecoration(
-                      hintText: "Enter your new password",
-                      filled: true,
-                      fillColor: Colors.grey.shade100,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureNewPassword
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureNewPassword = !_obscureNewPassword;
-                          });
-                        },
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: _w(0.037), // ~14px
-                        vertical: _h(0.019), // ~14px
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(_w(0.016)), // ~6
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(_w(0.016)),
-                        ),
-                        borderSide: const BorderSide(
-                          color: Color(0xFF00A8A8),
-                          width: 1.4,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(_w(0.016)),
-                        borderSide: BorderSide(
-                          color: _newPasswordError == null
-                              ? Colors.grey.shade300
-                              : Colors.red,
-                          width: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (_newPasswordError != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: _h(0.007), left: _w(0.011)),
-                      child: Text(
-                        _newPasswordError!,
-                        style: TextStyle(color: Colors.red, fontSize: _f(13)),
-                      ),
-                    ),
-                  SizedBox(height: _h(0.053)), // ~20px
-                  // 🔹 Confirm Password Field
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Confirm New Password",
-                      style: TextStyle(
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w600,
-                        fontSize: _f(14),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: _h(0.011)), // ~8px
-                  TextField(
-                    controller: _confirmPasswordController,
-                    obscureText: _obscureConfirmPassword,
-                    decoration: InputDecoration(
-                      hintText: "Re-enter your password",
-                      filled: true,
-                      fillColor: Colors.grey.shade100,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureConfirmPassword
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureConfirmPassword = !_obscureConfirmPassword;
-                          });
-                        },
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: _w(0.037),
-                        vertical: _h(0.019),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(_w(0.016)),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(_w(0.016)),
-                        ),
-                        borderSide: const BorderSide(
-                          color: Color(0xFF00A8A8),
-                          width: 1.4,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(_w(0.016)),
-                        borderSide: BorderSide(
-                          color: _confirmPasswordError == null
-                              ? Colors.grey.shade300
-                              : Colors.red,
-                          width: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (_confirmPasswordError != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: _h(0.007), left: _w(0.011)),
-                      child: Text(
-                        _confirmPasswordError!,
-                        style: TextStyle(color: Colors.red, fontSize: _f(13)),
-                      ),
-                    ),
+    // ✅ HIGHLIGHT: Override localization using passed locale
+    return Localizations.override(
+      context: context,
+      locale: widget.locale,
+      child: Builder(
+        builder: (context) {
+          final local = AppLocalizations.of(context)!; // ✅ HIGHLIGHT
 
-                  SizedBox(height: _h(0.05)), // ~30px
-                  // 🔹 Submit Button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _isLoading ? null : _validateAndSubmit,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00A8A8),
-                        padding: EdgeInsets.symmetric(vertical: _h(0.017)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(_w(0.016)),
+          return Scaffold(
+            backgroundColor: AppColors.white,
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: _w(0.064)),
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: _h(0.022)),
+                        Text(
+                          local.resetPasswordTitle,
+                          style: TextStyle(
+                            fontSize: _f(36),
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryDarkBlue,
+                          ),
                         ),
-                      ),
-                      child: _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : Text(
-                              "Submit",
-                              style: TextStyle(
-                                fontSize: _f(16),
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
+                        SizedBox(height: _h(0.006)),
+                        Text(
+                          local.resetPasswordDescription(widget.contactValue),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.textHint,
+                            fontSize: _f(17),
+                            height: 1.4,
+                          ),
+                        ),
+                        SizedBox(height: _h(0.08)),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            local.newPasswordLabel,
+                            style: TextStyle(
+                              color: AppColors.textGrey700,
+                              fontWeight: FontWeight.w600,
+                              fontSize: _f(14),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: _h(0.021)),
+                        TextField(
+                          controller: _newPasswordController,
+                          obscureText: _obscureNewPassword,
+                          decoration: InputDecoration(
+                            hintText: local.enterNewPasswordHint,
+                            filled: true,
+                            fillColor: AppColors.backgroundGrey100,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureNewPassword
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                color: AppColors.borderGrey,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureNewPassword = !_obscureNewPassword;
+                                });
+                              },
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: _w(0.037),
+                              vertical: _h(0.019),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(_w(0.016)),
+                              borderSide: const BorderSide(
+                                color: AppColors.borderGrey300,
                               ),
                             ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6),
+                              ),
+                              borderSide: BorderSide(
+                                color: AppColors.primary,
+                                width: 1.4,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(_w(0.016)),
+                              borderSide: BorderSide(
+                                color: _newPasswordError == null
+                                    ? AppColors.borderGrey300
+                                    : AppColors.errorPureRed,
+                                width: 1.2,
+                              ),
+                            ),
+                          ),
+                        ),
+                        if (_newPasswordError != null)
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: _h(0.007),
+                              left: _w(0.011),
+                            ),
+                            child: Text(
+                              _newPasswordError!,
+                              style: TextStyle(
+                                color: AppColors.errorPureRed,
+                                fontSize: _f(13),
+                              ),
+                            ),
+                          ),
+                        SizedBox(height: _h(0.053)),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            local.confirmPasswordLabel,
+                            style: TextStyle(
+                              color: AppColors.textGrey700,
+                              fontWeight: FontWeight.w600,
+                              fontSize: _f(14),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: _h(0.011)),
+                        TextField(
+                          controller: _confirmPasswordController,
+                          obscureText: _obscureConfirmPassword,
+                          decoration: InputDecoration(
+                            hintText: local.reEnterPasswordHint,
+                            filled: true,
+                            fillColor: AppColors.backgroundGrey100,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureConfirmPassword
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                color: AppColors.borderGrey,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureConfirmPassword =
+                                      !_obscureConfirmPassword;
+                                });
+                              },
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: _w(0.037),
+                              vertical: _h(0.019),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(_w(0.016)),
+                              borderSide: const BorderSide(
+                                color: AppColors.borderGrey300,
+                              ),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6),
+                              ),
+                              borderSide: BorderSide(
+                                color: AppColors.primary,
+                                width: 1.4,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(_w(0.016)),
+                              borderSide: BorderSide(
+                                color: _confirmPasswordError == null
+                                    ? AppColors.borderGrey300
+                                    : AppColors.errorPureRed,
+                                width: 1.2,
+                              ),
+                            ),
+                          ),
+                        ),
+                        if (_confirmPasswordError != null)
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: _h(0.007),
+                              left: _w(0.011),
+                            ),
+                            child: Text(
+                              _confirmPasswordError!,
+                              style: TextStyle(
+                                color: AppColors.errorPureRed,
+                                fontSize: _f(13),
+                              ),
+                            ),
+                          ),
+                        SizedBox(height: _h(0.05)),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _validateAndSubmit,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              padding: EdgeInsets.symmetric(
+                                vertical: _h(0.017),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(_w(0.016)),
+                              ),
+                            ),
+                            child: _isLoading
+                                ? const CircularProgressIndicator(
+                                    color: AppColors.white,
+                                  )
+                                : Text(
+                                    local.submit,
+                                    style: TextStyle(
+                                      fontSize: _f(16),
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        SizedBox(height: _h(0.106)),
+                      ],
                     ),
                   ),
-                  SizedBox(height: _h(0.106)), // ~40px
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

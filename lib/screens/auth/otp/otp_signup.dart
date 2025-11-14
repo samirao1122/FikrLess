@@ -3,18 +3,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pinput/pinput.dart';
+import '../../../theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import 'sucessfully_verified.dart';
 
 class UserOtpVerificationScreen extends StatefulWidget {
   final String email;
   final String? phoneNumber;
-  final String role; // ✅ Added role
+  final String role;
+  final Locale locale; // ✅ Added locale
 
   const UserOtpVerificationScreen({
     super.key,
     required this.email,
     this.phoneNumber,
-    required this.role, // ✅ Added role
+    required this.role,
+    required this.locale, // ✅ Require locale
   });
 
   @override
@@ -61,10 +65,12 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
   }
 
   Future<void> _verifyOtp() async {
+    final local = AppLocalizations.of(context)!;
+
     if (_otpController.text.length != 4) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter a valid 4-digit OTP")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(local.invalidOtpMessage)));
       return;
     }
 
@@ -75,7 +81,7 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
 
     final Map<String, dynamic> requestData = {
       "token": _otpController.text.trim(),
-      "role": widget.role, // ✅ Include role in API request
+      "role": widget.role,
     };
 
     try {
@@ -111,8 +117,8 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           backgroundColor: response.statusCode == 200
-              ? Colors.green
-              : Colors.redAccent,
+              ? AppColors.successGreen
+              : AppColors.errorRed,
           behavior: SnackBarBehavior.floating,
           duration: const Duration(seconds: 4),
         ),
@@ -122,11 +128,12 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => userVerifiedScreen(
+            builder: (context) => UserVerifiedScreen(
               contactValue: widget.email,
               isPhone: widget.phoneNumber != null,
               userId: userId,
-              role: widget.role, // ✅ pass role
+              role: widget.role,
+              locale: widget.locale, // ✅ Pass locale forward if needed
             ),
           ),
         );
@@ -138,10 +145,10 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Network error: $e",
+            "${AppLocalizations.of(context)!.networkError}$e",
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: AppColors.errorRed,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -150,170 +157,189 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
 
   @override
   Widget build(BuildContext context) {
-    final bool hasPhone =
-        widget.phoneNumber != null && widget.phoneNumber!.isNotEmpty;
-    final String contactType = hasPhone ? 'phone number' : 'email';
-    final String contactValue = hasPhone ? widget.phoneNumber! : widget.email;
+    return Localizations.override(
+      context: context,
+      locale: widget.locale, // ✅ Use passed locale
+      child: Builder(
+        builder: (context) {
+          final local = AppLocalizations.of(context)!;
+          final bool hasPhone =
+              widget.phoneNumber != null && widget.phoneNumber!.isNotEmpty;
+          final String contactValue = hasPhone
+              ? widget.phoneNumber!
+              : widget.email;
 
-    final defaultPinTheme = PinTheme(
-      width: 75,
-      height: 75,
-      textStyle: const TextStyle(
-        fontSize: 28,
-        fontWeight: FontWeight.w600,
-        color: Colors.black,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black12),
-        borderRadius: BorderRadius.circular(12),
-      ),
-    );
+          final defaultPinTheme = PinTheme(
+            width: 75,
+            height: 75,
+            textStyle: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textBlack,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              border: Border.all(color: AppColors.colorShadow),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          );
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: true,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              const Text(
-                "Enter OTP",
-                style: TextStyle(
-                  fontSize: 38,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                "We have sent you an OTP on your $contactType:\n$contactValue\nPlease check your ${hasPhone ? 'messages' : 'inbox'} and enter the OTP to verify.",
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black54,
-                  height: 1.6,
-                ),
-              ),
-              const SizedBox(height: 35),
-              Pinput(
-                length: 4,
-                controller: _otpController,
-                defaultPinTheme: defaultPinTheme,
-                focusedPinTheme: defaultPinTheme.copyWith(
-                  decoration: defaultPinTheme.decoration!.copyWith(
-                    border: Border.all(
-                      color: const Color(0xFF00A8A8),
-                      width: 2,
-                    ),
+          return Directionality(
+            textDirection: widget.locale.languageCode == 'ur'
+                ? TextDirection.rtl
+                : TextDirection.ltr,
+            child: Scaffold(
+              backgroundColor: AppColors.backgroundWhite,
+              resizeToAvoidBottomInset: true,
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 40,
                   ),
-                ),
-                submittedPinTheme: defaultPinTheme.copyWith(
-                  decoration: defaultPinTheme.decoration!.copyWith(
-                    border: Border.all(color: const Color(0xFF00A8A8)),
-                  ),
-                ),
-                preFilledWidget: const Text(
-                  "O",
-                  style: TextStyle(
-                    fontSize: 60,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(40, 126, 123, 123),
-                  ),
-                ),
-                showCursor: true,
-              ),
-              const SizedBox(height: 20),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 500),
-                child: _showResend
-                    ? GestureDetector(
-                        key: const ValueKey('resend'),
-                        onTap: _startTimer,
-                        child: const Text(
-                          "Resend Code",
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Color(0xFF00A8A8),
-                            fontWeight: FontWeight.w600,
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        local.enterOtpTitle,
+                        style: TextStyle(
+                          fontSize: 38,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textBlack,
                         ),
-                      )
-                    : Row(
-                        key: const ValueKey('timer'),
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Didn't get the code? ",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          Text(
-                            "00:${_secondsRemaining.toString().padLeft(2, '0')}s",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF00A8A8),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
                       ),
-              ),
-              const SizedBox(height: 40),
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _verifyOtp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00A8A8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                  ),
-                  child: _isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                          "Submit",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                      const SizedBox(height: 16),
+                      Text(
+                        hasPhone
+                            ? local.otpSentMessagePhone(contactValue)
+                            : local.otpSentMessageEmail(contactValue),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: AppColors.textBlack54,
+                          height: 1.6,
+                        ),
+                      ),
+                      const SizedBox(height: 35),
+                      Pinput(
+                        length: 4,
+                        controller: _otpController,
+                        defaultPinTheme: defaultPinTheme,
+                        focusedPinTheme: defaultPinTheme.copyWith(
+                          decoration: defaultPinTheme.decoration!.copyWith(
+                            border: Border.all(
+                              color: AppColors.accentTeal,
+                              width: 2,
+                            ),
                           ),
                         ),
+                        submittedPinTheme: defaultPinTheme.copyWith(
+                          decoration: defaultPinTheme.decoration!.copyWith(
+                            border: Border.all(color: AppColors.accentTeal),
+                          ),
+                        ),
+                        showCursor: true,
+                      ),
+                      const SizedBox(height: 20),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 500),
+                        child: _showResend
+                            ? GestureDetector(
+                                key: const ValueKey('resend'),
+                                onTap: _startTimer,
+                                child: Text(
+                                  local.resendCode,
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: AppColors.accentTeal,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              )
+                            : Row(
+                                key: const ValueKey('timer'),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    local.didNotGetCode,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.textHint,
+                                    ),
+                                  ),
+                                  Text(
+                                    "00:${_secondsRemaining.toString().padLeft(2, '0')}s",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.accentTeal,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                      const SizedBox(height: 40),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 55,
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _verifyOtp,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.accentTeal,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(9),
+                            ),
+                          ),
+                          child: _isLoading
+                              ? const CircularProgressIndicator(
+                                  color: AppColors.white,
+                                )
+                              : Text(
+                                  local.submit,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(height: 17),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 55,
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                              color: AppColors.borderLight,
+                              width: 1,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text(
+                            hasPhone
+                                ? local.editPhoneNumber
+                                : local.editEmailAddress,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textBlack87,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 17),
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: OutlinedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.black26, width: 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Text(
-                    hasPhone ? "Edit Phone Number" : "Edit Email Address",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

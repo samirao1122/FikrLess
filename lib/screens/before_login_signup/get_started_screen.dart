@@ -1,13 +1,13 @@
 // 📦 Import Flutter Package
 import 'package:flutter/material.dart';
 import 'choose_yourself.dart'; // ✅ Import the ChooseYourself screen
-import "../auth/login/login_screen.dart"; // ✅ get started Import the Login screen
+import "../auth/login/login_screen.dart"; // ✅ Import the Login screen
 import 'package:fikr_less/theme/app_colors.dart';
 import 'package:fikr_less/l10n/app_localizations.dart';
 
 // 🌿 Welcome Screen (Before Login)
 class BeforeLogin extends StatefulWidget {
-  const BeforeLogin({super.key});
+  const BeforeLogin({super.key, required Locale locale});
 
   @override
   State<BeforeLogin> createState() => _BeforeLoginState();
@@ -37,34 +37,33 @@ class _BeforeLoginState extends State<BeforeLogin> {
     final imageWidth = width * 0.85;
 
     return Localizations.override(
-      // ✅ Wrap Scaffold with Localizations.override for dynamic locale
       context: context,
       locale: _currentLocale,
       child: Builder(
-        // ✅ Added Builder to get correct context
         builder: (context) {
-          final local = AppLocalizations.of(
-            context,
-          )!; // ✅ Now uses overridden locale
+          final local = AppLocalizations.of(context)!;
           return Scaffold(
             backgroundColor: AppColors.white,
-            body: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.04, // responsive horizontal padding
-                  ),
+            resizeToAvoidBottomInset: true, // handle keyboard
+            body: SafeArea(
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.04),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: height * 0.1), // responsive top spacing
+                      SizedBox(height: height * 0.05), // responsive top spacing
                       // 🌱 Top Logo Image
                       Center(
-                        child: Image.asset(
-                          'assets/images/before_login/get_started_screen.png',
+                        child: SizedBox(
+                          // ⭐ FIXED (replaced Flexible)
                           width: imageWidth,
                           height: imageHeight,
-                          fit: BoxFit.contain,
+                          child: Image.asset(
+                            'assets/images/before_login/get_started_screen.png',
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
 
@@ -72,7 +71,7 @@ class _BeforeLoginState extends State<BeforeLogin> {
 
                       // 🧠 Main Heading
                       Text(
-                        local.loginTitle, //'Your Safe Space for',
+                        local.loginTitle,
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           fontSize: 38 * textScale,
@@ -84,8 +83,7 @@ class _BeforeLoginState extends State<BeforeLogin> {
 
                       // 💙 Highlighted Subheading
                       Text(
-                        local.loginSubtitle, //'Mental Wellness',
-
+                        local.loginSubtitle,
                         style: TextStyle(
                           fontSize: 30 * textScale,
                           fontWeight: FontWeight.bold,
@@ -97,8 +95,7 @@ class _BeforeLoginState extends State<BeforeLogin> {
 
                       // 📝 Description
                       Text(
-                        local
-                            .loginDescription, //'FikrLess helps you track your mood, connect with support, and practice self-care in a stigma-free environment.',
+                        local.loginDescription,
                         style: TextStyle(
                           fontSize: 18 * textScale,
                           color: AppColors.textHint,
@@ -107,14 +104,16 @@ class _BeforeLoginState extends State<BeforeLogin> {
                       ),
 
                       SizedBox(height: height * 0.03),
+
+                      // 🌐 Language Toggle
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: _toggleLanguage, // ✅ Toggle language
+                          onPressed: _toggleLanguage,
                           child: Text(
                             _currentLocale.languageCode == 'en'
-                                ? 'اردو' // Show Urdu text when English is active
-                                : 'English', // Show English text when Urdu is active
+                                ? 'اردو'
+                                : 'English',
                             style: TextStyle(
                               fontSize: 14 * textScale,
                               fontWeight: FontWeight.bold,
@@ -124,18 +123,20 @@ class _BeforeLoginState extends State<BeforeLogin> {
                         ),
                       ),
 
+                      SizedBox(height: height * 0.02),
+
                       // 🚀 Get Started Button
                       SizedBox(
                         width: double.infinity,
-                        height: height * 0.05,
+                        height: (height * 0.06).clamp(50, 60),
                         child: ElevatedButton(
                           onPressed: () {
-                            // ✅ Navigate to ChooseYourself screen
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const ChooseWhoAreYouScreen(),
+                                builder: (context) => ChooseWhoAreYouScreen(
+                                  locale: _currentLocale,
+                                ),
                               ),
                             );
                           },
@@ -144,13 +145,16 @@ class _BeforeLoginState extends State<BeforeLogin> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(9),
                             ),
+                            minimumSize: Size(double.infinity, 50),
                           ),
-                          child: Text(
-                            local.getStarted, //'Get Started',
-                            style: TextStyle(
-                              fontSize: 16 * textScale,
-                              color: AppColors.white,
-                              fontWeight: FontWeight.bold,
+                          child: FittedBox(
+                            child: Text(
+                              local.getStarted,
+                              style: TextStyle(
+                                fontSize: 16 * textScale,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -161,14 +165,14 @@ class _BeforeLoginState extends State<BeforeLogin> {
                       // 🔐 Log in Button
                       SizedBox(
                         width: double.infinity,
-                        height: height * 0.05,
+                        height: (height * 0.06).clamp(50, 60),
                         child: OutlinedButton(
                           onPressed: () {
-                            // ✅ Navigate to Login Screen
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const LoginScreen(),
+                                builder: (context) =>
+                                    LoginScreen(locale: _currentLocale),
                               ),
                             );
                           },
@@ -177,13 +181,17 @@ class _BeforeLoginState extends State<BeforeLogin> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
+                            minimumSize: Size(double.infinity, 50),
                           ),
-                          child: Text(
-                            local.login, //'Log in',
-                            style: TextStyle(
-                              fontSize: 16 * textScale,
-                              color: AppColors.accentTeal,
-                              fontWeight: FontWeight.bold,
+
+                          child: FittedBox(
+                            child: Text(
+                              local.login,
+                              style: TextStyle(
+                                fontSize: 16 * textScale,
+                                color: AppColors.accentTeal,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -193,7 +201,7 @@ class _BeforeLoginState extends State<BeforeLogin> {
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
           );
         },

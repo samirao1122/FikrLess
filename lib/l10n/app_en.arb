@@ -1,15 +1,340 @@
 {
   "@@locale": "en",
   "appTitle": "Fikr Less",
-  "login": "Login",
-  "signup": "Sign Up",
-  "forgotPassword": "Forgot Password?",
-  "emailHint": "Enter your email",
-  "passwordHint": "Enter your password",
-  "otp_sent": "OTP sent successfully!",
-  "routeNotFound": "Route not found",
+
+  
   "getStarted": "Get Started",
+  "routeNotFound": "Route not found",
+
+  "login": "Log in",
   "loginTitle": "Your Safe Space for",
   "loginSubtitle": "Mental Wellness",
-  "loginDescription": "FikrLess helps you track your mood, connect with support, and practice self-care in a stigma-free environment."
+  "loginDescription": "FikrLess helps you track your mood, connect with support, and practice self-care in a stigma-free environment.",
+  "forgotPassword": "Forgot Password?",
+  "emailHint": "Enter your email address",
+  "passwordHint": "Enter your password",
+  "loginButton": "Log in",
+  "loginWithPhone": "Log in with Phone Number",
+  "loginWithEmail": "Log in with Email",
+  "loginPrompt": "Don’t have an account? ",
+  "signupLink": "Sign up",
+  "phoneErrorInvalid": "Please enter a valid phone number",
+  "phoneErrorEmpty": "Please enter your phone number",
+  "passwordErrorEmpty": "Please enter your password",
+  "passwordErrorShort": "Password must be at least 6 characters",
+  "loginSuccess": "Login successful ✅",
+  "loginFailed": "Login failed ❌",
+  "networkError": "Network error: ",
+
+  "chooseTitle": "Choose Who Are You?",
+  "chooseSubtitle": "Kindly choose according to your role to proceed the sign up.",
+  "signupSpecialist": "Sign up as a Specialist",
+  "signupUser": "Sign up as a User",
+
+  "signupTitle": "Sign Up",
+  "signupSubtitle": "To register your account, please fill the below fields to access the full features of this app.",
+  "phoneLabel": "Phone Number",
+  "phoneHint": "Enter your phone number",
+  "passwordLabel": "Password",
+  "termsText": "I agree with ",
+  "termsPolicy": "Terms & Policy",
+  "termsError": "Please agree to Terms & Policy",
+  "signupButton": "Sign up",
+  "signupWithEmail": "Sign up with Email",
+  "loginPromptExisting": "Already have an account? ",
+  "loginLink": "Log in",
+
+  "otpSent": "OTP sent successfully!",
+
+  "userVerifiedTitle": "Successfully Verified",
+  "userVerifiedPhoneMessage": "Your phone number {maskedContact}\nhas been verified successfully.\nYou can now continue with log in.",
+  "@userVerifiedPhoneMessage": {
+    "description": "Phone verification message",
+    "placeholders": {
+      "maskedContact": {}
+    }
+  },
+  "userVerifiedEmailMessage": "Your email {maskedContact}\nhas been verified successfully.\nYou can now continue with log in.",
+  "@userVerifiedEmailMessage": {
+    "description": "Email verification message",
+    "placeholders": {
+      "maskedContact": {}
+    }
+  },
+  "setUpProfile": "Set up Profile",
+
+  "enterOtpTitle": "Enter OTP",
+  "otpSentMessagePhone": "We have sent an OTP to your phone number {contactValue}.\nPlease check your messages and enter the OTP.",
+  "@otpSentMessagePhone": {
+    "description": "OTP sent message for phone",
+    "placeholders": {
+      "contactValue": {}
+    }
+  },
+  "otpSentMessageEmail": "We have sent an OTP to your email {contactValue}.\nPlease check your inbox and enter the OTP.",
+  "@otpSentMessageEmail": {
+    "description": "OTP sent message for email",
+    "placeholders": {
+      "contactValue": {}
+    }
+  },
+  "resendCode": "Resend Code",
+  "didNotGetCode": "Didn't get the code? ",
+  "submit": "Submit",
+  "editPhoneNumber": "Edit Phone Number",
+  "editEmailAddress": "Edit Email Address",
+  "invalidOtpMessage": "Please enter a valid 4-digit OTP",
+
+  "passwordResetSuccessMessage": "Your password has been successfully changed.\nYou can now continue with log in.",
+
+  "resetPasswordTitle": "Reset Password",
+  "resetPasswordDescription": "Resetting password for {contactValue}",
+  "@resetPasswordDescription": {
+    "description": "Message showing the email or phone for which password is being reset",
+    "placeholders": {
+      "contactValue": {}
+    }
+  },
+  "newPasswordLabel": "New Password",
+  "confirmPasswordLabel": "Confirm New Password",
+  "enterNewPasswordHint": "Enter your new password",
+  "reEnterPasswordHint": "Re-enter your password",
+  "newPasswordErrorEmpty": "Please enter your new password",
+  "newPasswordErrorWeak": "Password must have 4+ chars, 1 uppercase, 1 number, and 1 special char",
+  "confirmPasswordErrorEmpty": "Please confirm your password",
+  "confirmPasswordErrorMismatch": "Passwords do not match",
+
+  "basicInformationTitle": "Basic Information",
+  "fullNameLabel": "Full Name",
+  "fullNameHint": "Enter your full name",
+  "designationLabel": "Designation",
+  "designationHint": "Enter your designation",
+  "locationLabel": "Location",
+  "locationKarachi": "Karachi, Pakistan",
+  "locationLahore": "Lahore, Pakistan",
+  "locationIslamabad": "Islamabad, Pakistan",
+  "hourlyRateLabel": "Hourly Rate",
+  "hourlyRateHint": "Hourly Rate",
+  "currencyPKR": "PKR",
+  "currencyUSD": "USD",
+  "currencyGBP": "GBP",
+  "specializationLabel": "Specialization",
+  "addSpecialization": "Add Specialization",
+  "languagesLabel": "Languages",
+  "addLanguage": "Add Language",
+  "addChipButton": "+ Add",
+  "nextButton": "Next",
+  "addDialogTitle": "{title}",
+  "@addDialogTitle": {
+    "description": "Dialog title for adding a new tag",
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "addDialogHint": "Enter new item",
+  "cancelButton": "Cancel",
+  "addButton": "Add",
+
+  "educationCertificationsTitle": "Education & Certifications",
+  "educationSectionTitle": "🎓 Education",
+  "certificationsSectionTitle": "📜 Certifications",
+  "educationFieldDegree": "Degree",
+  "educationFieldInstitute": "Institute Name",
+  "certificationFieldTitle": "Certificate Title",
+  "certificationFieldProvider": "Provider",
+  "degreeHint": "Enter degree",
+  "instituteHint": "Enter institute name",
+  "certificateHint": "Enter certificate title",
+  "providerHint": "Enter provider",
+  "removeButton": "Remove",
+  "addMoreButton": "Add More",
+
+
+  "basicDemographicsTitle": "Basic Demographics",
+  "basicDemographicsSubtitle": "Help us get to know you",
+
+  "ageLabel": "Age",
+  "genderIdentityLabel": "Gender identity",
+  "countryLabel": "Country of residence",
+  "relationshipStatusLabel": "Relationship status",
+
+  "ageOption1": "16 – 25",
+  "ageOption2": "26 – 35",
+  "ageOption3": "36 – 45",
+  "ageOption4": "46+",
+
+  "countryOption1": "Karachi, Pakistan",
+  "countryOption2": "Lahore, Pakistan",
+  "countryOption3": "Islamabad, Pakistan",
+  "countryOption4": "Multan, Pakistan",
+  "countryOption5": "Other",
+
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "genderPreferNotToSay": "Prefer not to say",
+
+  "relationshipSingle": "Single",
+  "relationshipInRelationship": "In a relationship",
+  "relationshipMarried": "Married",
+  "relationshipDivorced": "Divorced",
+  "relationshipWidowed": "Widowed",
+
+  "disclaimerTitle": "Disclaimer",
+  "disclaimerDescription": "This is for data collection purposes to tailor this app to your needs.",
+
+  "submittingButton": "Submitting...",
+  "pageProgressText": "Page {currentStep} of {totalSteps}",
+  "@pageProgressText": {
+    "description": "Shows the current page number out of total steps in a multi-step survey",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+
+  
+  "mentalHealthGoalsTitle": "Mental Health Goals",
+  "mentalHealthReasonsTitle": "What brings you here today?",
+  "mentalHealthOtherHint": "Please specify...",
+  "mentalHealthGoalsSectionTitle": "What are your goals for using this app? (Select top 2)",
+  "mentalHealthNextButton": "Next",
+  "mentalHealthSelectError": "Please select at least one reason and one goal.",
+  "mentalHealthPageProgress": "Page {currentStep} of {totalSteps}",
+  "@mentalHealthPageProgress": {
+    "description": "Shows the current page number out of total steps in the mental health flow",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+
+  "mentalHealthReasonAnxiety": "Anxiety or stress",
+  "mentalHealthReasonDepression": "Depression or low mood",
+  "mentalHealthReasonRelationship": "Relationship or family issues",
+  "mentalHealthReasonTrauma": "Trauma or grief",
+  "mentalHealthReasonSelfEsteem": "Self-esteem or confidence",
+  "mentalHealthReasonWork": "Work or academic stress",
+  "mentalHealthReasonOther": "Other (free text)",
+
+  "mentalHealthGoalReduceStress": "Reduce stress/anxiety",
+  "mentalHealthGoalImproveMood": "Improve mood & motivation",
+  "mentalHealthGoalHealthyHabits": "Build healthy habits (sleep, journaling, exercise)",
+  "mentalHealthGoalCoping": "Learn coping strategies",
+  "mentalHealthGoalTalkProfessional": "Talk to a professional",
+  "mentalHealthGoalPersonalGrowth": "Personal growth / mindfulness",
+
+  
+  "lifestyleSupportTitle": "Lifestyle & Support",
+
+  "exerciseFrequencyQuestion": "How often do you exercise?",
+  "exerciseOptionNever": "Never",
+  "exerciseOptionOccasionally": "Occasionally",
+  "exerciseOptionWeekly": "Weekly",
+  "exerciseOptionDaily": "Daily",
+
+  "substanceUseQuestion": "How often do you use alcohol or substances?",
+  "substanceOptionNever": "Never",
+  "substanceOptionOccasionally": "Occasionally",
+  "substanceOptionFrequently": "Frequently",
+
+  "supportSystemQuestion": "Do you have a strong support system (family/friends)?",
+  "supportOptionYes": "Yes",
+  "supportOptionSomewhat": "Somewhat",
+  "supportOptionNo": "No",
+
+  "lifestyleNextButton": "Next",
+  "lifestylePageProgress": "Page {currentStep} of {totalSteps}",
+  "@lifestylePageProgress": {
+    "description": "Shows the current page number out of total steps in the lifestyle & support flow",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+   "currentMentalHealthTitle": "Current Mental Health Status",
+  
+  "mentalHealthDiagnosisQuestion": "Have you ever been diagnosed with a mental health condition?",
+  "mentalHealthFollowUpQuestion": "Follow-up: Which one(s)?",
+  "seeingProfessionalQuestion": "Are you currently seeing a mental health professional?",
+  "suicidalThoughtsQuestion": "Have you ever had suicidal thoughts or self-harm behaviors?",
+
+  "diagnosedYes": "Yes",
+  "diagnosedNo": "No",
+  "diagnosedPreferNot": "Prefer not to say",
+  "seeingProfessionalNone": "None of the above",
+  "suicidalYesRecent": "Yes (recently)",
+  "suicidalYesPast": "Yes (in the past)",
+  "suicidalNever": "Never",
+
+  "followUpPersistentSadness": "Persistent sadness",
+  "followUpPanicAttacks": "Panic attacks",
+  "followUpSleepDifficulty": "Difficulty sleeping",
+  "followUpLossInterest": "Loss of interest in activities",
+  "followUpConcentrationDifficulty": "Difficulty concentrating",
+  "followUpNone": "None of the above",
+
+  "currentMentalHealthNextButton": "Next",
+  "currentMentalHealthPageProgress": "Page {currentStep} of {totalSteps}",
+  "@currentMentalHealthPageProgress": {
+    "description": "Shows the current page number out of total steps in the mental health flow",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+
+
+
+
+
+
+
+
+
+
+  "preferencesTitle": "Preferences",
+  "preferredSupportTypeLabel": "Preferred type of support:",
+  "preferredTherapistLabel": "Preferred therapist characteristics:",
+  "preferredLanguageLabel": "Preferred language:",
+  "supportOptionSelfHelp": "Self–help tools (journaling, meditation, exercises)",
+  "supportOptionChatProfessional": "Chat with a professional",
+  "supportOptionVideoTherapy": "Video/voice therapy",
+  "supportOptionPeerSupport": "Peer community support",
+  "therapistOptionMale": "Male",
+  "therapistOptionFemale": "Female",
+  "therapistOptionNoPreference": "No preference",
+  "languageOptionEnglish": "English",
+  "languageOptionUrdu": "Urdu",
+  "selectLanguageHint": "Select language",
+  
+  "stepProgress": "Step {currentStep} of {totalSteps}",
+  "@stepProgress": {
+    "description": "Shows the current page number out of total steps in the mental health flow",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+
+  "consentSafetyTitle": "Consent & Safety",
+  "consentMessage": "I understand this app does not replace emergency medical services.",
+  "agreeCheckbox": "Yes, I agree",
+  "safetyWarning": "If you ever feel unsafe or have thoughts of self-harm, please contact your local emergency number immediately.",
+  "submitButton": "Submit & Go to Login",
+  "pageProgress": "Page {currentStep} of {totalSteps}",
+  "@pageProgress": {
+    "description": "Shows the current page number out of total steps in the mental health flow",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+    "surveySubmitted": "Survey submitted successfully!",
+  "surveySubmitFailed": "Failed to submit survey",
+  "surveySubmitError": "Error submitting survey",
+  "forgotDescription": "Enter your registered email address to receive a reset code.",
+"validEmailError": "Enter a valid email address",
+"failedToSendOtp": "Failed to send OTP.",
+"back": "Back"
+
 }

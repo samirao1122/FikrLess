@@ -1,9 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'education_certification.dart';
+import '../../../theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 
 class BasicInformationScreen extends StatefulWidget {
-  const BasicInformationScreen({super.key});
+  final Locale locale; // ✅ accept locale
+
+  const BasicInformationScreen({super.key, required this.locale});
 
   @override
   State<BasicInformationScreen> createState() => _BasicInformationScreenState();
@@ -23,158 +27,181 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      body: Stack(
-        children: [
-          // 🌈 Background gradient
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color.fromARGB(108, 78, 194, 194), Color(0xFFF8F8F8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
+    // ✅ Override localization with passed locale
+    return Localizations.override(
+      context: context,
+      locale: widget.locale,
+      child: Builder(
+        builder: (context) {
+          final loc = AppLocalizations.of(context)!;
 
-          // 🧭 Main Content
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          // ✅ Explicit Directionality based on locale
+          return Directionality(
+            textDirection: widget.locale.languageCode == 'ur'
+                ? TextDirection.rtl
+                : TextDirection.ltr,
+            child: Scaffold(
+              extendBodyBehindAppBar: true,
+              backgroundColor: AppColors.backgroundWhite,
+              body: Stack(
                 children: [
-                  const Text(
-                    "Basic Information",
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF01394F),
+                  // Background gradient
+                  Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.gradientTop,
+                          AppColors.gradientBottom,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 20),
 
-                  // 🪞 Full-width Glass Card
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(25),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.4),
+                  // Main Content
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            loc.basicInformationTitle,
+                            style: const TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryDarkBlue,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 15,
-                                offset: const Offset(0, 5),
+                          ),
+                          const SizedBox(height: 20),
+
+                          // Glass Card
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(25),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 20,
+                                  sigmaY: 20,
+                                ),
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.cardWhite70,
+                                    borderRadius: BorderRadius.circular(25),
+                                    border: Border.all(
+                                      color: AppColors.cardBorderWhite40,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.shadowLight,
+                                        blurRadius: 15,
+                                        offset: const Offset(0, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        _buildLabel(loc.fullNameLabel),
+                                        _buildTextField(
+                                          fullNameController,
+                                          loc.fullNameHint,
+                                        ),
+                                        const SizedBox(height: 16),
+
+                                        _buildLabel(loc.designationLabel),
+                                        _buildTextField(
+                                          designationController,
+                                          loc.designationHint,
+                                        ),
+                                        const SizedBox(height: 16),
+
+                                        _buildLabel(loc.locationLabel),
+                                        _buildDropdown<String>(
+                                          value: selectedLocation,
+                                          items: loc.locationOptions,
+                                          onChanged: (val) => setState(
+                                            () => selectedLocation = val,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+
+                                        _buildLabel(loc.hourlyRateLabel),
+                                        const SizedBox(height: 6),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: _buildTextField(
+                                                hourlyRateController,
+                                                loc.hourlyRateHint,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            _buildDropdown<String>(
+                                              value: selectedCurrency,
+                                              items: loc.currencyOptions,
+                                              onChanged: (val) => setState(
+                                                () => selectedCurrency = val,
+                                              ),
+                                              width: 90,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 16),
+
+                                        _buildLabel(loc.specializationLabel),
+                                        _buildTagSection(
+                                          specializations,
+                                          loc.addSpecialization,
+                                        ),
+                                        const SizedBox(height: 16),
+
+                                        _buildLabel(loc.languagesLabel),
+                                        _buildTagSection(
+                                          languages,
+                                          loc.addLanguage,
+                                        ),
+                                        const SizedBox(height: 30),
+
+                                        // Next Button
+                                        _buildNextButton(context, loc),
+                                        const SizedBox(height: 20),
+
+                                        // Progress Bar
+                                        _buildProgressBar(context, 0.5),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ],
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _buildLabel("Full Name"),
-                                _buildTextField(
-                                  fullNameController,
-                                  "Enter your full name",
-                                ),
-                                const SizedBox(height: 16),
-
-                                _buildLabel("Designation"),
-                                _buildTextField(
-                                  designationController,
-                                  "Enter your designation",
-                                ),
-                                const SizedBox(height: 16),
-
-                                _buildLabel("Location"),
-                                _buildDropdown<String>(
-                                  value: selectedLocation,
-                                  items: const [
-                                    "Karachi, Pakistan",
-                                    "Lahore, Pakistan",
-                                    "Islamabad, Pakistan",
-                                  ],
-                                  onChanged: (val) =>
-                                      setState(() => selectedLocation = val),
-                                ),
-                                const SizedBox(height: 16),
-
-                                _buildLabel("Hourly Rate"),
-                                const SizedBox(height: 6),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _buildTextField(
-                                        hourlyRateController,
-                                        "Hourly Rate",
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    _buildDropdown<String>(
-                                      value: selectedCurrency,
-                                      items: const ["PKR", "USD", "GBP"],
-                                      onChanged: (val) => setState(
-                                        () => selectedCurrency = val,
-                                      ),
-                                      width: 90,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 16),
-
-                                _buildLabel("Specialization"),
-                                _buildTagSection(
-                                  specializations,
-                                  "Add Specialization",
-                                ),
-                                const SizedBox(height: 16),
-
-                                _buildLabel("Languages"),
-                                _buildTagSection(languages, "Add Language"),
-                                const SizedBox(height: 30),
-
-                                // 🟦 Next Button ABOVE progress line
-                                _buildNextButton(context),
-                                const SizedBox(height: 20),
-
-                                // Progress Bar (below)
-                                _buildProgressBar(context, 0.5),
-                              ],
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
 
   // ---------------- UI Components ----------------
-
   Widget _buildLabel(String text) => Padding(
     padding: const EdgeInsets.only(bottom: 6),
     child: Text(
       text,
       style: const TextStyle(
         fontWeight: FontWeight.w600,
-        color: Color(0xFF01394F),
+        color: AppColors.primaryDarkBlue,
       ),
     ),
   );
@@ -185,18 +212,18 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
-        fillColor: Colors.white.withOpacity(0.8),
+        fillColor: AppColors.backgroundWhite.withOpacity(0.8),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,
           vertical: 14,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderSide: BorderSide(color: AppColors.borderGrey300),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderSide: BorderSide(color: AppColors.borderGrey300),
         ),
       ),
     );
@@ -227,8 +254,8 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
       width: width,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.8),
-        border: Border.all(color: Colors.grey.shade300),
+        color: AppColors.backgroundWhite.withOpacity(0.8),
+        border: Border.all(color: AppColors.borderGrey300),
         borderRadius: BorderRadius.circular(10),
       ),
       child: dropdown,
@@ -239,9 +266,9 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.8),
+        color: AppColors.backgroundWhite.withOpacity(0.8),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: AppColors.borderGrey300),
       ),
       child: Wrap(
         spacing: 8,
@@ -250,9 +277,9 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
           ...tags.map(
             (tag) => Chip(
               label: Text(tag),
-              deleteIconColor: Colors.redAccent,
+              deleteIconColor: AppColors.errorRed,
               onDeleted: () => setState(() => tags.remove(tag)),
-              backgroundColor: const Color(0xFFE0F7FA),
+              backgroundColor: AppColors.chipBlue,
             ),
           ),
           GestureDetector(
@@ -263,8 +290,8 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
               }
             },
             child: Chip(
-              label: const Text("+ Add"),
-              backgroundColor: Colors.grey.shade200,
+              label: Text("+ ${addLabel}"),
+              backgroundColor: AppColors.chipAddGrey,
             ),
           ),
         ],
@@ -277,14 +304,14 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
       borderRadius: BorderRadius.circular(50),
       child: LinearProgressIndicator(
         value: progress,
-        backgroundColor: Colors.grey.shade300,
-        color: const Color(0xFF00A8A8),
+        backgroundColor: AppColors.progressBackground,
+        color: AppColors.progressPrimary,
         minHeight: 5,
       ),
     );
   }
 
-  Widget _buildNextButton(BuildContext context) {
+  Widget _buildNextButton(BuildContext context, AppLocalizations loc) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
@@ -292,24 +319,26 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const EducationCertificationsScreen(),
+              builder: (context) => EducationCertificationsScreen(
+                locale: widget.locale,
+              ), // ✅ pass locale
             ),
           );
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF00A8A8),
+          backgroundColor: AppColors.primary,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           elevation: 4,
         ),
-        child: const Text(
-          "Next",
-          style: TextStyle(
+        child: Text(
+          loc.nextButton,
+          style: const TextStyle(
             fontSize: 19,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: AppColors.white,
           ),
         ),
       ),
@@ -324,16 +353,18 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
         title: Text(title),
         content: TextField(
           controller: tagController,
-          decoration: const InputDecoration(hintText: "Enter new item"),
+          decoration: InputDecoration(
+            hintText: AppLocalizations.of(context)!.addDialogHint,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text(AppLocalizations.of(context)!.cancelButton),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, tagController.text),
-            child: const Text("Add"),
+            child: Text(AppLocalizations.of(context)!.addButton),
           ),
         ],
       ),

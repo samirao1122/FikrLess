@@ -13,10 +13,12 @@ dependencies:
   cupertino_icons: ^1.0.8
   country_picker: ^2.0.27
   pinput: ^5.0.2
+  shared_preferences: ^2.2.1
   http: ^1.2.2
   google_fonts: ^6.3.2
   provider: ^6.0.5
   flutter_localizations:
+
     sdk: flutter
 
 dev_dependencies:
@@ -30,11 +32,11 @@ flutter:
   generate: true
 
   assets:
-    - assets/images/
-    - assets/images/before_login/
-    - assets/images/splash_screen/
-    - assets/images/otp_screen/
-    # - assets/icon/  # Uncomment if you add icons folder
+  - assets/images/
+  - assets/images/before_login/
+  - assets/images/splash_screen/
+  - assets/images/otp_screen/
+  # - assets/icon/  # Uncomment if you add icons folder
 
 flutter_icons:
   android: true

@@ -1,16 +1,330 @@
 {
   "@@locale": "ur",
   "appTitle": "فکر لیس",
+  
+  "getStarted": "شروع کریں",
+  "routeNotFound": "راستہ نہیں ملا",
+
   "login": "لاگ ان",
-  "signup": "سائن اپ",
+  "loginTitle": "آپ کی محفوظ جگہ",
+  "loginSubtitle": "دماغی صحت کی دیکھ بھال",
+  "loginDescription": "فکر لیس آپ کو اپنے موڈ کو ٹریک کرنے، مدد سے جڑنے اور خود کی دیکھ بھال کرنے میں مدد دیتا ہے۔",
   "forgotPassword": "پاس ورڈ بھول گئے؟",
   "emailHint": "اپنا ای میل درج کریں",
   "passwordHint": "اپنا پاس ورڈ درج کریں",
-  "otp_sent": "OTP کامیابی سے بھیج دیا گیا!",
-  "routeNotFound": "راستہ نہیں ملا",
+  "loginButton": "لاگ ان کریں",
+  "loginWithPhone": "فون نمبر کے ساتھ لاگ ان کریں",
+  "loginWithEmail": "ای میل کے ساتھ لاگ ان کریں",
+  "loginPrompt": "اکاؤنٹ نہیں ہے؟ ",
+  "signupLink": "سائن اپ",
+  "phoneErrorInvalid": "درست فون نمبر درج کریں",
+  "phoneErrorEmpty": "براہ کرم فون نمبر درج کریں",
+  "passwordErrorEmpty": "براہ کرم پاس ورڈ درج کریں",
+  "passwordErrorShort": "پاس ورڈ کم از کم 6 حروف کا ہونا چاہیے",
+  "loginSuccess": "لاگ ان کامیاب ✅",
+  "loginFailed": "لاگ ان ناکام ❌",
+  "networkError": "نیٹ ورک کی خرابی: ",
+
+  "chooseTitle": "آپ کون ہیں منتخب کریں؟",
+  "chooseSubtitle": "براہ کرم سائن اپ کے لیے اپنا کردار منتخب کریں۔",
+  "signupSpecialist": "ماہر کے طور پر سائن اپ کریں",
+  "signupUser": "صارف کے طور پر سائن اپ کریں",
+
+  "signupTitle": "سائن اپ",
+  "signupSubtitle": "اپنا اکاؤنٹ رجسٹر کرنے کے لیے، نیچے دیے گئے فیلڈز پُر کریں تاکہ آپ ایپ کی تمام خصوصیات تک رسائی حاصل کر سکیں۔",
+  "phoneLabel": "فون نمبر",
+  "phoneHint": "اپنا فون نمبر درج کریں",
+  "passwordLabel": "پاس ورڈ",
+  "termsText": "میں متفق ہوں ",
+  "termsPolicy": "شرائط و پالیسی",
+  "termsError": "براہ کرم شرائط و پالیسی سے اتفاق کریں",
+  "signupButton": "سائن اپ",
+  "signupWithEmail": "ای میل کے ساتھ سائن اپ کریں",
+  "loginPromptExisting": "پہلے سے اکاؤنٹ موجود ہے؟ ",
+  "loginLink": "لاگ ان کریں",
+
+  "otpSent": "OTP کامیابی سے بھیج دیا گیا!",
+
+  "userVerifiedTitle": "کامیابی کے ساتھ تصدیق شدہ",
+  "userVerifiedPhoneMessage": "آپ کا فون نمبر {maskedContact}\nکامیابی کے ساتھ تصدیق ہو گیا ہے۔\nاب آپ لاگ ان کے ساتھ آگے بڑھ سکتے ہیں۔",
+  "@userVerifiedPhoneMessage": {
+    "description": "Phone verification message",
+    "placeholders": {
+      "maskedContact": {}
+    }
+  },
+  "userVerifiedEmailMessage": "آپ کا ای میل {maskedContact}\nکامیابی کے ساتھ تصدیق ہو گیا ہے۔\nاب آپ لاگ ان کے ساتھ آگے بڑھ سکتے ہیں۔",
+  "@userVerifiedEmailMessage": {
+    "description": "Email verification message",
+    "placeholders": {
+      "maskedContact": {}
+    }
+  },
+  "setUpProfile": "پروفائل سیٹ کریں",
+
+  "enterOtpTitle": "OTP درج کریں",
+  "otpSentMessagePhone": "ہم نے آپ کے فون نمبر {contactValue} پر OTP بھیج دیا ہے۔\nبراہ کرم اپنے پیغامات چیک کریں اور OTP درج کریں۔",
+  "@otpSentMessagePhone": {
+    "description": "OTP sent message for phone",
+    "placeholders": {
+      "contactValue": {}
+    }
+  },
+  "otpSentMessageEmail": "ہم نے آپ کے ای میل {contactValue} پر OTP بھیج دیا ہے۔\nبراہ کرم اپنا ان باکس چیک کریں اور OTP درج کریں۔",
+  "@otpSentMessageEmail": {
+    "description": "OTP sent message for email",
+    "placeholders": {
+      "contactValue": {}
+    }
+  },
+  "resendCode": "کوڈ دوبارہ بھیجیں",
+  "didNotGetCode": "کوڈ نہیں ملا؟ ",
+  "submit": "جمع کروائیں",
+  "editPhoneNumber": "فون نمبر تبدیل کریں",
+  "editEmailAddress": "ای میل ایڈریس تبدیل کریں",
+  "invalidOtpMessage": "براہ کرم 4 ہندسوں کا درست OTP درج کریں",
+
+  "passwordResetSuccessMessage": "آپ کا پاس ورڈ کامیابی سے تبدیل ہو گیا ہے۔\nاب آپ لاگ ان کے ساتھ آگے بڑھ سکتے ہیں۔",
+
+  "resetPasswordTitle": "پاس ورڈ ری سیٹ کریں",
+  "resetPasswordDescription": "{contactValue} کے لیے پاس ورڈ ری سیٹ ہو رہا ہے",
+  "@resetPasswordDescription": {
+    "description": "Message showing the email or phone for which password is being reset",
+    "placeholders": {
+      "contactValue": {}
+    }
+  },
+  "newPasswordLabel": "نیا پاس ورڈ",
+  "confirmPasswordLabel": "نیا پاس ورڈ دوبارہ درج کریں",
+  "enterNewPasswordHint": "اپنا نیا پاس ورڈ درج کریں",
+  "reEnterPasswordHint": "اپنا پاس ورڈ دوبارہ درج کریں",
+  "newPasswordErrorEmpty": "براہ کرم اپنا نیا پاس ورڈ درج کریں",
+  "newPasswordErrorWeak": "پاس ورڈ میں 4+ حروف، 1 بڑا حرف، 1 نمبر اور 1 خاص حرف ہونا چاہیے",
+  "confirmPasswordErrorEmpty": "براہ کرم اپنا پاس ورڈ دوبارہ درج کریں",
+  "confirmPasswordErrorMismatch": "پاس ورڈ میل نہیں کھاتے",
+
+  "basicInformationTitle": "بنیادی معلومات",
+  "fullNameLabel": "پورا نام",
+  "fullNameHint": "اپنا پورا نام درج کریں",
+  "designationLabel": "عہدہ",
+  "designationHint": "اپنا عہدہ درج کریں",
+  "locationLabel": "مقام",
+  "locationKarachi": "کراچی، پاکستان",
+  "locationLahore": "لاہور، پاکستان",
+  "locationIslamabad": "اسلام آباد، پاکستان",
+  "hourlyRateLabel": "فی گھنٹہ ریٹ",
+  "hourlyRateHint": "فی گھنٹہ ریٹ",
+  "currencyPKR": "روپے (PKR)",
+  "currencyUSD": "ڈالر (USD)",
+  "currencyGBP": "پاؤنڈ (GBP)",
+  "specializationLabel": "مہارت",
+  "addSpecialization": "مہارت شامل کریں",
+  "languagesLabel": "زبانیں",
+  "addLanguage": "زبان شامل کریں",
+  "addChipButton": "+ شامل کریں",
+ 
+  "addDialogTitle": "{title}",
+  "@addDialogTitle": {
+    "description": "Dialog title for adding a new tag",
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "addDialogHint": "نئی چیز درج کریں",
+  "cancelButton": "منسوخ کریں",
+  "addButton": "شامل کریں",
+
+  "educationCertificationsTitle": "تعلیم اور سرٹیفیکیشنز",
+  "educationSectionTitle": "🎓 تعلیم",
+  "certificationsSectionTitle": "📜 سرٹیفیکیشنز",
+  "educationFieldDegree": "ڈگری",
+  "educationFieldInstitute": "ادارہ کا نام",
+  "certificationFieldTitle": "سرٹیفکیٹ کا عنوان",
+  "certificationFieldProvider": "ادارہ",
+  "degreeHint": "ڈگری درج کریں",
+  "instituteHint": "ادارہ کا نام درج کریں",
+  "certificateHint": "سرٹیفکیٹ کا عنوان درج کریں",
+  "providerHint": "ادارہ درج کریں",
+  "removeButton": "ہٹائیں",
+  "addMoreButton": "مزید شامل کریں",
+
+  "basicDemographicsTitle": "بنیادی آبادی کی معلومات",
+  "basicDemographicsSubtitle": "ہمیں جاننے میں مدد کریں",
+
+  "ageLabel": "عمر",
+  "genderIdentityLabel": "صنف",
+  "countryLabel": "رہائش کا ملک",
+  "relationshipStatusLabel": "ازدواجی حیثیت",
+
+  "ageOption1": "16 – 25",
+  "ageOption2": "26 – 35",
+  "ageOption3": "36 – 45",
+  "ageOption4": "46+",
+
+  "countryOption1": "کراچی، پاکستان",
+  "countryOption2": "لاہور، پاکستان",
+  "countryOption3": "اسلام آباد، پاکستان",
+  "countryOption4": "ملتان، پاکستان",
+  "countryOption5": "دیگر",
+
+  "genderMale": "مرد",
+  "genderFemale": "خاتون",
+  "genderPreferNotToSay": "کہنے سے گریز کریں",
+
+  "relationshipSingle": "اکیلے",
+  "relationshipInRelationship": "رشتہ میں",
+  "relationshipMarried": "شادی شدہ",
+  "relationshipDivorced": "طلاق شدہ",
+  "relationshipWidowed": "بیوہ/بیوہ",
+
+  "disclaimerTitle": "ڈسکلیمر",
+  "disclaimerDescription": "یہ ڈیٹا اکٹھا کرنے کے لیے ہے تاکہ ایپ آپ کی ضروریات کے مطابق ہو۔",
+
+  "submittingButton": "جمع کر رہے ہیں...",
+  "pageProgressText": "صفحہ {currentStep} از {totalSteps}",
+  "@pageProgressText": {
+    "description": "ملٹی سٹیپ سروے میں موجودہ صفحہ نمبر اور کل مراحل دکھاتا ہے",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+
+  "mentalHealthGoalsTitle": "دماغی صحت کے اہداف",
+  "mentalHealthReasonsTitle": "آپ آج یہاں کیوں آئے ہیں؟",
+  "mentalHealthOtherHint": "براہ کرم وضاحت کریں...",
+  "mentalHealthGoalsSectionTitle": "اس ایپ کے استعمال کے اپنے اہداف کیا ہیں؟ (سب سے اوپر 2 منتخب کریں)",
+  "mentalHealthNextButton": "اگلا",
+  "mentalHealthSelectError": "براہ کرم کم از کم ایک وجہ اور ایک مقصد منتخب کریں۔",
+  "mentalHealthPageProgress": "صفحہ {currentStep} از {totalSteps}",
+  "@mentalHealthPageProgress": {
+    "description": "دماغی صحت کے فلو میں موجودہ صفحہ نمبر اور کل مراحل دکھاتا ہے",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+
+  "mentalHealthReasonAnxiety": "فکر یا دباؤ",
+  "mentalHealthReasonDepression": "اداسی یا موڈ میں کمی",
+  "mentalHealthReasonRelationship": "رشتہ یا خاندانی مسائل",
+  "mentalHealthReasonTrauma": "صدمہ یا غم",
+  "mentalHealthReasonSelfEsteem": "خود اعتمادی یا اعتماد",
+  "mentalHealthReasonWork": "کام یا تعلیمی دباؤ",
+  "mentalHealthReasonOther": "دیگر (متن میں درج کریں)",
+
+  "mentalHealthGoalReduceStress": "فکر/دباؤ کم کریں",
+  "mentalHealthGoalImproveMood": "موڈ اور حوصلہ بڑھائیں",
+  "mentalHealthGoalHealthyHabits": "صحت مند عادات بنائیں (نیند، جرنلنگ، ورزش)",
+  "mentalHealthGoalCoping": "مددگار حکمت عملی سیکھیں",
+  "mentalHealthGoalTalkProfessional": "پیشہ ور سے بات کریں",
+  "mentalHealthGoalPersonalGrowth": "ذاتی نشوونما / ذہنی سکون",
   
-  "getStarted": "شروع کریں",
-  "loginTitle": "آپ کی محفوظ جگہ",
-  "loginSubtitle": "دماغی صحت کی دیکھ بھال",
-  "loginDescription": "FikrLess آپ کو اپنے موڈ کو ٹریک کرنے، سپورٹ سے جڑنے، اور خود کی دیکھ بھال کرنے میں مدد دیتا ہے۔"
+  "lifestyleSupportTitle": "طرز زندگی اور سپورٹ",
+
+  "exerciseFrequencyQuestion": "آپ کتنی بار ورزش کرتے ہیں؟",
+  "exerciseOptionNever": "کبھی نہیں",
+  "exerciseOptionOccasionally": "کبھی کبھار",
+  "exerciseOptionWeekly": "ہفتہ وار",
+  "exerciseOptionDaily": "روزانہ",
+
+  "substanceUseQuestion": "آپ کتنی بار شراب یا منشیات استعمال کرتے ہیں؟",
+  "substanceOptionNever": "کبھی نہیں",
+  "substanceOptionOccasionally": "کبھی کبھار",
+  "substanceOptionFrequently": "اکثر",
+
+  "supportSystemQuestion": "کیا آپ کے پاس مضبوط معاون نظام ہے (خاندان/دوست)؟",
+  "supportOptionYes": "ہاں",
+  "supportOptionSomewhat": "کچھ حد تک",
+  "supportOptionNo": "نہیں",
+
+  "lifestyleNextButton": "اگلا",
+  "lifestylePageProgress": "صفحہ {currentStep} از {totalSteps}",
+  "@lifestylePageProgress": {
+    "description": "طرز زندگی اور سپورٹ کے سروے میں موجودہ صفحہ نمبر اور کل مراحل دکھاتا ہے",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+    "currentMentalHealthTitle": "موجودہ دماغی صحت کی صورتحال",
+  
+  "mentalHealthDiagnosisQuestion": "کیا آپ کو کبھی دماغی صحت کی بیماری کی تشخیص ہوئی ہے؟",
+  "mentalHealthFollowUpQuestion": "فالو اپ: کون سی؟",
+  "seeingProfessionalQuestion": "کیا آپ اس وقت کسی دماغی صحت کے ماہر سے ملاقات کر رہے ہیں؟",
+  "suicidalThoughtsQuestion": "کیا آپ نے کبھی خودکشی یا خود کو نقصان پہنچانے کے خیالات رکھے ہیں؟",
+
+  "diagnosedYes": "ہاں",
+  "diagnosedNo": "نہیں",
+  "diagnosedPreferNot": "کہنے سے گریز کریں",
+  "seeingProfessionalNone": "مندرجہ بالا میں سے کوئی نہیں",
+  "suicidalYesRecent": "ہاں (حال ہی میں)",
+  "suicidalYesPast": "ہاں (ماضی میں)",
+  "suicidalNever": "کبھی نہیں",
+
+  "followUpPersistentSadness": "مسلسل اداسی",
+  "followUpPanicAttacks": "پینک اٹیک",
+  "followUpSleepDifficulty": "نیند میں دشواری",
+  "followUpLossInterest": "سرگرمیوں میں دلچسپی کا نقصان",
+  "followUpConcentrationDifficulty": "توجہ مرکوز کرنے میں مشکل",
+  "followUpNone": "مندرجہ بالا میں سے کوئی نہیں",
+
+  "currentMentalHealthNextButton": "اگلا",
+  "currentMentalHealthPageProgress": "صفحہ {currentStep} از {totalSteps}",
+  "@currentMentalHealthPageProgress": {
+    "description": "موجودہ دماغی صحت کے سروے میں موجودہ صفحہ نمبر اور کل مراحل دکھاتا ہے",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+
+  "preferencesTitle": "ترجیحات",
+  "preferredSupportTypeLabel": "مدد کی پسندیدہ قسم:",
+  "preferredTherapistLabel": "تھراپسٹ کی خصوصیات کی ترجیح:",
+  "preferredLanguageLabel": "پسندیدہ زبان:",
+  "supportOptionSelfHelp": "خود مدد کے اوزار (جرنلنگ، مراقبہ، مشقیں)",
+  "supportOptionChatProfessional": "پیشہ ور کے ساتھ چیٹ",
+  "supportOptionVideoTherapy": "ویڈیو/آواز تھراپی",
+  "supportOptionPeerSupport": "ساتھی کمیونٹی کی حمایت",
+  "therapistOptionMale": "مرد",
+  "therapistOptionFemale": "خاتون",
+  "therapistOptionNoPreference": "کوئی ترجیح نہیں",
+  "languageOptionEnglish": "انگریزی",
+  "languageOptionUrdu": "اردو",
+  "selectLanguageHint": "زبان منتخب کریں",
+  "nextButton": "اگلا",
+  "stepProgress": "مرحلہ {currentStep} از {totalSteps}",
+    "@stepProgress": {
+    "description": "موجودہ دماغی صحت کے سروے میں موجودہ صفحہ نمبر اور کل مراحل دکھاتا ہے",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+
+  
+  "consentSafetyTitle": "رضامندی اور حفاظت",
+  "consentMessage": "میں سمجھتا/سمجھتی ہوں کہ یہ ایپ ہنگامی طبی خدمات کی جگہ نہیں لے سکتی۔",
+  "agreeCheckbox": "ہاں، میں متفق ہوں",
+  "safetyWarning": "اگر آپ خود کو غیر محفوظ محسوس کریں یا خود کو نقصان پہنچانے کے خیالات ہوں، تو براہ کرم فوری طور پر اپنے مقامی ہنگامی نمبر پر رابطہ کریں۔",
+  "submitButton": "جمع کریں اور لاگ ان پر جائیں",
+  "pageProgress": "صفحہ {currentStep} از {totalSteps}",
+    "@pageProgress": {
+    "description": "موجودہ دماغی صحت کے سروے میں موجودہ صفحہ نمبر اور کل مراحل دکھاتا ہے",
+    "placeholders": {
+      "currentStep": {},
+      "totalSteps": {}
+    }
+  },
+  "surveySubmitted": "سروے کامیابی سے جمع ہو گیا!",
+  "surveySubmitFailed": "سروے جمع کرنے میں ناکامی",
+  "surveySubmitError": "سروے جمع کرنے میں خرابی",
+  "forgotDescription": "ری سیٹ کوڈ حاصل کرنے کے لیے اپنا رجسٹرڈ ای میل ایڈریس درج کریں۔",
+"validEmailError": "درست ای میل ایڈریس درج کریں",
+"failedToSendOtp": "او ٹی پی بھیجنے میں ناکامی",
+"back": "واپس"
+
 }
+
+

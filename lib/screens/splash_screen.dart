@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'before_login_signup/get_started_screen.dart';
+import "../theme/app_colors.dart";
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -51,12 +53,22 @@ class _SplashScreenState extends State<SplashScreen>
       CurvedAnimation(parent: _controller, curve: Curves.easeInOutSine),
     );
 
-    // ⏳ Splash duration
+    // ⏳ Navigate after splash duration
+    _navigateToBeforeLogin();
+  }
+
+  Future<void> _navigateToBeforeLogin() async {
+    // Load saved language
+    final prefs = await SharedPreferences.getInstance();
+    final savedLang = prefs.getString('selectedLanguage') ?? 'en';
+    final locale = Locale(savedLang);
+
+    // Wait for splash duration
     Timer(const Duration(seconds: 8), () {
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const BeforeLogin()),
+          MaterialPageRoute(builder: (context) => BeforeLogin(locale: locale)),
         );
       }
     });
@@ -82,9 +94,9 @@ class _SplashScreenState extends State<SplashScreen>
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF00A8A8), // 🌿 rich aqua
-                  Color(0xFF9FEDE6), // 🌊 lighter mint
-                  Color(0xFFB9F3EC), // 🌤 soft mint bottom
+                  AppColors.accentTeal,
+                  AppColors.splashGradientMiddle,
+                  AppColors.splashGradientBottom,
                 ],
                 stops: [0.0, 0.5, 1.0],
               ),
@@ -160,7 +172,7 @@ class _SplashScreenState extends State<SplashScreen>
           width: w,
           height: h,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(opacity),
+            color: AppColors.white.withOpacity(opacity),
             borderRadius: BorderRadius.circular(w * 0.7),
           ),
         ),

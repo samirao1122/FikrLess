@@ -3,12 +3,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../auth/login/login_screen.dart';
-import 'user_survey_data.dart'; // ✅ correct import
+import 'user_survey_data.dart';
+import '../../../theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 
 class ConsentSafetyScreen extends StatefulWidget {
   final UserSurveyData surveyData;
+  final Locale locale; // ✅ store locale
 
-  const ConsentSafetyScreen({super.key, required this.surveyData});
+  const ConsentSafetyScreen({
+    super.key,
+    required this.surveyData,
+    required this.locale,
+  });
 
   @override
   State<ConsentSafetyScreen> createState() => _ConsentSafetyScreenState();
@@ -20,7 +27,6 @@ class _ConsentSafetyScreenState extends State<ConsentSafetyScreen> {
   final int totalSteps = 6;
   final int currentStep = 6;
 
-  // ✅ Submit all survey data to backend
   Future<void> _submitData() async {
     widget.surveyData.understandsEmergencyDisclaimer = agree;
 
@@ -29,7 +35,6 @@ class _ConsentSafetyScreenState extends State<ConsentSafetyScreen> {
         'https://stalagmitical-millie-unhomiletic.ngrok-free.dev/demographics',
       );
 
-      // ✅ Use the actual userId from surveyData
       final Map<String, dynamic> payload = widget.surveyData.toJson();
       if (widget.surveyData.userId != null) {
         payload["user_id"] = widget.surveyData.userId;
@@ -37,8 +42,7 @@ class _ConsentSafetyScreenState extends State<ConsentSafetyScreen> {
         debugPrint("⚠️ Warning: userId is null in surveyData!");
       }
 
-      // Debug print — shows full payload in console
-      print("📦 Sending payload: ${jsonEncode(payload)}");
+      debugPrint("📦 Sending payload: ${jsonEncode(payload)}");
 
       final response = await http.post(
         url,
@@ -48,191 +52,218 @@ class _ConsentSafetyScreenState extends State<ConsentSafetyScreen> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Survey submitted successfully!')),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.surveySubmitted),
+          ),
         );
 
-        // Wait briefly before navigation
         await Future.delayed(const Duration(seconds: 1));
 
-        // ✅ Navigate to login screen
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
+          MaterialPageRoute(
+            builder: (_) => LoginScreen(locale: widget.locale), // ✅ pass locale
+          ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Failed to submit survey (${response.statusCode}): ${response.body}',
+              '${AppLocalizations.of(context)!.surveySubmitFailed} (${response.statusCode}): ${response.body}',
             ),
           ),
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error submitting survey: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${AppLocalizations.of(context)!.surveySubmitError}: $e',
+          ),
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FB),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(
-                      Theme.of(context).platform == TargetPlatform.iOS
-                          ? CupertinoIcons.back
-                          : Icons.arrow_back_rounded,
-                      color: const Color(0xFF00A8A8),
-                      size: 26,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  const Text(
-                    "Consent & Safety",
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 38,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF00A8A8),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
+    return Localizations.override(
+      context: context,
+      locale: widget.locale, // ✅ override locale
+      child: Builder(
+        builder: (context) {
+          final loc = AppLocalizations.of(context)!;
 
-              // Card
-              Expanded(
-                child: Container(
-                  width: double.infinity,
+          return Directionality(
+            textDirection: widget.locale.languageCode == 'ur'
+                ? TextDirection.rtl
+                : TextDirection.ltr, // ✅ dynamic LTR/RTL
+            child: Scaffold(
+              backgroundColor: AppColors.background,
+              body: SafeArea(
+                child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 30,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                      bottomLeft: Radius.circular(25),
-                      bottomRight: Radius.circular(25),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.18),
-                        blurRadius: 12,
-                        offset: const Offset(0, 6),
-                      ),
-                    ],
+                    horizontal: 20,
+                    vertical: 40,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Handle bar
-                      Center(
-                        child: Container(
-                          width: 145,
-                          height: 5,
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-
-                      // Consent Text
-                      const Text(
-                        "I understand this app does not replace emergency medical services.",
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 22),
-
-                      CheckboxListTile(
-                        value: agree,
-                        onChanged: (val) =>
-                            setState(() => agree = val ?? false),
-                        activeColor: const Color(0xFF00A8A8),
-                        title: const Text(
-                          "Yes, I agree",
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 16,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.zero,
-                        controlAffinity: ListTileControlAffinity.leading,
-                      ),
-                      const SizedBox(height: 35),
-
-                      // Safety message
-                      const Text(
-                        "If you ever feel unsafe or have thoughts of self-harm, "
-                        "please contact your local emergency number immediately.",
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 16,
-                          color: Colors.black87,
-                          height: 1.5,
-                        ),
-                      ),
-                      const Spacer(),
-
-                      // Submit / Go to Login button
-                      Center(
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: agree ? _submitData : null,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF00A8A8),
-                              disabledBackgroundColor: Colors.grey.shade300,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
-                              ),
+                      // Header
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: Icon(
+                              Theme.of(context).platform == TargetPlatform.iOS
+                                  ? CupertinoIcons.back
+                                  : Icons.arrow_back_rounded,
+                              color: AppColors.primary,
+                              size: 26,
                             ),
-                            child: const Text(
-                              "Submit & Go to Login",
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              loc.consentSafetyTitle,
                               style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: 18,
+                                fontSize: 38,
                                 fontWeight: FontWeight.w700,
-                                color: Colors.white,
+                                color: AppColors.primary,
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 30),
 
-                      // Progress bar
-                      _buildSegmentedProgressBar(),
-                      const SizedBox(height: 8),
-                      const Center(
-                        child: Text(
-                          "Page 6 of 6",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Roboto',
-                            color: Colors.black54,
+                      // Card
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 30,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                              bottomLeft: Radius.circular(25),
+                              bottomRight: Radius.circular(25),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.colorShadow,
+                                blurRadius: 12,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Container(
+                                  width: 145,
+                                  height: 5,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.textBlack87,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 40),
+
+                              // Consent text
+                              Text(
+                                loc.consentMessage,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textBlack87,
+                                ),
+                              ),
+                              const SizedBox(height: 22),
+
+                              CheckboxListTile(
+                                value: agree,
+                                onChanged: (val) =>
+                                    setState(() => agree = val ?? false),
+                                activeColor: AppColors.primary,
+                                title: Text(
+                                  loc.agreeCheckbox,
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 16,
+                                    color: AppColors.textBlack87,
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.zero,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                              ),
+                              const SizedBox(height: 35),
+
+                              Text(
+                                loc.safetyWarning,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  color: AppColors.textBlack87,
+                                  height: 1.5,
+                                ),
+                              ),
+                              const Spacer(),
+
+                              // Submit button
+                              Center(
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: agree ? _submitData : null,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primary,
+                                      disabledBackgroundColor:
+                                          AppColors.progressGrey,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 16,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      loc.submitButton,
+                                      style: const TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 25),
+
+                              // Progress bar
+                              _buildSegmentedProgressBar(),
+                              const SizedBox(height: 8),
+                              Center(
+                                child: Text(
+                                  loc.pageProgress(currentStep, totalSteps),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Roboto',
+                                    color: AppColors.textBlack54,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -240,14 +271,13 @@ class _ConsentSafetyScreenState extends State<ConsentSafetyScreen> {
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  // Progress Bar
   Widget _buildSegmentedProgressBar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -258,7 +288,7 @@ class _ConsentSafetyScreenState extends State<ConsentSafetyScreen> {
             height: 6,
             margin: EdgeInsets.only(right: index == totalSteps - 1 ? 0 : 4),
             decoration: BoxDecoration(
-              color: isFilled ? const Color(0xFF00A8A8) : Colors.grey.shade300,
+              color: isFilled ? AppColors.primary : AppColors.progressGrey,
               borderRadius: BorderRadius.circular(3),
             ),
           ),

@@ -8,59 +8,6 @@ import 'package:intl/intl.dart' as intl;
 import 'app_localizations_en.dart';
 import 'app_localizations_ur.dart'; // ✅ Import Urdu localization
 
-// ignore_for_file: type=lint
-
-/// Callers can lookup localized strings with an instance of AppLocalizations
-/// returned by `AppLocalizations.of(context)`.
-///
-/// Applications need to include `AppLocalizations.delegate()` in their app's
-/// `localizationDelegates` list, and the locales they support in the app's
-/// `supportedLocales` list. For example:
-///
-/// ```dart
-/// import 'l10n/app_localizations.dart';
-///
-/// return MaterialApp(
-///   localizationsDelegates: AppLocalizations.localizationsDelegates,
-///   supportedLocales: AppLocalizations.supportedLocales,
-///   home: MyApplicationHome(),
-/// );
-/// ```
-///
-/// ## Update pubspec.yaml
-///
-/// Please make sure to update your pubspec.yaml to include the following
-/// packages:
-///
-/// ```yaml
-/// dependencies:
-///   # Internationalization support.
-///   flutter_localizations:
-///     sdk: flutter
-///   intl: any # Use the pinned version from flutter_localizations
-///
-///   # Rest of dependencies
-/// ```
-///
-/// ## iOS Applications
-///
-/// iOS applications define key application metadata, including supported
-/// locales, in an Info.plist file that is built into the application bundle.
-/// To configure the locales supported by your app, you’ll need to edit this
-/// file.
-///
-/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
-/// Then, in the Project Navigator, open the Info.plist file under the Runner
-/// project’s Runner folder.
-///
-/// Next, select the Information Property List item, select Add Item from the
-/// Editor menu, then select Localizations from the pop-up menu.
-///
-/// Select and expand the newly-created Localizations item then, for each
-/// locale your application supports, add a new item and select the locale
-/// you wish to add from the pop-up menu in the Value field. This list should
-/// be consistent with the languages listed in the AppLocalizations.supportedLocales
-/// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
     : localeName = intl.Intl.canonicalizedLocale(locale.toString());
@@ -74,16 +21,6 @@ abstract class AppLocalizations {
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 
-  /// A list of this localizations delegate along with the default localizations
-  /// delegates.
-  ///
-  /// Returns a list of localizations delegates containing this delegate along with
-  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
-  /// and GlobalWidgetsLocalizations.delegate.
-  ///
-  /// Additional delegates can be added by appending to this list in
-  /// MaterialApp. This list does not have to be used at all if a custom list
-  /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
         delegate,
@@ -92,61 +29,277 @@ abstract class AppLocalizations {
         GlobalWidgetsLocalizations.delegate,
       ];
 
-  /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('ur'), // ✅ Added Urdu support
   ];
 
-  /// No description provided for @appTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Fikr Less'**
+  // 🔑 Common strings
   String get appTitle;
-
-  /// No description provided for @login.
-  ///
-  /// In en, this message translates to:
-  /// **'Login'**
   String get login;
-
-  /// No description provided for @signup.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign Up'**
   String get signup;
-
-  /// No description provided for @forgotPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Forgot Password?'**
   String get forgotPassword;
-
-  /// No description provided for @emailHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your email'**
   String get emailHint;
-
-  /// No description provided for @passwordHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your password'**
   String get passwordHint;
-
-  /// No description provided for @otp_sent.
-  ///
-  /// In en, this message translates to:
-  /// **'OTP sent successfully!'**
-  String get otp_sent;
-
+  String get otpSent;
   String get routeNotFound;
 
-  // Added strings for BeforeLogin screen
+  // 🏁 BeforeLogin screen
   String get getStarted;
   String get loginTitle;
   String get loginSubtitle;
   String get loginDescription;
+  String get loginButton;
+  String get loginWithPhone;
+  String get loginWithEmail;
+  String get loginPrompt;
+  String get signupLink;
+  String get loginSuccess;
+  String get loginFailed;
+  String get networkError;
+
+  // 👤 ChooseWhoAreYouScreen
+  String get chooseTitle;
+  String get chooseSubtitle;
+  String get signupSpecialist;
+  String get signupUser;
+
+  // 📱 UserSignUpScreen
+  String get signupTitle;
+  String get signupSubtitle;
+  String get phoneLabel;
+  String get phoneHint;
+  String get phoneErrorEmpty;
+  String get phoneErrorInvalid;
+  String get passwordLabel;
+  String get passwordErrorEmpty;
+  String get passwordErrorShort;
+  String get termsText;
+  String get termsPolicy;
+  String get termsError;
+  String get signupButton;
+  String get signupWithEmail;
+  String get loginPromptExisting;
+  String get loginLink;
+
+  // ✅ userVerifiedScreen translations
+  String get userVerifiedTitle;
+  String userVerifiedPhoneMessage(String maskedContact);
+  String userVerifiedEmailMessage(String maskedContact);
+  String get setUpProfile;
+
+  // 🆕 OTP Verification screen translations
+  String get enterOtpTitle;
+  String otpSentMessagePhone(String contactValue);
+  String otpSentMessageEmail(String contactValue);
+  String get resendCode;
+  String get didNotGetCode;
+  String get submit;
+  String get editPhoneNumber;
+  String get editEmailAddress;
+  String get invalidOtpMessage;
+
+  // 🔔 Password reset success message
+  String get passwordResetSuccessMessage;
+
+  // 🔑 Reset Password Screen keys
+  String get resetPasswordTitle;
+  String resetPasswordDescription(String contactValue);
+  String get newPasswordLabel;
+  String get confirmPasswordLabel;
+  String get enterNewPasswordHint;
+  String get reEnterPasswordHint;
+  String get newPasswordErrorEmpty;
+  String get newPasswordErrorWeak;
+  String get confirmPasswordErrorEmpty;
+  String get confirmPasswordErrorMismatch;
+
+  String get forgotDescription;
+  String get validEmailError;
+  String get failedToSendOtp;
+  String get back;
+
+  // ------------------ Basic Information Screen ------------------
+  String get basicInformationTitle;
+  String get fullNameLabel;
+  String get fullNameHint;
+  String get designationLabel;
+  String get designationHint;
+  String get locationLabel;
+  List<String> get locationOptions;
+  String get hourlyRateLabel;
+  String get hourlyRateHint;
+  List<String> get currencyOptions;
+  String get specializationLabel;
+  String get addSpecialization;
+  String get languagesLabel;
+  String get addLanguage;
+  String get addChipButton;
+  String get nextButton;
+  String addDialogTitle(String title);
+  String get addDialogHint;
+  String get cancelButton;
+  String get addButton;
+
+  // ------------------ Education & Certifications Screen ------------------
+  String get educationCertificationsTitle;
+  String get educationSectionTitle;
+  String get certificationsSectionTitle;
+
+  // 🔑 Added missing fields for red errors
+  String get educationFieldDegree;
+  String get educationFieldInstitute;
+  String get certificationFieldTitle;
+  String get certificationFieldProvider;
+
+  List<String> get educationFields;
+  List<String> get certificationFields;
+
+  String get degreeHint;
+  String get instituteHint;
+  String get certificateHint;
+  String get providerHint;
+  String get removeButton;
+  String get addMoreButton;
+  // ------------------ Basic Demographics Screen ------------------
+  String get basicDemographicsTitle;
+  String get basicDemographicsSubtitle;
+  String get ageLabel;
+  String get genderIdentityLabel;
+  String get countryLabel;
+  String get relationshipStatusLabel;
+
+  String get ageOption1;
+  String get ageOption2;
+  String get ageOption3;
+  String get ageOption4;
+
+  String get countryOption1;
+  String get countryOption2;
+  String get countryOption3;
+  String get countryOption4;
+  String get countryOption5;
+
+  String get genderMale;
+  String get genderFemale;
+  String get genderPreferNotToSay;
+
+  String get relationshipSingle;
+  String get relationshipInRelationship;
+  String get relationshipMarried;
+  String get relationshipDivorced;
+  String get relationshipWidowed;
+
+  String get disclaimerTitle;
+  String get disclaimerDescription;
+
+  String get submittingButton;
+
+  // Page progress
+  String pageProgressText(int currentStep, int totalSteps);
+
+  // ------------------ Mental Health Screen ------------------
+  String get mentalHealthGoalsTitle;
+  String get mentalHealthReasonsTitle;
+  String get mentalHealthOtherHint;
+  String get mentalHealthGoalsSectionTitle;
+  String get mentalHealthNextButton;
+  String get mentalHealthSelectError;
+  String mentalHealthPageProgress(int currentStep, int totalSteps);
+
+  String get mentalHealthReasonAnxiety;
+  String get mentalHealthReasonDepression;
+  String get mentalHealthReasonRelationship;
+  String get mentalHealthReasonTrauma;
+  String get mentalHealthReasonSelfEsteem;
+  String get mentalHealthReasonWork;
+  String get mentalHealthReasonOther;
+
+  String get mentalHealthGoalReduceStress;
+  String get mentalHealthGoalImproveMood;
+  String get mentalHealthGoalHealthyHabits;
+  String get mentalHealthGoalCoping;
+  String get mentalHealthGoalTalkProfessional;
+  String get mentalHealthGoalPersonalGrowth;
+  // ------------------ Lifestyle & Support Screen ------------------
+  // ------------------ Lifestyle & Support Screen ------------------
+  String get lifestyleSupportTitle;
+  String get exerciseFrequencyQuestion;
+  String get exerciseOptionNever;
+  String get exerciseOptionOccasionally;
+  String get exerciseOptionWeekly;
+  String get exerciseOptionDaily;
+
+  String get substanceUseQuestion;
+  String get substanceOptionNever;
+  String get substanceOptionOccasionally;
+  String get substanceOptionFrequently;
+
+  String get supportSystemQuestion;
+  String get supportOptionYes;
+  String get supportOptionSomewhat;
+  String get supportOptionNo;
+
+  String get lifestyleNextButton;
+  String lifestylePageProgress(int currentStep, int totalSteps);
+  // ------------------ Current Mental Health Status ------------------
+  String get currentMentalHealthTitle;
+  String get mentalHealthDiagnosisQuestion;
+  String get mentalHealthFollowUpQuestion;
+  String get seeingProfessionalQuestion;
+  String get suicidalThoughtsQuestion;
+
+  String get diagnosedYes;
+  String get diagnosedNo;
+  String get diagnosedPreferNot;
+
+  String get seeingProfessionalNone;
+
+  String get suicidalYesRecent;
+  String get suicidalYesPast;
+  String get suicidalNever;
+
+  String get followUpPersistentSadness;
+  String get followUpPanicAttacks;
+  String get followUpSleepDifficulty;
+  String get followUpLossInterest;
+  String get followUpConcentrationDifficulty;
+  String get followUpNone;
+
+  String get currentMentalHealthNextButton;
+  String currentMentalHealthPageProgress(int currentStep, int totalSteps);
+
+  // ---------------- PreferencesScreen ----------------
+  String get preferencesTitle;
+  String get preferredSupportTypeLabel;
+  String get preferredTherapistLabel;
+  String get preferredLanguageLabel;
+
+  String get supportOptionSelfHelp;
+  String get supportOptionChatProfessional;
+  String get supportOptionVideoTherapy;
+  String get supportOptionPeerSupport;
+
+  String get therapistOptionMale;
+  String get therapistOptionFemale;
+  String get therapistOptionNoPreference;
+
+  String get languageOptionEnglish;
+  String get languageOptionUrdu;
+  String get selectLanguageHint;
+
+  String stepProgress(int currentStep, int totalSteps);
+
+  // ---------------- ConsentSafetyScreen ----------------
+  String get consentSafetyTitle;
+  String get consentMessage;
+  String get agreeCheckbox;
+  String get safetyWarning;
+  String get submitButton;
+  String get surveySubmitted;
+  String get surveySubmitFailed;
+  String get surveySubmitError;
+  String pageProgress(int currentStep, int totalSteps);
 }
 
 class _AppLocalizationsDelegate
@@ -160,19 +313,18 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'ur'].contains(locale.languageCode); // ✅ Updated to include Urdu
+      <String>['en', 'ur'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-  // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
     case 'ur':
-      return AppLocalizationsUr(); // ✅ Added Urdu
+      return AppLocalizationsUr();
   }
 
   throw FlutterError(

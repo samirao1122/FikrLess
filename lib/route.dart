@@ -19,7 +19,7 @@ import 'screens/auth/forget_pasword/pasword_reset_screen.dart';
 import 'screens/auth/forget_pasword/reset_sucessfully.dart';
 
 // User Flow
-import 'screens/userflow/user_dashboard.dart';
+import 'screens/userflow/home_screen.dart';
 import 'screens/userflow/Demographies/basic_info_screen.dart';
 import 'screens/userflow/Demographies/Consent&Safety.dart';
 import 'screens/userflow/Demographies/current_mental_health_status.dart';
@@ -111,7 +111,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     // User Flow
     case '/userDashboard':
-      return MaterialPageRoute(builder: (_) => UserScreen(locale: locale));
+      return MaterialPageRoute(builder: (_) => HomeScreen(locale: locale));
     case '/basicInfoUser':
       return MaterialPageRoute(
         builder: (_) => BasicDemographicsScreen(

@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../services/api_service.dart';
+import '../../../services/auth_cache_service.dart';
 import '../../before_login_signup/choose_yourself.dart';
 import '../forget_pasword/forget_password.dart';
 import 'login_screen.dart';
-import '../../userflow/user_dashboard.dart';
+import '../../userflow/home_screen.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../theme/app_colors.dart';
 
@@ -27,7 +29,7 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
   bool _isLoading = false;
 
   final String baseUrl =
-      "https://stalagmitical-millie-unhomiletic.ngrok-free.dev/login";
+      "${baseUrlSignUP}/login";
 
   bool _validateInput(AppLocalizations locale) {
     setState(() {
@@ -78,6 +80,23 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
+        // Save login data to cache
+        final token = responseData['token']?.toString() ?? responseData['access_token']?.toString();
+        final userId = responseData['userId']?.toString() ?? responseData['user_id']?.toString() ?? responseData['id']?.toString();
+        final email = responseData['email']?.toString();
+        final name = responseData['name']?.toString() ?? responseData['username']?.toString();
+        final role = responseData['role']?.toString();
+
+        if (token != null && userId != null) {
+          await AuthCacheService.saveLoginData(
+            token: token,
+            userId: userId,
+            email: email ?? _emailController.text.trim(),
+            name: name,
+            role: role,
+          );
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -104,7 +123,7 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => UserScreen(locale: widget.locale),
+              builder: (context) => HomeScreen(locale: widget.locale),
             ),
           );
         });

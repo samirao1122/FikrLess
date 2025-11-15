@@ -1,3 +1,4 @@
+import 'package:fikr_less/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -7,6 +8,7 @@ import 'signup_with_phone.dart';
 import '../login/login_screen.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../theme/app_colors.dart';
+import 'package:fikr_less/services/api_service.dart';
 
 class UserSignUpScreenEmail extends StatefulWidget {
   final String role;
@@ -70,7 +72,7 @@ class _UserSignUpScreenEmailState extends State<UserSignUpScreenEmail> {
     if (!valid) return;
 
     final url = Uri.parse(
-      "https://stalagmitical-millie-unhomiletic.ngrok-free.dev/signup",
+      "$baseUrlSignUP/signup",
     );
 
     try {
@@ -85,6 +87,7 @@ class _UserSignUpScreenEmailState extends State<UserSignUpScreenEmail> {
           'user_type': widget.role,
         }),
       );
+
 
       final data = jsonDecode(response.body);
 

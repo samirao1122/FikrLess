@@ -30,7 +30,7 @@ class AppColors {
   static const Color borderLight = Colors.black26;
 
   // 💎 Accents
-  static const Color accentTeal = Color(0xFF00A8A8);
+  static const Color accentTeal = Color(0xFF0196B1);
   static const Color errorRed = Colors.redAccent;
   static const Color colorHandleBar = Color.fromARGB(255, 27, 27, 27);
   static const Color colorShadow = Colors.black12;

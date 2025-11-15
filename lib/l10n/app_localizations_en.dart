@@ -12,10 +12,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Fikr Less';
 
   @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get routeNotFound => 'Route not found';
+
+  @override
   String get login => 'Log in';
 
   @override
-  String get signup => 'Sign Up';
+  String get loginTitle => 'Your Safe Space for';
+
+  @override
+  String get loginSubtitle => 'Mental Wellness';
+
+  @override
+  String get loginDescription => 'FikrLess helps you track your mood, connect with support, and practice self-care in a stigma-free environment.';
 
   @override
   String get forgotPassword => 'Forgot Password?';
@@ -25,26 +37,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordHint => 'Enter your password';
-
-  @override
-  String get otpSent => 'OTP sent successfully!';
-
-  @override
-  String get routeNotFound => 'Route not found';
-
-  // BeforeLogin screen
-  @override
-  String get getStarted => 'Get Started';
-
-  @override
-  String get loginTitle => 'Your Safe Space for';
-
-  @override
-  String get loginSubtitle => 'Mental Wellness';
-
-  @override
-  String get loginDescription =>
-      'FikrLess helps you track your mood, connect with support, and practice self-care in a stigma-free environment.';
 
   @override
   String get loginButton => 'Log in';
@@ -62,6 +54,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signupLink => 'Sign up';
 
   @override
+  String get phoneErrorInvalid => 'Please enter a valid phone number';
+
+  @override
+  String get phoneErrorEmpty => 'Please enter your phone number';
+
+  @override
+  String get passwordErrorEmpty => 'Please enter your password';
+
+  @override
+  String get passwordErrorShort => 'Password must be at least 6 characters';
+
+  @override
   String get loginSuccess => 'Login successful ✅';
 
   @override
@@ -70,13 +74,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get networkError => 'Network error: ';
 
-  // ChooseWhoAreYouScreen
   @override
   String get chooseTitle => 'Choose Who Are You?';
 
   @override
-  String get chooseSubtitle =>
-      'Kindly choose according to your role to proceed the sign up.';
+  String get chooseSubtitle => 'Kindly choose according to your role to proceed the sign up.';
 
   @override
   String get signupSpecialist => 'Sign up as a Specialist';
@@ -84,13 +86,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get signupUser => 'Sign up as a User';
 
-  // UserSignUpScreen
   @override
   String get signupTitle => 'Sign Up';
 
   @override
-  String get signupSubtitle =>
-      'To register your account, please fill the below fields to access the full features of this app.';
+  String get signupSubtitle => 'To register your account, please fill the below fields to access the full features of this app.';
 
   @override
   String get phoneLabel => 'Phone Number';
@@ -99,19 +99,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneHint => 'Enter your phone number';
 
   @override
-  String get phoneErrorEmpty => 'Please enter your phone number';
-
-  @override
-  String get phoneErrorInvalid => 'Please enter a valid phone number';
-
-  @override
   String get passwordLabel => 'Password';
-
-  @override
-  String get passwordErrorEmpty => 'Please enter your password';
-
-  @override
-  String get passwordErrorShort => 'Password must be at least 6 characters';
 
   @override
   String get termsText => 'I agree with ';
@@ -134,38 +122,43 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get loginLink => 'Log in';
 
-  // UserVerifiedScreen
+  @override
+  String get otpSent => 'OTP sent successfully!';
+
   @override
   String get userVerifiedTitle => 'Successfully Verified';
 
   @override
-  String userVerifiedPhoneMessage(String maskedContact) =>
-      'Your phone number $maskedContact\nhas been verified successfully.\nYou can now continue with log in.';
+  String userVerifiedPhoneMessage(Object maskedContact) {
+    return 'Your phone number $maskedContact\nhas been verified successfully.\nYou can now continue with log in.';
+  }
 
   @override
-  String userVerifiedEmailMessage(String maskedContact) =>
-      'Your email $maskedContact\nhas been verified successfully.\nYou can now continue with log in.';
+  String userVerifiedEmailMessage(Object maskedContact) {
+    return 'Your email $maskedContact\nhas been verified successfully.\nYou can now continue with log in.';
+  }
 
   @override
   String get setUpProfile => 'Set up Profile';
 
-  // OTP Verification screen
   @override
   String get enterOtpTitle => 'Enter OTP';
 
   @override
-  String otpSentMessagePhone(String contactValue) =>
-      'We have sent an OTP to your phone number $contactValue.\nPlease check your messages and enter the OTP.';
+  String otpSentMessagePhone(Object contactValue) {
+    return 'We have sent an OTP to your phone number $contactValue.\nPlease check your messages and enter the OTP.';
+  }
 
   @override
-  String otpSentMessageEmail(String contactValue) =>
-      'We have sent an OTP to your email $contactValue.\nPlease check your inbox and enter the OTP.';
+  String otpSentMessageEmail(Object contactValue) {
+    return 'We have sent an OTP to your email $contactValue.\nPlease check your inbox and enter the OTP.';
+  }
 
   @override
   String get resendCode => 'Resend Code';
 
   @override
-  String get didNotGetCode => "Didn't get the code? ";
+  String get didNotGetCode => 'Didn\'t get the code? ';
 
   @override
   String get submit => 'Submit';
@@ -180,16 +173,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalidOtpMessage => 'Please enter a valid 4-digit OTP';
 
   @override
-  String get passwordResetSuccessMessage =>
-      'Your password has been successfully changed.\nYou can now continue with log in.';
+  String get passwordResetSuccessMessage => 'Your password has been successfully changed.\nYou can now continue with log in.';
 
-  // ResetPasswordScreen
   @override
   String get resetPasswordTitle => 'Reset Password';
 
   @override
-  String resetPasswordDescription(String contactValue) =>
-      'Resetting password for $contactValue';
+  String resetPasswordDescription(Object contactValue) {
+    return 'Resetting password for $contactValue';
+  }
 
   @override
   String get newPasswordLabel => 'New Password';
@@ -207,8 +199,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newPasswordErrorEmpty => 'Please enter your new password';
 
   @override
-  String get newPasswordErrorWeak =>
-      'Password must have 4+ chars, 1 uppercase, 1 number, and 1 special char';
+  String get newPasswordErrorWeak => 'Password must have 4+ chars, 1 uppercase, 1 number, and 1 special char';
 
   @override
   String get confirmPasswordErrorEmpty => 'Please confirm your password';
@@ -216,7 +207,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get confirmPasswordErrorMismatch => 'Passwords do not match';
 
-  // Basic Information Screen
   @override
   String get basicInformationTitle => 'Basic Information';
 
@@ -236,11 +226,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationLabel => 'Location';
 
   @override
-  List<String> get locationOptions => [
-    'Karachi, Pakistan',
-    'Lahore, Pakistan',
-    'Islamabad, Pakistan',
-  ];
+  String get locationKarachi => 'Karachi, Pakistan';
+
+  @override
+  String get locationLahore => 'Lahore, Pakistan';
+
+  @override
+  String get locationIslamabad => 'Islamabad, Pakistan';
+
+  @override
+  String get locationMultan => 'Multan, Pakistan';
+
+  @override
+  String get locationOther => 'Other';
 
   @override
   String get hourlyRateLabel => 'Hourly Rate';
@@ -249,7 +247,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hourlyRateHint => 'Hourly Rate';
 
   @override
-  List<String> get currencyOptions => ['PKR', 'USD', 'GBP'];
+  String get currencyPKR => 'PKR';
+
+  @override
+  String get currencyUSD => 'USD';
+
+  @override
+  String get currencyGBP => 'GBP';
 
   @override
   String get specializationLabel => 'Specialization';
@@ -270,7 +274,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nextButton => 'Next';
 
   @override
-  String addDialogTitle(String title) => '$title';
+  String addDialogTitle(Object title) {
+    return '$title';
+  }
 
   @override
   String get addDialogHint => 'Enter new item';
@@ -281,7 +287,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get addButton => 'Add';
 
-  // Education & Certifications Screen
   @override
   String get educationCertificationsTitle => 'Education & Certifications';
 
@@ -292,10 +297,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get certificationsSectionTitle => '📜 Certifications';
 
   @override
-  List<String> get educationFields => ['Degree', 'Institute Name'];
+  String get educationFieldDegree => 'Degree';
 
   @override
-  List<String> get certificationFields => ['Certificate Title', 'Provider'];
+  String get educationFieldInstitute => 'Institute Name';
+
+  @override
+  String get certificationFieldTitle => 'Certificate Title';
+
+  @override
+  String get certificationFieldProvider => 'Provider';
 
   @override
   String get degreeHint => 'Enter degree';
@@ -316,16 +327,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addMoreButton => 'Add More';
 
   @override
-  String get educationFieldDegree => 'Degree';
-  @override
-  String get educationFieldInstitute => 'Institute Name';
-  @override
-  String get certificationFieldTitle => 'Certificate Title';
-  @override
-  String get certificationFieldProvider => 'Provider';
-
-  // Basic Demographics Screen
-  @override
   String get basicDemographicsTitle => 'Basic Demographics';
 
   @override
@@ -345,39 +346,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ageOption1 => '16 – 25';
+
   @override
   String get ageOption2 => '26 – 35';
+
   @override
   String get ageOption3 => '36 – 45';
+
   @override
   String get ageOption4 => '46+';
 
   @override
   String get countryOption1 => 'Karachi, Pakistan';
+
   @override
   String get countryOption2 => 'Lahore, Pakistan';
+
   @override
   String get countryOption3 => 'Islamabad, Pakistan';
+
   @override
   String get countryOption4 => 'Multan, Pakistan';
+
   @override
   String get countryOption5 => 'Other';
 
   @override
   String get genderMale => 'Male';
+
   @override
   String get genderFemale => 'Female';
+
   @override
   String get genderPreferNotToSay => 'Prefer not to say';
 
   @override
   String get relationshipSingle => 'Single';
+
   @override
   String get relationshipInRelationship => 'In a relationship';
+
   @override
   String get relationshipMarried => 'Married';
+
   @override
   String get relationshipDivorced => 'Divorced';
+
   @override
   String get relationshipWidowed => 'Widowed';
 
@@ -385,17 +399,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get disclaimerTitle => 'Disclaimer';
 
   @override
-  String get disclaimerDescription =>
-      'This is for data collection purposes to tailor this app to your needs.';
+  String get disclaimerDescription => 'This is for data collection purposes to tailor this app to your needs.';
 
   @override
   String get submittingButton => 'Submitting...';
 
   @override
-  String pageProgressText(int currentStep, int totalSteps) =>
-      'Page $currentStep of $totalSteps';
+  String pageProgressText(Object currentStep, Object totalSteps) {
+    return 'Page $currentStep of $totalSteps';
+  }
 
-  // Mental Health Section
   @override
   String get mentalHealthGoalsTitle => 'Mental Health Goals';
 
@@ -406,72 +419,129 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mentalHealthOtherHint => 'Please specify...';
 
   @override
-  String get mentalHealthGoalsSectionTitle =>
-      'What are your goals for using this app? (Select top 2)';
+  String get mentalHealthGoalsSectionTitle => 'What are your goals for using this app? (Select top 2)';
 
   @override
   String get mentalHealthNextButton => 'Next';
 
   @override
-  String get mentalHealthSelectError =>
-      'Please select at least one reason and one goal.';
+  String get mentalHealthSelectError => 'Please select at least one reason and one goal.';
 
   @override
-  String mentalHealthPageProgress(int currentStep, int totalSteps) =>
-      'Page $currentStep of $totalSteps';
+  String mentalHealthPageProgress(Object currentStep, Object totalSteps) {
+    return 'Page $currentStep of $totalSteps';
+  }
 
   @override
   String get mentalHealthReasonAnxiety => 'Anxiety or stress';
+
   @override
   String get mentalHealthReasonDepression => 'Depression or low mood';
+
   @override
   String get mentalHealthReasonRelationship => 'Relationship or family issues';
+
   @override
   String get mentalHealthReasonTrauma => 'Trauma or grief';
+
   @override
   String get mentalHealthReasonSelfEsteem => 'Self-esteem or confidence';
+
   @override
   String get mentalHealthReasonWork => 'Work or academic stress';
+
   @override
   String get mentalHealthReasonOther => 'Other (free text)';
 
   @override
   String get mentalHealthGoalReduceStress => 'Reduce stress/anxiety';
+
   @override
   String get mentalHealthGoalImproveMood => 'Improve mood & motivation';
+
   @override
-  String get mentalHealthGoalHealthyHabits =>
-      'Build healthy habits (sleep, journaling, exercise)';
+  String get mentalHealthGoalHealthyHabits => 'Build healthy habits (sleep, journaling, exercise)';
+
   @override
   String get mentalHealthGoalCoping => 'Learn coping strategies';
+
   @override
   String get mentalHealthGoalTalkProfessional => 'Talk to a professional';
+
   @override
   String get mentalHealthGoalPersonalGrowth => 'Personal growth / mindfulness';
 
-  // Current Mental Health Status Section
+  @override
+  String get lifestyleSupportTitle => 'Lifestyle & Support';
+
+  @override
+  String get exerciseFrequencyQuestion => 'How often do you exercise?';
+
+  @override
+  String get exerciseOptionNever => 'Never';
+
+  @override
+  String get exerciseOptionOccasionally => 'Occasionally';
+
+  @override
+  String get exerciseOptionWeekly => 'Weekly';
+
+  @override
+  String get exerciseOptionDaily => 'Daily';
+
+  @override
+  String get substanceUseQuestion => 'How often do you use alcohol or substances?';
+
+  @override
+  String get substanceOptionNever => 'Never';
+
+  @override
+  String get substanceOptionOccasionally => 'Occasionally';
+
+  @override
+  String get substanceOptionFrequently => 'Frequently';
+
+  @override
+  String get supportSystemQuestion => 'Do you have a strong support system (family/friends)?';
+
+  @override
+  String get supportOptionYes => 'Yes';
+
+  @override
+  String get supportOptionSomewhat => 'Somewhat';
+
+  @override
+  String get supportOptionNo => 'No';
+
+  @override
+  String get lifestyleNextButton => 'Next';
+
+  @override
+  String lifestylePageProgress(Object currentStep, Object totalSteps) {
+    return 'Page $currentStep of $totalSteps';
+  }
+
   @override
   String get currentMentalHealthTitle => 'Current Mental Health Status';
 
   @override
-  String get mentalHealthDiagnosisQuestion =>
-      'Have you ever been diagnosed with a mental health condition?';
+  String get mentalHealthDiagnosisQuestion => 'Have you ever been diagnosed with a mental health condition?';
 
   @override
   String get mentalHealthFollowUpQuestion => 'Follow-up: Which one(s)?';
 
   @override
-  String get seeingProfessionalQuestion =>
-      'Are you currently seeing a mental health professional?';
+  String get seeingProfessionalQuestion => 'Are you currently seeing a mental health professional?';
 
   @override
-  String get suicidalThoughtsQuestion =>
-      'Have you ever had suicidal thoughts or self-harm behaviors?';
+  String get suicidalThoughtsQuestion => 'Have you ever had suicidal thoughts or self-harm behaviors?';
 
   @override
   String get diagnosedYes => 'Yes';
+
   @override
   String get diagnosedNo => 'No';
+
   @override
   String get diagnosedPreferNot => 'Prefer not to say';
 
@@ -480,21 +550,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get suicidalYesRecent => 'Yes (recently)';
+
   @override
   String get suicidalYesPast => 'Yes (in the past)';
+
   @override
   String get suicidalNever => 'Never';
 
   @override
   String get followUpPersistentSadness => 'Persistent sadness';
+
   @override
   String get followUpPanicAttacks => 'Panic attacks';
+
   @override
   String get followUpSleepDifficulty => 'Difficulty sleeping';
+
   @override
   String get followUpLossInterest => 'Loss of interest in activities';
+
   @override
   String get followUpConcentrationDifficulty => 'Difficulty concentrating';
+
   @override
   String get followUpNone => 'None of the above';
 
@@ -502,109 +579,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String get currentMentalHealthNextButton => 'Next';
 
   @override
-  String currentMentalHealthPageProgress(int currentStep, int totalSteps) =>
-      'Page $currentStep of $totalSteps';
+  String currentMentalHealthPageProgress(Object currentStep, Object totalSteps) {
+    return 'Page $currentStep of $totalSteps';
+  }
 
-  // Lifestyle & Support Screen
-  @override
-  String get lifestyleSupportTitle => 'Lifestyle & Support';
-
-  @override
-  String get exerciseFrequencyQuestion => 'How often do you exercise?';
-  @override
-  String get exerciseOptionNever => 'Never';
-  @override
-  String get exerciseOptionOccasionally => 'Occasionally';
-  @override
-  String get exerciseOptionWeekly => 'Weekly';
-  @override
-  String get exerciseOptionDaily => 'Daily';
-
-  @override
-  String get substanceUseQuestion =>
-      'How often do you use alcohol or substances?';
-  @override
-  String get substanceOptionNever => 'Never';
-  @override
-  String get substanceOptionOccasionally => 'Occasionally';
-  @override
-  String get substanceOptionFrequently => 'Frequently';
-
-  @override
-  String get supportSystemQuestion =>
-      'Do you have a strong support system (family/friends)?';
-  @override
-  String get supportOptionYes => 'Yes';
-  @override
-  String get supportOptionSomewhat => 'Somewhat';
-  @override
-  String get supportOptionNo => 'No';
-
-  @override
-  String get lifestyleNextButton => 'Next';
-
-  @override
-  String lifestylePageProgress(int currentStep, int totalSteps) =>
-      'Page $currentStep of $totalSteps';
-
-  // ---------------- PreferencesScreen ----------------
   @override
   String get preferencesTitle => 'Preferences';
 
   @override
   String get preferredSupportTypeLabel => 'Preferred type of support:';
+
   @override
   String get preferredTherapistLabel => 'Preferred therapist characteristics:';
+
   @override
   String get preferredLanguageLabel => 'Preferred language:';
 
   @override
-  String get supportOptionSelfHelp =>
-      'Self–help tools (journaling, meditation, exercises)';
+  String get supportOptionSelfHelp => 'Self–help tools (journaling, meditation, exercises)';
+
   @override
   String get supportOptionChatProfessional => 'Chat with a professional';
+
   @override
   String get supportOptionVideoTherapy => 'Video/voice therapy';
+
   @override
   String get supportOptionPeerSupport => 'Peer community support';
 
   @override
   String get therapistOptionMale => 'Male';
+
   @override
   String get therapistOptionFemale => 'Female';
+
   @override
   String get therapistOptionNoPreference => 'No preference';
 
   @override
   String get languageOptionEnglish => 'English';
+
   @override
   String get languageOptionUrdu => 'Urdu';
+
   @override
   String get selectLanguageHint => 'Select language';
 
   @override
-  String stepProgress(int currentStep, int totalSteps) =>
-      'Step $currentStep of $totalSteps';
+  String stepProgress(Object currentStep, Object totalSteps) {
+    return 'Step $currentStep of $totalSteps';
+  }
 
-  // ---------------- ConsentSafetyScreen ----------------
   @override
   String get consentSafetyTitle => 'Consent & Safety';
 
   @override
-  String get consentMessage =>
-      'I understand this app does not replace emergency medical services.';
+  String get consentMessage => 'I understand this app does not replace emergency medical services.';
+
   @override
   String get agreeCheckbox => 'Yes, I agree';
 
   @override
-  String get safetyWarning =>
-      'If you ever feel unsafe or have thoughts of self-harm, please contact your local emergency number immediately.';
+  String get safetyWarning => 'If you ever feel unsafe or have thoughts of self-harm, please contact your local emergency number immediately.';
 
   @override
   String get submitButton => 'Submit & Go to Login';
+
   @override
-  String pageProgress(int currentStep, int totalSteps) =>
-      'Page $currentStep of $totalSteps';
+  String pageProgress(Object currentStep, Object totalSteps) {
+    return 'Page $currentStep of $totalSteps';
+  }
+
   @override
   String get surveySubmitted => 'Survey submitted successfully!';
 
@@ -613,9 +658,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get surveySubmitError => 'Error submitting survey';
+
   @override
-  String get forgotDescription =>
-      'Enter your registered email address to receive a reset code.';
+  String get forgotDescription => 'Enter your registered email address to receive a reset code.';
 
   @override
   String get validEmailError => 'Enter a valid email address';
@@ -625,4 +670,175 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get back => 'Back';
+
+  @override
+  String get homeTitle => 'Home';
+
+  @override
+  String get myActivity => 'My Activity';
+
+  @override
+  String get seeMore => 'See More';
+
+  @override
+  String get steps => 'Steps';
+
+  @override
+  String get mood => 'Mood';
+
+  @override
+  String get quickActions => 'Quick Actions';
+
+  @override
+  String get goal => 'Goal';
+
+  @override
+  String get journal => 'Journal';
+
+  @override
+  String get specialist => 'Specialist';
+
+  @override
+  String get exercise => 'Exercise';
+
+  @override
+  String get quoteOfTheDay => 'Quote of the day';
+
+  @override
+  String get loadingQuote => 'Loading quote...';
+
+  @override
+  String get loadingMood => 'Loading mood...';
+
+  @override
+  String get noMoodSet => 'No mood set';
+
+  @override
+  String get article => 'Article';
+
+  @override
+  String get forum => 'Forum';
+
+  @override
+  String get chat => 'Chat';
+
+  @override
+  String get wellness => 'Wellness';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get moodSelection => 'Select Your Mood';
+
+  @override
+  String get selectMood => 'Select Mood';
+
+  @override
+  String get moodSubmitted => 'Mood submitted successfully';
+
+  @override
+  String get moodSubmitFailed => 'Failed to submit mood';
+
+  @override
+  String get stepsPermissionDenied => 'Step counter permission denied';
+
+  @override
+  String get stepsError => 'Error accessing step counter';
+
+  @override
+  String get spiritualHub => 'Spiritual Hub';
+
+  @override
+  String get dailyLifeReminders => 'Daily Life Reminders';
+
+  @override
+  String get guidedMeditations => 'Guided Meditations';
+
+  @override
+  String get learnMore => 'Learn More';
+
+  @override
+  String get mindfulnessPractitioners => 'Mindfulness Practitioners';
+
+  @override
+  String get noRemindersAvailable => 'No reminders available';
+
+  @override
+  String get noMeditationsAvailable => 'No meditations available';
+
+  @override
+  String get noPractitionersAvailable => 'No practitioners available';
+
+  @override
+  String meditation(int number) {
+    return 'Meditation $number';
+  }
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get bookASession => 'Book a Session';
+
+  @override
+  String get downloading => 'Downloading...';
+
+  @override
+  String get downloadFailed => 'Download failed';
+
+  @override
+  String get howAreYouFeelingToday => 'How are you feeling today?';
+
+  @override
+  String get todaysJournal => 'Today\'s Journal';
+
+  @override
+  String get write => 'Write';
+
+  @override
+  String get tapWriteToAdd => 'Tap \"Write\" to add a private journal entry';
+
+  @override
+  String get expressYourThoughts => 'Express your thoughts and feelings safely';
+
+  @override
+  String get saveTodaysMood => 'Save Today\'s Mood';
+
+  @override
+  List<String> get currencyOptions => [
+    currencyPKR,
+    currencyUSD,
+    currencyGBP,
+  ];
+
+  @override
+  List<String> get locationOptions => [
+    locationMultan,
+    locationOther,
+  ];
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get recentMoods => 'Recent Moods';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get whatsInYourMindToday => 'What\'s in your mind today?';
+
+  @override
+  String get moodSaved => 'Mood saved successfully';
+
+  @override
+  String get moodSaveFailed => 'Failed to save mood';
 }

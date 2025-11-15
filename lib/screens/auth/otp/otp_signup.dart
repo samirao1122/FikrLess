@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:fikr_less/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pinput/pinput.dart';
@@ -77,7 +78,7 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
     setState(() => _isLoading = true);
 
     const String apiUrl =
-        "https://stalagmitical-millie-unhomiletic.ngrok-free.dev/email-verify";
+        "$baseUrlSignUP/email-verify";
 
     final Map<String, dynamic> requestData = {
       "token": _otpController.text.trim(),

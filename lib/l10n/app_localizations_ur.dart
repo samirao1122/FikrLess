@@ -1,5 +1,10 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
+// ignore_for_file: type=lint
+
+/// The translations for Urdu (`ur`).
 class AppLocalizationsUr extends AppLocalizations {
   AppLocalizationsUr([String locale = 'ur']) : super(locale);
 
@@ -7,10 +12,22 @@ class AppLocalizationsUr extends AppLocalizations {
   String get appTitle => 'فکر لیس';
 
   @override
+  String get getStarted => 'شروع کریں';
+
+  @override
+  String get routeNotFound => 'راستہ نہیں ملا';
+
+  @override
   String get login => 'لاگ ان';
 
   @override
-  String get signup => 'سائن اپ';
+  String get loginTitle => 'آپ کی محفوظ جگہ';
+
+  @override
+  String get loginSubtitle => 'دماغی صحت کی دیکھ بھال';
+
+  @override
+  String get loginDescription => 'فکر لیس آپ کو اپنے موڈ کو ٹریک کرنے، مدد سے جڑنے اور خود کی دیکھ بھال کرنے میں مدد دیتا ہے۔';
 
   @override
   String get forgotPassword => 'پاس ورڈ بھول گئے؟';
@@ -20,26 +37,6 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get passwordHint => 'اپنا پاس ورڈ درج کریں';
-
-  @override
-  String get otpSent => 'OTP کامیابی سے بھیج دیا گیا!';
-
-  @override
-  String get routeNotFound => 'راستہ نہیں ملا';
-
-  // BeforeLogin screen
-  @override
-  String get getStarted => 'شروع کریں';
-
-  @override
-  String get loginTitle => 'آپ کی محفوظ جگہ';
-
-  @override
-  String get loginSubtitle => 'دماغی صحت کی دیکھ بھال';
-
-  @override
-  String get loginDescription =>
-      'FikrLess آپ کو اپنے موڈ کو ٹریک کرنے، سپورٹ سے جڑنے، اور خود کی دیکھ بھال کرنے میں مدد دیتا ہے۔';
 
   @override
   String get loginButton => 'لاگ ان کریں';
@@ -57,6 +54,18 @@ class AppLocalizationsUr extends AppLocalizations {
   String get signupLink => 'سائن اپ';
 
   @override
+  String get phoneErrorInvalid => 'درست فون نمبر درج کریں';
+
+  @override
+  String get phoneErrorEmpty => 'براہ کرم فون نمبر درج کریں';
+
+  @override
+  String get passwordErrorEmpty => 'براہ کرم پاس ورڈ درج کریں';
+
+  @override
+  String get passwordErrorShort => 'پاس ورڈ کم از کم 6 حروف کا ہونا چاہیے';
+
+  @override
   String get loginSuccess => 'لاگ ان کامیاب ✅';
 
   @override
@@ -65,7 +74,6 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get networkError => 'نیٹ ورک کی خرابی: ';
 
-  // ChooseWhoAreYouScreen
   @override
   String get chooseTitle => 'آپ کون ہیں منتخب کریں؟';
 
@@ -78,13 +86,11 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get signupUser => 'صارف کے طور پر سائن اپ کریں';
 
-  // UserSignUpScreen
   @override
   String get signupTitle => 'سائن اپ';
 
   @override
-  String get signupSubtitle =>
-      'اپنا اکاؤنٹ رجسٹر کرنے کے لیے نیچے دیے گئے فیلڈز کو پُر کریں تاکہ ایپ کی تمام خصوصیات تک رسائی حاصل ہو۔';
+  String get signupSubtitle => 'اپنا اکاؤنٹ رجسٹر کرنے کے لیے، نیچے دیے گئے فیلڈز پُر کریں تاکہ آپ ایپ کی تمام خصوصیات تک رسائی حاصل کر سکیں۔';
 
   @override
   String get phoneLabel => 'فون نمبر';
@@ -93,29 +99,16 @@ class AppLocalizationsUr extends AppLocalizations {
   String get phoneHint => 'اپنا فون نمبر درج کریں';
 
   @override
-  String get phoneErrorEmpty => 'براہ کرم فون نمبر درج کریں';
-
-  @override
-  String get phoneErrorInvalid => 'درست فون نمبر درج کریں';
-
-  @override
   String get passwordLabel => 'پاس ورڈ';
 
   @override
-  String get passwordErrorEmpty => 'براہ کرم پاس ورڈ درج کریں';
+  String get termsText => 'میں متفق ہوں ';
 
   @override
-  String get passwordErrorShort =>
-      'پاس ورڈ کم از کم 6 حروف پر مشتمل ہونا چاہیے';
+  String get termsPolicy => 'شرائط و پالیسی';
 
   @override
-  String get termsText => 'میں اتفاق کرتا ہوں ';
-
-  @override
-  String get termsPolicy => 'شرائط و ضوابط';
-
-  @override
-  String get termsError => 'براہ کرم شرائط و ضوابط سے اتفاق کریں';
+  String get termsError => 'براہ کرم شرائط و پالیسی سے اتفاق کریں';
 
   @override
   String get signupButton => 'سائن اپ';
@@ -129,32 +122,37 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get loginLink => 'لاگ ان کریں';
 
-  // userVerifiedScreen
+  @override
+  String get otpSent => 'OTP کامیابی سے بھیج دیا گیا!';
+
   @override
   String get userVerifiedTitle => 'کامیابی کے ساتھ تصدیق شدہ';
 
   @override
-  String userVerifiedPhoneMessage(String maskedContact) =>
-      'آپ کا فون نمبر $maskedContact\nکامیابی کے ساتھ تصدیق ہو گیا ہے۔\nاب آپ لاگ ان کے ساتھ آگے بڑھ سکتے ہیں۔';
+  String userVerifiedPhoneMessage(Object maskedContact) {
+    return 'آپ کا فون نمبر $maskedContact\nکامیابی کے ساتھ تصدیق ہو گیا ہے۔\nاب آپ لاگ ان کے ساتھ آگے بڑھ سکتے ہیں۔';
+  }
 
   @override
-  String userVerifiedEmailMessage(String maskedContact) =>
-      'آپ کا ای میل $maskedContact\nکامیابی کے ساتھ تصدیق ہو گیا ہے۔\nاب آپ لاگ ان کے ساتھ آگے بڑھ سکتے ہیں۔';
+  String userVerifiedEmailMessage(Object maskedContact) {
+    return 'آپ کا ای میل $maskedContact\nکامیابی کے ساتھ تصدیق ہو گیا ہے۔\nاب آپ لاگ ان کے ساتھ آگے بڑھ سکتے ہیں۔';
+  }
 
   @override
   String get setUpProfile => 'پروفائل سیٹ کریں';
 
-  // OTP Verification screen
   @override
   String get enterOtpTitle => 'OTP درج کریں';
 
   @override
-  String otpSentMessagePhone(String contactValue) =>
-      'ہم نے آپ کے فون نمبر $contactValue پر OTP بھیجا ہے۔\nبراہ کرم اپنے پیغامات چیک کریں اور OTP درج کریں۔';
+  String otpSentMessagePhone(Object contactValue) {
+    return 'ہم نے آپ کے فون نمبر $contactValue پر OTP بھیج دیا ہے۔\nبراہ کرم اپنے پیغامات چیک کریں اور OTP درج کریں۔';
+  }
 
   @override
-  String otpSentMessageEmail(String contactValue) =>
-      'ہم نے آپ کے ای میل $contactValue پر OTP بھیجا ہے۔\nبراہ کرم اپنا ان باکس چیک کریں اور OTP درج کریں۔';
+  String otpSentMessageEmail(Object contactValue) {
+    return 'ہم نے آپ کے ای میل $contactValue پر OTP بھیج دیا ہے۔\nبراہ کرم اپنا ان باکس چیک کریں اور OTP درج کریں۔';
+  }
 
   @override
   String get resendCode => 'کوڈ دوبارہ بھیجیں';
@@ -163,7 +161,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get didNotGetCode => 'کوڈ نہیں ملا؟ ';
 
   @override
-  String get submit => 'جمع کریں';
+  String get submit => 'جمع کروائیں';
 
   @override
   String get editPhoneNumber => 'فون نمبر تبدیل کریں';
@@ -172,19 +170,18 @@ class AppLocalizationsUr extends AppLocalizations {
   String get editEmailAddress => 'ای میل ایڈریس تبدیل کریں';
 
   @override
-  String get invalidOtpMessage => 'براہ کرم درست 4 ہندسوں کا OTP درج کریں';
+  String get invalidOtpMessage => 'براہ کرم 4 ہندسوں کا درست OTP درج کریں';
 
   @override
-  String get passwordResetSuccessMessage =>
-      'آپ کا پاس ورڈ کامیابی کے ساتھ تبدیل ہو گیا ہے۔\nاب آپ لاگ ان کے ساتھ آگے بڑھ سکتے ہیں۔';
+  String get passwordResetSuccessMessage => 'آپ کا پاس ورڈ کامیابی سے تبدیل ہو گیا ہے۔\nاب آپ لاگ ان کے ساتھ آگے بڑھ سکتے ہیں۔';
 
-  // ResetPasswordScreen
   @override
   String get resetPasswordTitle => 'پاس ورڈ ری سیٹ کریں';
 
   @override
-  String resetPasswordDescription(String contactValue) =>
-      'پاس ورڈ ری سیٹ کیا جا رہا ہے $contactValue کے لیے';
+  String resetPasswordDescription(Object contactValue) {
+    return '$contactValue کے لیے پاس ورڈ ری سیٹ ہو رہا ہے';
+  }
 
   @override
   String get newPasswordLabel => 'نیا پاس ورڈ';
@@ -202,17 +199,14 @@ class AppLocalizationsUr extends AppLocalizations {
   String get newPasswordErrorEmpty => 'براہ کرم اپنا نیا پاس ورڈ درج کریں';
 
   @override
-  String get newPasswordErrorWeak =>
-      'پاس ورڈ میں 4+ حروف، 1 بڑا حرف، 1 نمبر اور 1 خصوصی کردار ہونا چاہیے';
+  String get newPasswordErrorWeak => 'پاس ورڈ میں 4+ حروف، 1 بڑا حرف، 1 نمبر اور 1 خاص حرف ہونا چاہیے';
 
   @override
-  String get confirmPasswordErrorEmpty =>
-      'براہ کرم اپنا پاس ورڈ دوبارہ درج کریں';
+  String get confirmPasswordErrorEmpty => 'براہ کرم اپنا پاس ورڈ دوبارہ درج کریں';
 
   @override
-  String get confirmPasswordErrorMismatch => 'پاس ورڈ مماثل نہیں ہیں';
+  String get confirmPasswordErrorMismatch => 'پاس ورڈ میل نہیں کھاتے';
 
-  // ------------------ Basic Information ------------------
   @override
   String get basicInformationTitle => 'بنیادی معلومات';
 
@@ -232,26 +226,40 @@ class AppLocalizationsUr extends AppLocalizations {
   String get locationLabel => 'مقام';
 
   @override
-  List<String> get locationOptions => [
-    'کراچی، پاکستان',
-    'لاہور، پاکستان',
-    'اسلام آباد، پاکستان',
-  ];
+  String get locationKarachi => 'کراچی، پاکستان';
 
   @override
-  String get hourlyRateLabel => 'گھنٹہ وار فیس';
+  String get locationLahore => 'لاہور، پاکستان';
 
   @override
-  String get hourlyRateHint => 'گھنٹہ وار فیس درج کریں';
+  String get locationIslamabad => 'اسلام آباد، پاکستان';
 
   @override
-  List<String> get currencyOptions => ['PKR', 'USD', 'GBP'];
+  String get locationMultan => 'ملتان، پاکستان';
 
   @override
-  String get specializationLabel => 'تخصص';
+  String get locationOther => 'دیگر';
 
   @override
-  String get addSpecialization => 'تخصص شامل کریں';
+  String get hourlyRateLabel => 'فی گھنٹہ ریٹ';
+
+  @override
+  String get hourlyRateHint => 'فی گھنٹہ ریٹ';
+
+  @override
+  String get currencyPKR => 'روپے (PKR)';
+
+  @override
+  String get currencyUSD => 'ڈالر (USD)';
+
+  @override
+  String get currencyGBP => 'پاؤنڈ (GBP)';
+
+  @override
+  String get specializationLabel => 'مہارت';
+
+  @override
+  String get addSpecialization => 'مہارت شامل کریں';
 
   @override
   String get languagesLabel => 'زبانیں';
@@ -266,10 +274,12 @@ class AppLocalizationsUr extends AppLocalizations {
   String get nextButton => 'اگلا';
 
   @override
-  String addDialogTitle(String title) => '$title';
+  String addDialogTitle(Object title) {
+    return '$title';
+  }
 
   @override
-  String get addDialogHint => 'نیا آئٹم درج کریں';
+  String get addDialogHint => 'نئی چیز درج کریں';
 
   @override
   String get cancelButton => 'منسوخ کریں';
@@ -277,7 +287,6 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get addButton => 'شامل کریں';
 
-  // ------------------ Education & Certifications ------------------
   @override
   String get educationCertificationsTitle => 'تعلیم اور سرٹیفیکیشنز';
 
@@ -288,48 +297,40 @@ class AppLocalizationsUr extends AppLocalizations {
   String get certificationsSectionTitle => '📜 سرٹیفیکیشنز';
 
   @override
-  List<String> get educationFields => ['ڈگری', 'ادارہ'];
+  String get educationFieldDegree => 'ڈگری';
 
   @override
-  List<String> get certificationFields => ['سرٹیفیکیشن کا عنوان', 'پروائیڈر'];
+  String get educationFieldInstitute => 'ادارہ کا نام';
+
+  @override
+  String get certificationFieldTitle => 'سرٹیفکیٹ کا عنوان';
+
+  @override
+  String get certificationFieldProvider => 'ادارہ';
 
   @override
   String get degreeHint => 'ڈگری درج کریں';
 
   @override
-  String get instituteHint => 'ادارہ درج کریں';
+  String get instituteHint => 'ادارہ کا نام درج کریں';
 
   @override
-  String get certificateHint => 'سرٹیفیکیشن کا عنوان درج کریں';
+  String get certificateHint => 'سرٹیفکیٹ کا عنوان درج کریں';
 
   @override
-  String get providerHint => 'پروائیڈر درج کریں';
+  String get providerHint => 'ادارہ درج کریں';
 
   @override
-  String get removeButton => 'حذف کریں';
+  String get removeButton => 'ہٹائیں';
 
   @override
   String get addMoreButton => 'مزید شامل کریں';
 
   @override
-  String get certificationFieldProvider => 'پروائیڈر';
+  String get basicDemographicsTitle => 'بنیادی آبادی کی معلومات';
 
   @override
-  String get certificationFieldTitle => 'سرٹیفیکیشن کا عنوان';
-
-  @override
-  String get educationFieldDegree => 'ڈگری';
-
-  @override
-  String get educationFieldInstitute => 'ادارہ';
-
-  // ------------------ Basic Demographics ------------------
-  @override
-  String get basicDemographicsTitle => 'بنیادی آبادیات';
-
-  @override
-  String get basicDemographicsSubtitle =>
-      'ہمیں آپ کے بارے میں جاننے میں مدد کریں';
+  String get basicDemographicsSubtitle => 'ہمیں جاننے میں مدد کریں';
 
   @override
   String get ageLabel => 'عمر';
@@ -338,205 +339,177 @@ class AppLocalizationsUr extends AppLocalizations {
   String get genderIdentityLabel => 'صنف';
 
   @override
-  String get countryLabel => 'ملکِ رہائش';
+  String get countryLabel => 'رہائش کا ملک';
 
   @override
-  String get relationshipStatusLabel => 'رشتہ کی حالت';
+  String get relationshipStatusLabel => 'ازدواجی حیثیت';
 
   @override
   String get ageOption1 => '16 – 25';
+
   @override
   String get ageOption2 => '26 – 35';
+
   @override
   String get ageOption3 => '36 – 45';
+
   @override
   String get ageOption4 => '46+';
 
   @override
   String get countryOption1 => 'کراچی، پاکستان';
+
   @override
   String get countryOption2 => 'لاہور، پاکستان';
+
   @override
   String get countryOption3 => 'اسلام آباد، پاکستان';
+
   @override
   String get countryOption4 => 'ملتان، پاکستان';
+
   @override
   String get countryOption5 => 'دیگر';
 
   @override
   String get genderMale => 'مرد';
+
   @override
   String get genderFemale => 'خاتون';
-  @override
-  String get genderPreferNotToSay => 'کہنا مناسب نہیں';
 
   @override
-  String get relationshipSingle => 'اکیلا';
+  String get genderPreferNotToSay => 'کہنے سے گریز کریں';
+
   @override
-  String get relationshipInRelationship => 'رشتے میں';
+  String get relationshipSingle => 'اکیلے';
+
+  @override
+  String get relationshipInRelationship => 'رشتہ میں';
+
   @override
   String get relationshipMarried => 'شادی شدہ';
-  @override
-  String get relationshipDivorced => 'طلاق یافتہ';
-  @override
-  String get relationshipWidowed => 'بیوہ/بیوہا';
 
   @override
-  String get disclaimerTitle => 'دستبرداری';
+  String get relationshipDivorced => 'طلاق شدہ';
 
   @override
-  String get disclaimerDescription =>
-      'یہ ڈیٹا جمع کرنے کے مقصد کے لیے ہے تاکہ ایپ کو آپ کی ضروریات کے مطابق ڈھالا جا سکے۔';
+  String get relationshipWidowed => 'بیوہ/بیوہ';
 
   @override
-  String get submittingButton => 'جمع کر رہا ہے...';
+  String get disclaimerTitle => 'ڈسکلیمر';
 
   @override
-  String pageProgressText(int currentStep, int totalSteps) =>
-      'صفحہ $currentStep از $totalSteps';
+  String get disclaimerDescription => 'یہ ڈیٹا اکٹھا کرنے کے لیے ہے تاکہ ایپ آپ کی ضروریات کے مطابق ہو۔';
 
-  // ------------------ Mental Health Section ------------------
+  @override
+  String get submittingButton => 'جمع کر رہے ہیں...';
+
+  @override
+  String pageProgressText(Object currentStep, Object totalSteps) {
+    return 'صفحہ $currentStep از $totalSteps';
+  }
+
   @override
   String get mentalHealthGoalsTitle => 'دماغی صحت کے اہداف';
 
   @override
-  String get mentalHealthReasonsTitle => 'آج آپ یہاں کیوں ہیں؟';
+  String get mentalHealthReasonsTitle => 'آپ آج یہاں کیوں آئے ہیں؟';
 
   @override
   String get mentalHealthOtherHint => 'براہ کرم وضاحت کریں...';
 
   @override
-  String get mentalHealthGoalsSectionTitle =>
-      'اس ایپ کے استعمال کے لیے آپ کے اہداف کیا ہیں؟ (اوپر سے 2 منتخب کریں)';
+  String get mentalHealthGoalsSectionTitle => 'اس ایپ کے استعمال کے اپنے اہداف کیا ہیں؟ (سب سے اوپر 2 منتخب کریں)';
 
   @override
   String get mentalHealthNextButton => 'اگلا';
 
   @override
-  String get mentalHealthSelectError =>
-      'براہ کرم کم از کم ایک وجہ اور ایک ہدف منتخب کریں۔';
+  String get mentalHealthSelectError => 'براہ کرم کم از کم ایک وجہ اور ایک مقصد منتخب کریں۔';
 
   @override
-  String mentalHealthPageProgress(int currentStep, int totalSteps) =>
-      'صفحہ $currentStep از $totalSteps';
+  String mentalHealthPageProgress(Object currentStep, Object totalSteps) {
+    return 'صفحہ $currentStep از $totalSteps';
+  }
 
   @override
-  String get mentalHealthReasonAnxiety => 'پریشانی یا دباؤ';
+  String get mentalHealthReasonAnxiety => 'فکر یا دباؤ';
+
   @override
-  String get mentalHealthReasonDepression => 'ڈپریشن یا موڈ میں کمی';
+  String get mentalHealthReasonDepression => 'اداسی یا موڈ میں کمی';
+
   @override
-  String get mentalHealthReasonRelationship => 'رشتے یا خاندانی مسائل';
+  String get mentalHealthReasonRelationship => 'رشتہ یا خاندانی مسائل';
+
   @override
   String get mentalHealthReasonTrauma => 'صدمہ یا غم';
-  @override
-  String get mentalHealthReasonSelfEsteem => 'اعتماد یا خود اعتمادی';
-  @override
-  String get mentalHealthReasonWork => 'کام یا تعلیمی دباؤ';
-  @override
-  String get mentalHealthReasonOther => 'دیگر (تحریری وضاحت)';
 
   @override
-  String get mentalHealthGoalReduceStress => 'پریشانی/دباؤ کم کریں';
-  @override
-  String get mentalHealthGoalImproveMood => 'موڈ اور حوصلہ بہتر کریں';
-  @override
-  String get mentalHealthGoalHealthyHabits =>
-      'صحت مند عادات بنائیں (نیند، جرنلنگ، ورزش)';
-  @override
-  String get mentalHealthGoalCoping => 'مقابلہ کرنے کی حکمت عملی سیکھیں';
-  @override
-  String get mentalHealthGoalTalkProfessional => 'ماہر سے بات کریں';
-  @override
-  String get mentalHealthGoalPersonalGrowth => 'ذاتی ترقی / ذہنی آگاہی';
-
-  // ------------------ Current Mental Health Section ------------------
-  @override
-  String get currentMentalHealthTitle => 'موجودہ دماغی صحت کی حالت';
+  String get mentalHealthReasonSelfEsteem => 'خود اعتمادی یا اعتماد';
 
   @override
-  String get mentalHealthDiagnosisQuestion =>
-      'کیا آپ کو کبھی کسی دماغی صحت کی بیماری کی تشخیص ہوئی ہے؟';
+  String get mentalHealthReasonWork => 'کام یا تعلیمی دباؤ';
 
   @override
-  String get mentalHealthFollowUpQuestion => 'پیروی: کونسی؟';
+  String get mentalHealthReasonOther => 'دیگر (متن میں درج کریں)';
 
   @override
-  String get seeingProfessionalQuestion =>
-      'کیا آپ اس وقت کسی دماغی صحت کے ماہر سے ملاقات کر رہے ہیں؟';
+  String get mentalHealthGoalReduceStress => 'فکر/دباؤ کم کریں';
 
   @override
-  String get suicidalThoughtsQuestion =>
-      'کیا آپ نے کبھی خودکشی کے خیالات یا خود کو نقصان پہنچانے کا سوچا ہے؟';
+  String get mentalHealthGoalImproveMood => 'موڈ اور حوصلہ بڑھائیں';
 
   @override
-  String get diagnosedYes => 'ہاں';
-  @override
-  String get diagnosedNo => 'نہیں';
-  @override
-  String get diagnosedPreferNot => 'کہنا مناسب نہیں';
+  String get mentalHealthGoalHealthyHabits => 'صحت مند عادات بنائیں (نیند، جرنلنگ، ورزش)';
 
   @override
-  String get seeingProfessionalNone => 'مندرجہ بالا میں سے کوئی نہیں';
+  String get mentalHealthGoalCoping => 'مددگار حکمت عملی سیکھیں';
 
   @override
-  String get suicidalYesRecent => 'ہاں (حال ہی میں)';
-  @override
-  String get suicidalYesPast => 'ہاں (ماضی میں)';
-  @override
-  String get suicidalNever => 'کبھی نہیں';
+  String get mentalHealthGoalTalkProfessional => 'پیشہ ور سے بات کریں';
 
   @override
-  String get followUpPersistentSadness => 'مسلسل اداسی';
-  @override
-  String get followUpPanicAttacks => 'پینک اٹیک';
-  @override
-  String get followUpSleepDifficulty => 'نیند میں مشکلات';
-  @override
-  String get followUpLossInterest => 'سرگرمیوں میں دلچسپی کی کمی';
-  @override
-  String get followUpConcentrationDifficulty => 'توجہ مرکوز کرنے میں مشکلات';
-  @override
-  String get followUpNone => 'مندرجہ بالا میں سے کوئی نہیں';
+  String get mentalHealthGoalPersonalGrowth => 'ذاتی نشوونما / ذہنی سکون';
 
-  @override
-  String get currentMentalHealthNextButton => 'اگلا';
-
-  @override
-  String currentMentalHealthPageProgress(int currentStep, int totalSteps) =>
-      'صفحہ $currentStep از $totalSteps';
-
-  // ------------------ Lifestyle & Support Section ------------------
   @override
   String get lifestyleSupportTitle => 'طرز زندگی اور سپورٹ';
 
   @override
   String get exerciseFrequencyQuestion => 'آپ کتنی بار ورزش کرتے ہیں؟';
+
   @override
   String get exerciseOptionNever => 'کبھی نہیں';
+
   @override
   String get exerciseOptionOccasionally => 'کبھی کبھار';
+
   @override
   String get exerciseOptionWeekly => 'ہفتہ وار';
+
   @override
   String get exerciseOptionDaily => 'روزانہ';
 
   @override
-  String get substanceUseQuestion =>
-      'آپ کتنی بار الکحل یا دیگر مادے استعمال کرتے ہیں؟';
-  @override
-  String get substanceOptionNever => 'کبھی نہیں';
-  @override
-  String get substanceOptionOccasionally => 'کبھی کبھار';
-  @override
-  String get substanceOptionFrequently => 'بار بار';
+  String get substanceUseQuestion => 'آپ کتنی بار شراب یا منشیات استعمال کرتے ہیں؟';
 
   @override
-  String get supportSystemQuestion =>
-      'کیا آپ کے پاس مضبوط سپورٹ سسٹم ہے (خاندان/دوست)؟';
+  String get substanceOptionNever => 'کبھی نہیں';
+
+  @override
+  String get substanceOptionOccasionally => 'کبھی کبھار';
+
+  @override
+  String get substanceOptionFrequently => 'اکثر';
+
+  @override
+  String get supportSystemQuestion => 'کیا آپ کے پاس مضبوط معاون نظام ہے (خاندان/دوست)؟';
+
   @override
   String get supportOptionYes => 'ہاں';
+
   @override
   String get supportOptionSomewhat => 'کچھ حد تک';
+
   @override
   String get supportOptionNo => 'نہیں';
 
@@ -544,79 +517,150 @@ class AppLocalizationsUr extends AppLocalizations {
   String get lifestyleNextButton => 'اگلا';
 
   @override
-  String lifestylePageProgress(int currentStep, int totalSteps) =>
-      'صفحہ $currentStep از $totalSteps';
+  String lifestylePageProgress(Object currentStep, Object totalSteps) {
+    return 'صفحہ $currentStep از $totalSteps';
+  }
 
-  // ---------------- PreferencesScreen ----------------
+  @override
+  String get currentMentalHealthTitle => 'موجودہ دماغی صحت کی صورتحال';
+
+  @override
+  String get mentalHealthDiagnosisQuestion => 'کیا آپ کو کبھی دماغی صحت کی بیماری کی تشخیص ہوئی ہے؟';
+
+  @override
+  String get mentalHealthFollowUpQuestion => 'فالو اپ: کون سی؟';
+
+  @override
+  String get seeingProfessionalQuestion => 'کیا آپ اس وقت کسی دماغی صحت کے ماہر سے ملاقات کر رہے ہیں؟';
+
+  @override
+  String get suicidalThoughtsQuestion => 'کیا آپ نے کبھی خودکشی یا خود کو نقصان پہنچانے کے خیالات رکھے ہیں؟';
+
+  @override
+  String get diagnosedYes => 'ہاں';
+
+  @override
+  String get diagnosedNo => 'نہیں';
+
+  @override
+  String get diagnosedPreferNot => 'کہنے سے گریز کریں';
+
+  @override
+  String get seeingProfessionalNone => 'مندرجہ بالا میں سے کوئی نہیں';
+
+  @override
+  String get suicidalYesRecent => 'ہاں (حال ہی میں)';
+
+  @override
+  String get suicidalYesPast => 'ہاں (ماضی میں)';
+
+  @override
+  String get suicidalNever => 'کبھی نہیں';
+
+  @override
+  String get followUpPersistentSadness => 'مسلسل اداسی';
+
+  @override
+  String get followUpPanicAttacks => 'پینک اٹیک';
+
+  @override
+  String get followUpSleepDifficulty => 'نیند میں دشواری';
+
+  @override
+  String get followUpLossInterest => 'سرگرمیوں میں دلچسپی کا نقصان';
+
+  @override
+  String get followUpConcentrationDifficulty => 'توجہ مرکوز کرنے میں مشکل';
+
+  @override
+  String get followUpNone => 'مندرجہ بالا میں سے کوئی نہیں';
+
+  @override
+  String get currentMentalHealthNextButton => 'اگلا';
+
+  @override
+  String currentMentalHealthPageProgress(Object currentStep, Object totalSteps) {
+    return 'صفحہ $currentStep از $totalSteps';
+  }
+
   @override
   String get preferencesTitle => 'ترجیحات';
 
   @override
   String get preferredSupportTypeLabel => 'مدد کی پسندیدہ قسم:';
+
   @override
-  String get preferredTherapistLabel => 'معالج کی پسندیدہ خصوصیات:';
+  String get preferredTherapistLabel => 'تھراپسٹ کی خصوصیات کی ترجیح:';
+
   @override
   String get preferredLanguageLabel => 'پسندیدہ زبان:';
 
   @override
-  String get supportOptionSelfHelp =>
-      'ذاتی مدد کے اوزار (جرنل لکھنا، مراقبہ، ورزش)';
+  String get supportOptionSelfHelp => 'خود مدد کے اوزار (جرنلنگ، مراقبہ، مشقیں)';
+
   @override
-  String get supportOptionChatProfessional => 'پروفیشنل کے ساتھ چیٹ کریں';
+  String get supportOptionChatProfessional => 'پیشہ ور کے ساتھ چیٹ';
+
   @override
-  String get supportOptionVideoTherapy => 'ویڈیو/آڈیو تھراپی';
+  String get supportOptionVideoTherapy => 'ویڈیو/آواز تھراپی';
+
   @override
-  String get supportOptionPeerSupport => 'ہم عمر کمیونٹی سپورٹ';
+  String get supportOptionPeerSupport => 'ساتھی کمیونٹی کی حمایت';
 
   @override
   String get therapistOptionMale => 'مرد';
+
   @override
   String get therapistOptionFemale => 'خاتون';
+
   @override
   String get therapistOptionNoPreference => 'کوئی ترجیح نہیں';
 
   @override
   String get languageOptionEnglish => 'انگریزی';
+
   @override
   String get languageOptionUrdu => 'اردو';
+
   @override
   String get selectLanguageHint => 'زبان منتخب کریں';
 
   @override
-  String stepProgress(int currentStep, int totalSteps) =>
-      'مرحلہ $currentStep میں سے $totalSteps';
+  String stepProgress(Object currentStep, Object totalSteps) {
+    return 'مرحلہ $currentStep از $totalSteps';
+  }
 
-  // ---------------- ConsentSafetyScreen ----------------
   @override
   String get consentSafetyTitle => 'رضامندی اور حفاظت';
 
   @override
-  String get consentMessage =>
-      'میں سمجھتا ہوں کہ یہ ایپ ایمرجنسی طبی خدمات کی جگہ نہیں لے سکتی۔';
+  String get consentMessage => 'میں سمجھتا/سمجھتی ہوں کہ یہ ایپ ہنگامی طبی خدمات کی جگہ نہیں لے سکتی۔';
+
   @override
   String get agreeCheckbox => 'ہاں، میں متفق ہوں';
 
   @override
-  String get safetyWarning =>
-      'اگر آپ کو کبھی خطرہ محسوس ہو یا خود کو نقصان پہنچانے کے خیالات ہوں، تو فوراً اپنے مقامی ایمرجنسی نمبر سے رابطہ کریں۔';
+  String get safetyWarning => 'اگر آپ خود کو غیر محفوظ محسوس کریں یا خود کو نقصان پہنچانے کے خیالات ہوں، تو براہ کرم فوری طور پر اپنے مقامی ہنگامی نمبر پر رابطہ کریں۔';
 
   @override
   String get submitButton => 'جمع کریں اور لاگ ان پر جائیں';
-  @override
-  String pageProgress(int currentStep, int totalSteps) =>
-      'صفحہ $currentStep میں سے $totalSteps';
 
   @override
-  String get surveySubmitted => 'Survey submitted successfully!';
+  String pageProgress(Object currentStep, Object totalSteps) {
+    return 'صفحہ $currentStep از $totalSteps';
+  }
 
   @override
-  String get surveySubmitFailed => 'Failed to submit survey';
+  String get surveySubmitted => 'سروے کامیابی سے جمع ہو گیا!';
 
   @override
-  String get surveySubmitError => 'Error submitting survey';
+  String get surveySubmitFailed => 'سروے جمع کرنے میں ناکامی';
+
   @override
-  String get forgotDescription =>
-      'ری سیٹ کوڈ حاصل کرنے کے لیے اپنا رجسٹرڈ ای میل ایڈریس درج کریں۔';
+  String get surveySubmitError => 'سروے جمع کرنے میں خرابی';
+
+  @override
+  String get forgotDescription => 'ری سیٹ کوڈ حاصل کرنے کے لیے اپنا رجسٹرڈ ای میل ایڈریس درج کریں۔';
 
   @override
   String get validEmailError => 'درست ای میل ایڈریس درج کریں';
@@ -626,4 +670,175 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get back => 'واپس';
+
+  @override
+  String get homeTitle => 'ہوم';
+
+  @override
+  String get myActivity => 'میری سرگرمی';
+
+  @override
+  String get seeMore => 'مزید دیکھیں';
+
+  @override
+  String get steps => 'قدم';
+
+  @override
+  String get mood => 'موڈ';
+
+  @override
+  String get quickActions => 'فوری اعمال';
+
+  @override
+  String get goal => 'ہدف';
+
+  @override
+  String get journal => 'جرنل';
+
+  @override
+  String get specialist => 'ماہر';
+
+  @override
+  String get exercise => 'ورزش';
+
+  @override
+  String get quoteOfTheDay => 'آج کا اقتباس';
+
+  @override
+  String get loadingQuote => 'اقتباس لوڈ ہو رہا ہے...';
+
+  @override
+  String get loadingMood => 'موڈ لوڈ ہو رہا ہے...';
+
+  @override
+  String get noMoodSet => 'موڈ سیٹ نہیں کیا گیا';
+
+  @override
+  String get article => 'مضمون';
+
+  @override
+  String get forum => 'فورم';
+
+  @override
+  String get chat => 'چیٹ';
+
+  @override
+  String get wellness => 'صحت';
+
+  @override
+  String get profile => 'پروفائل';
+
+  @override
+  String get notifications => 'اطلاعات';
+
+  @override
+  String get moodSelection => 'اپنا موڈ منتخب کریں';
+
+  @override
+  String get selectMood => 'موڈ منتخب کریں';
+
+  @override
+  String get moodSubmitted => 'موڈ کامیابی سے جمع ہو گیا';
+
+  @override
+  String get moodSubmitFailed => 'موڈ جمع کرنے میں ناکامی';
+
+  @override
+  String get stepsPermissionDenied => 'قدم شمار کرنے کی اجازت مسترد';
+
+  @override
+  String get stepsError => 'قدم شمار کرنے تک رسائی میں خرابی';
+
+  @override
+  String get spiritualHub => 'روحانی مرکز';
+
+  @override
+  String get dailyLifeReminders => 'روزمرہ زندگی کی یاد دہانیاں';
+
+  @override
+  String get guidedMeditations => 'ہدایت یافتہ مراقبے';
+
+  @override
+  String get learnMore => 'مزید جانیں';
+
+  @override
+  String get mindfulnessPractitioners => 'ذہن سازی کے ماہرین';
+
+  @override
+  String get noRemindersAvailable => 'کوئی یاد دہانیاں دستیاب نہیں';
+
+  @override
+  String get noMeditationsAvailable => 'کوئی مراقبے دستیاب نہیں';
+
+  @override
+  String get noPractitionersAvailable => 'کوئی ماہرین دستیاب نہیں';
+
+  @override
+  String meditation(int number) {
+    return 'مراقبہ $number';
+  }
+
+  @override
+  String get all => 'سب';
+
+  @override
+  String get bookASession => 'سیشن بک کریں';
+
+  @override
+  String get downloading => 'ڈاؤن لوڈ ہو رہا ہے...';
+
+  @override
+  String get downloadFailed => 'ڈاؤن لوڈ ناکام';
+
+  @override
+  String get howAreYouFeelingToday => 'آج آپ کیسا محسوس کر رہے ہیں؟';
+
+  @override
+  String get todaysJournal => 'آج کا جرنل';
+
+  @override
+  String get write => 'لکھیں';
+
+  @override
+  String get tapWriteToAdd => '\"لکھیں\" پر ٹیپ کریں تاکہ نجی جرنل انٹری شامل کریں';
+
+  @override
+  String get expressYourThoughts => 'اپنے خیالات اور جذبات کو محفوظ طریقے سے ظاہر کریں';
+
+  @override
+  String get saveTodaysMood => 'آج کا موڈ محفوظ کریں';
+
+  @override
+  List<String> get currencyOptions => [
+    currencyPKR,
+    currencyUSD,
+    currencyGBP,
+  ];
+
+  @override
+  List<String> get locationOptions => [
+    locationMultan,
+    locationOther,
+  ];
+
+  @override
+  String get cancel => 'منسوخ کریں';
+
+  @override
+  String get recentMoods => 'حالیہ موڈ';
+
+  @override
+  String get today => 'آج';
+
+  @override
+  String get yesterday => 'کل';
+
+  @override
+  String get whatsInYourMindToday => 'آج آپ کے ذہن میں کیا ہے؟';
+
+  @override
+  String get moodSaved => 'موڈ کامیابی سے محفوظ ہو گیا';
+
+  @override
+  String get moodSaveFailed => 'موڈ محفوظ کرنے میں ناکامی';
 }

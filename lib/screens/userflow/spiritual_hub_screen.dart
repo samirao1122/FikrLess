@@ -266,7 +266,7 @@ class _SpiritualHubScreenState extends State<SpiritualHubScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Image.asset(
-                      'assets/images/home_directory/img.png',
+                      'assets/images/home_directory/com_helper.png',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(

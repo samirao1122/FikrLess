@@ -235,57 +235,64 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
                               ),
                               SizedBox(height: getResponsiveHeight(0.05)),
 
-                              /// ----- Email -----
-                              Text(
-                                locale.emailHint,
-                                style: TextStyle(
-                                  fontSize: getResponsiveFont(19),
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textBlack,
-                                ),
-                              ),
-                              SizedBox(height: getResponsiveHeight(0.008)),
-                              Container(
-                                height: getResponsiveHeight(0.065),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: _emailError == null
-                                        ? AppColors.borderLight
-                                        : AppColors.errorRed,
-                                    width: 1.3,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: getResponsiveWidth(0.03),
-                                ),
-                                child: TextField(
-                                  controller: _emailController,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: locale.emailHint,
-                                    hintStyle: TextStyle(
-                                      color: AppColors.hintVeryLight,
-                                      fontSize: getResponsiveFont(16),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              if (_emailError != null)
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: getResponsiveHeight(0.005),
-                                    left: getResponsiveWidth(0.01),
-                                  ),
-                                  child: Text(
-                                    _emailError!,
-                                    style: TextStyle(
-                                      color: AppColors.errorRed,
-                                      fontSize: getResponsiveFont(13),
-                                    ),
-                                  ),
-                                ),
+/// ----- Email -----
+Text(
+  locale.emailHint,
+  style: TextStyle(
+    fontSize: getResponsiveFont(19),
+    fontWeight: FontWeight.w500,
+    color: AppColors.textBlack,
+  ),
+),
+SizedBox(height: getResponsiveHeight(0.008)),
+
+Container(
+  height: getResponsiveHeight(0.065),
+  decoration: BoxDecoration(
+    border: Border.all(
+      color: _emailError == null
+          ? AppColors.borderLight
+          : AppColors.errorRed,
+      width: 1.3,
+    ),
+    borderRadius: BorderRadius.circular(8),
+  ),
+  padding: EdgeInsets.symmetric(
+    horizontal: getResponsiveWidth(0.03),
+  ),
+
+  child: Center(   // ⬅️ This centers the whole TextField vertically
+    child: TextField(
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        isDense: true,                 // remove default top padding
+        border: InputBorder.none,
+        hintText: locale.emailHint,
+        hintStyle: TextStyle(
+          color: AppColors.hintVeryLight,
+          fontSize: getResponsiveFont(16),
+        ),
+        contentPadding: EdgeInsets.zero, // ⬅️ PERFECT vertical center
+      ),
+    ),
+  ),
+),
+
+if (_emailError != null)
+  Padding(
+    padding: EdgeInsets.only(
+      top: getResponsiveHeight(0.005),
+      left: getResponsiveWidth(0.01),
+    ),
+    child: Text(
+      _emailError!,
+      style: TextStyle(
+        color: AppColors.errorRed,
+        fontSize: getResponsiveFont(13),
+      ),
+    ),
+  ),
 
                               SizedBox(height: getResponsiveHeight(0.025)),
 
@@ -313,30 +320,38 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
                                 padding: EdgeInsets.symmetric(
                                   horizontal: getResponsiveWidth(0.03),
                                 ),
-                                child: TextField(
-                                  controller: _passwordController,
-                                  obscureText: !_isPasswordVisible,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: locale.passwordHint,
-                                    hintStyle: TextStyle(
-                                      color: AppColors.textBlack38,
-                                      fontSize: getResponsiveFont(15),
+                                child: Center(
+                                  child: TextField(
+                                    controller: _passwordController,
+                                    obscureText: !_isPasswordVisible,
+                                    textAlignVertical: TextAlignVertical.center,
+                                    style: TextStyle(
+                                      height: 1.0,
                                     ),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        _isPasswordVisible
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.zero,
+                                      hintText: locale.passwordHint,
+                                      hintStyle: TextStyle(
                                         color: AppColors.textBlack38,
-                                        size: getResponsiveFont(22),
+                                        fontSize: getResponsiveFont(15),
+                                        height: 1.0,
                                       ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isPasswordVisible =
-                                              !_isPasswordVisible;
-                                        });
-                                      },
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          _isPasswordVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: AppColors.textBlack38,
+                                          size: getResponsiveFont(22),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _isPasswordVisible =
+                                                !_isPasswordVisible;
+                                          });
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),

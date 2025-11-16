@@ -2,6 +2,9 @@
 class Assets {
   Assets._();
 
+  static const String achievementsGoalsComHelper = 'assets/images/achievements_goals/com_helper.png';
+  static const String achievementsGoalsImg = 'assets/images/achievements_goals/achievements.png';
+  static const String achievementsGoalsWeekWarrior = 'assets/images/achievements_goals/week_warrior.png';
   static const String beforeLoginGetStartedScreen = 'assets/images/before_login/get_started_screen.png';
   static const String homeDirectoryAudioDownload = 'assets/images/home_directory/audio_download.png';
   static const String homeDirectoryAudioPause = 'assets/images/home_directory/audio_pause.png';
@@ -9,8 +12,7 @@ class Assets {
   static const String homeDirectoryBackButton = 'assets/images/home_directory/back_button.png';
   static const String homeDirectoryExercise = 'assets/images/home_directory/exercise.png';
   static const String homeDirectoryGoals = 'assets/images/home_directory/goals.png';
-  static const String homeDirectoryImg = 'assets/images/home_directory/img.png';
-  static const String homeDirectoryImg1 = 'assets/images/home_directory/verified.png';
+  static const String homeDirectoryImg = 'assets/images/home_directory/achievements.png';
   static const String homeDirectoryJournal = 'assets/images/home_directory/journal.png';
   static const String homeDirectoryNavArticle = 'assets/images/home_directory/nav_article.png';
   static const String homeDirectoryNavChat = 'assets/images/home_directory/nav_chat.png';
@@ -20,8 +22,10 @@ class Assets {
   static const String homeDirectoryNavMood = 'assets/images/home_directory/nav_mood.png';
   static const String homeDirectoryNavSessions = 'assets/images/home_directory/nav_sessions.png';
   static const String homeDirectoryNavWellness = 'assets/images/home_directory/nav_wellness.png';
+  static const String homeDirectoryNoNotifications = 'assets/images/home_directory/no_notifications.png';
   static const String homeDirectoryNotificationsImage = 'assets/images/home_directory/notifications_image.png';
   static const String homeDirectorySpecialist = 'assets/images/home_directory/specialist.png';
+  static const String homeDirectoryVerified = 'assets/images/home_directory/verified.png';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String moodAngry = 'assets/images/mood/angry.png';
   static const String moodAnxious = 'assets/images/mood/anxious.png';

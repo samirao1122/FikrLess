@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,6 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoadingQuote = false;
   bool _isLoadingMood = false;
   int _selectedIndex = 0;
+  String? _cachedImageBase64;
+  Uint8List? _cachedImageBytes;
 
   @override
   void initState() {
@@ -74,6 +78,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Load quote from API
     _loadQuote();
+
+    // Load cached image
+    _loadCachedImage();
+  }
+
+  Future<void> _loadCachedImage() async {
+    final cachedImage = await AuthCacheService.getUserImage();
+    if (mounted && cachedImage != null && cachedImage != _cachedImageBase64) {
+      setState(() {
+        _cachedImageBase64 = cachedImage;
+        // Decode once and cache the bytes to avoid re-decoding on every rebuild
+        try {
+          final imageData = cachedImage.contains(',')
+              ? cachedImage.split(',')[1]
+              : cachedImage;
+          _cachedImageBytes = base64Decode(imageData);
+        } catch (e) {
+          _cachedImageBytes = null;
+        }
+      });
+    }
+  }
+
+  String _getInitials(String name) {
+    if (name.isEmpty) return '??';
+    final parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    } else if (parts.length == 1 && parts[0].isNotEmpty) {
+      return parts[0][0].toUpperCase();
+    }
+    return '??';
   }
 
   void _updateSteps() {
@@ -207,32 +243,60 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               // ---- Left: Profile ----
               GestureDetector(
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ProfileScreen(locale: widget.locale),
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 24, // 48x48 circle
-                  backgroundColor: AppColors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(4), // space from circle edge
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/home_directory/img.png',
-                        fit: BoxFit.cover, // fill the inner circle smoothly
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.person,
-                            color: AppColors.accentTeal,
-                            size: 24,
-                          );
-                        },
+                      builder: (_) => ProfileScreen(
+                        locale: widget.locale,
+                        currentSteps: _currentSteps,
+                        currentMood: _currentMood,
                       ),
                     ),
+                  );
+                  // Reload cached image after returning from profile screen
+                  _loadCachedImage();
+                },
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4), // space from circle edge
+                    child: _cachedImageBytes != null
+                        ? ClipOval(
+                            child: Image.memory(
+                              _cachedImageBytes!,
+                              fit: BoxFit.cover,
+                              width: 40,
+                              height: 40,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                  Icons.person,
+                                  color: AppColors.accentTeal,
+                                  size: 24,
+                                );
+                              },
+                            ),
+                          )
+                        : ClipOval(
+                            child: Image.asset(
+                              'assets/images/home_directory/com_helper.png',
+                              fit: BoxFit.cover,
+                              width: 40,
+                              height: 40,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                  Icons.person,
+                                  color: AppColors.accentTeal,
+                                  size: 24,
+                                );
+                              },
+                            ),
+                          ),
                   ),
                 ),
               ),

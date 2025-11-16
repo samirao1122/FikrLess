@@ -9,6 +9,7 @@ class AuthCacheService {
   static const String _keyUserPhone = 'user_phone';
   static const String _keyUserName = 'user_name';
   static const String _keyUserRole = 'user_role';
+  static const String _keyUserImage = 'user_image_base64';
 
   /// Check if user is logged in
   static Future<bool> isLoggedIn() async {
@@ -106,6 +107,36 @@ class AuthCacheService {
   static Future<void> updateUserEmail(String email) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_keyUserEmail, email);
+  }
+
+  /// Save selected language
+  static Future<void> saveLanguage(String languageCode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedLanguage', languageCode);
+  }
+
+  /// Get saved language
+  static Future<String> getLanguage() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('selectedLanguage') ?? 'en';
+  }
+
+  /// Save user profile image (base64)
+  static Future<void> saveUserImage(String base64Image) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyUserImage, base64Image);
+  }
+
+  /// Get user profile image (base64)
+  static Future<String?> getUserImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keyUserImage);
+  }
+
+  /// Clear user profile image
+  static Future<void> clearUserImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_keyUserImage);
   }
 }
 

@@ -809,20 +809,31 @@ class AppLocalizationsUr extends AppLocalizations {
   String get saveTodaysMood => 'آج کا موڈ محفوظ کریں';
 
   @override
-  List<String> get currencyOptions => [
-    currencyPKR,
-    currencyUSD,
-    currencyGBP,
-  ];
-
-  @override
-  List<String> get locationOptions => [
-    locationMultan,
-    locationOther,
-  ];
-
-  @override
   String get cancel => 'منسوخ کریں';
+
+  @override
+  String get noNotificationsYet => 'ابھی تک کوئی اطلاعات نہیں';
+
+  @override
+  String get markAsUnread => 'غیر پڑھا ہوا نشان زد کریں';
+
+  @override
+  String get clearAll => 'سب صاف کریں';
+
+  @override
+  String get deleteNotifications => 'اطلاعات حذف کریں';
+
+  @override
+  String get deleteNotificationsConfirm => 'کیا آپ واقعی تمام اطلاعات حذف کرنا چاہتے ہیں؟';
+
+  @override
+  String get delete => 'حذف کریں';
+
+  @override
+  String get notificationsCleared => 'تمام اطلاعات صاف کر دی گئیں';
+
+  @override
+  String get errorOccurred => 'ایک خرابی پیش آئی';
 
   @override
   String get recentMoods => 'حالیہ موڈ';
@@ -841,4 +852,92 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get moodSaveFailed => 'موڈ محفوظ کرنے میں ناکامی';
+
+  @override
+  String get overview => 'جائزہ';
+
+  @override
+  String get achievements => 'کامیابیاں';
+
+  @override
+  String get settings => 'ترتیبات';
+
+  @override
+  String get memberSince => 'رکنیت از';
+
+  @override
+  String get thisWeekMode => 'اس ہفتے کا موڈ';
+
+  @override
+  String get recentAchievements => 'حالیہ کامیابیاں';
+
+  @override
+  String get yourAchievements => 'آپ کی کامیابیاں';
+
+  @override
+  String get unlocked => 'کھلا ہوا';
+
+  @override
+  String get noAchievementsYet => 'ابھی تک کوئی کامیابی نہیں';
+
+  @override
+  String get loadingAchievements => 'کامیابیاں لوڈ ہو رہی ہیں...';
+
+  @override
+  String get accountSettings => 'اکاؤنٹ کی ترتیبات';
+
+  @override
+  String get personalDetails => 'ذاتی تفصیلات';
+
+  @override
+  String get changePhoneNumber => 'فون نمبر تبدیل کریں';
+
+  @override
+  String get changePassword => 'پاس ورڈ تبدیل کریں';
+
+  @override
+  String get appSetting => 'ایپ کی ترتیب';
+
+  @override
+  String get language => 'زبان';
+
+  @override
+  String get legal => 'قانونی';
+
+  @override
+  String get privacyPolicy => 'پرائیویسی پالیسی';
+
+  @override
+  String get termsOfUse => 'استعمال کی شرائط';
+
+  @override
+  String get helpAndSupport => 'مدد اور تعاون';
+
+  @override
+  String get customerSupport => 'کسٹمر سپورٹ';
+
+  @override
+  String get faqs => 'اکثر پوچھے جانے والے سوالات';
+
+  @override
+  String get rateUs => 'ہمیں درجہ دیں';
+
+  @override
+  String get languageChanged => 'زبان تبدیل ہو گئی۔ تبدیلیاں دیکھنے کے لیے براہ کرم ایپ کو دوبارہ شروع کریں۔';
+
+  @override
+  List<String> get locationOptions => [
+    locationKarachi,
+    locationLahore,
+    locationIslamabad,
+    locationMultan,
+    locationOther,
+  ];
+
+  @override
+  List<String> get currencyOptions => [
+    currencyPKR,
+    currencyUSD,
+    currencyGBP,
+  ];
 }

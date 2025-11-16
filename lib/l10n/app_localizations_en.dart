@@ -809,20 +809,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveTodaysMood => 'Save Today\'s Mood';
 
   @override
-  List<String> get currencyOptions => [
-    currencyPKR,
-    currencyUSD,
-    currencyGBP,
-  ];
-
-  @override
-  List<String> get locationOptions => [
-    locationMultan,
-    locationOther,
-  ];
-
-  @override
   String get cancel => 'Cancel';
+
+  @override
+  String get noNotificationsYet => 'No Notifications Yet';
+
+  @override
+  String get markAsUnread => 'Mark as Unread';
+
+  @override
+  String get clearAll => 'Clear All';
+
+  @override
+  String get deleteNotifications => 'Delete Notifications';
+
+  @override
+  String get deleteNotificationsConfirm => 'Are you sure you want to delete all notifications?';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get notificationsCleared => 'All notifications cleared';
+
+  @override
+  String get errorOccurred => 'An error occurred';
 
   @override
   String get recentMoods => 'Recent Moods';
@@ -841,4 +852,92 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moodSaveFailed => 'Failed to save mood';
+
+  @override
+  String get overview => 'Overview';
+
+  @override
+  String get achievements => 'Achievements';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get memberSince => 'Member Since';
+
+  @override
+  String get thisWeekMode => 'This Week Mode';
+
+  @override
+  String get recentAchievements => 'Recent Achievements';
+
+  @override
+  String get yourAchievements => 'Your Achievements';
+
+  @override
+  String get unlocked => 'Unlocked';
+
+  @override
+  String get noAchievementsYet => 'No achievements yet';
+
+  @override
+  String get loadingAchievements => 'Loading achievements...';
+
+  @override
+  String get accountSettings => 'Account Settings';
+
+  @override
+  String get personalDetails => 'Personal Details';
+
+  @override
+  String get changePhoneNumber => 'Change Phone Number';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get appSetting => 'App Setting';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get legal => 'Legal';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get termsOfUse => 'Terms of Use';
+
+  @override
+  String get helpAndSupport => 'Help and Support';
+
+  @override
+  String get customerSupport => 'Customer Support';
+
+  @override
+  String get faqs => 'FAQs';
+
+  @override
+  String get rateUs => 'Rate Us';
+
+  @override
+  String get languageChanged => 'Language changed. Please restart the app to see changes.';
+
+  @override
+  List<String> get locationOptions => [
+    locationKarachi,
+    locationLahore,
+    locationIslamabad,
+    locationMultan,
+    locationOther,
+  ];
+
+  @override
+  List<String> get currencyOptions => [
+    currencyPKR,
+    currencyUSD,
+    currencyGBP,
+  ];
 }

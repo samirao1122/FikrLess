@@ -227,29 +227,37 @@ class _SignUpScreenState extends State<userSignUpScreen> {
                           padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.03,
                           ),
-                          child: TextFormField(
-                            controller: _passwordController,
-                            obscureText: !_isPasswordVisible,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: loc.passwordHint,
-                              hintStyle: TextStyle(
-                                color: AppColors.textTertiary,
-                                fontSize: 18 * textScale,
+                          child: Center(
+                            child: TextFormField(
+                              controller: _passwordController,
+                              obscureText: !_isPasswordVisible,
+                              textAlignVertical: TextAlignVertical.center,
+                              style: TextStyle(
+                                height: 1.0,
                               ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.zero,
+                                hintText: loc.passwordHint,
+                                hintStyle: TextStyle(
                                   color: AppColors.textTertiary,
-                                  size: 22,
+                                  fontSize: 18 * textScale,
+                                  height: 1.0,
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    _isPasswordVisible = !_isPasswordVisible;
-                                  });
-                                },
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: AppColors.textTertiary,
+                                    size: 22,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordVisible = !_isPasswordVisible;
+                                    });
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -271,7 +279,7 @@ class _SignUpScreenState extends State<userSignUpScreen> {
 
                         // ✅ Terms Checkbox
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Checkbox(
                               value: _agreeToTerms,

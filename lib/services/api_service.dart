@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import '../l10n/app_localizations.dart';
 
  const String baseUrl = 'http://13.204.135.41:5003/api/v1';
@@ -288,6 +290,351 @@ class SpiritualHubApiService extends ApiService {
     } catch (e) {
       print('Error fetching practitioners: ${ApiService.handleError(e)}');
       return null;
+    }
+  }
+}
+
+/// Service for Notifications API calls
+class NotificationsApiService extends ApiService {
+  /// Get notifications with filters
+  static Future<List<Map<String, dynamic>>?> getNotifications({
+    required String token,
+    int limit = 10,
+    int offset = 1,
+    String? date,
+    String? id,
+    String? type,
+  }) async {
+    try {
+      final body = <String, dynamic>{
+        'limit': limit.toString(),
+        'offset': offset.toString(),
+      };
+      
+      if (date != null && date.isNotEmpty) body['date'] = date;
+      if (id != null && id.isNotEmpty) body['id'] = id;
+      if (type != null && type.isNotEmpty) body['type'] = type;
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/reached_specialist'),
+        headers: ApiService.getHeaders(token: token),
+        body: json.encode(body),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data is List) {
+          return data.cast<Map<String, dynamic>>();
+        } else if (data is Map && data['data'] != null) {
+          return (data['data'] as List).cast<Map<String, dynamic>>();
+        }
+        return [];
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching notifications: ${ApiService.handleError(e)}');
+      return null;
+    }
+  }
+
+  /// Mark notifications as read
+  static Future<bool> markAsRead({
+    required String token,
+    required List<String> ids,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/mark_read'),
+        headers: ApiService.getHeaders(token: token),
+        body: json.encode({'ids': ids}),
+      );
+
+      return response.statusCode == 200 || response.statusCode == 201;
+    } catch (e) {
+      print('Error marking notifications as read: ${ApiService.handleError(e)}');
+      return false;
+    }
+  }
+
+  /// Delete notifications
+  static Future<bool> deleteNotifications({
+    required String token,
+    required List<String> ids,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/delete_notifications'),
+        headers: ApiService.getHeaders(token: token),
+        body: json.encode({'ids': ids}),
+      );
+
+      return response.statusCode == 200 || response.statusCode == 201;
+    } catch (e) {
+      print('Error deleting notifications: ${ApiService.handleError(e)}');
+      return false;
+    }
+  }
+}
+
+/// Service for Achievements API calls
+class AchievementsApiService extends ApiService {
+  /// Get recent achievements
+  static Future<List<Map<String, dynamic>>?> getRecentAchievements({
+    required String token,
+    int limit = 5,
+  }) async {
+    try {
+      // TODO: Replace with actual API call when ready
+      // final response = await http.get(
+      //   Uri.parse('$baseUrl/achievements/recent'),
+      //   headers: ApiService.getHeaders(token: token),
+      // );
+      // if (response.statusCode == 200) {
+      //   final data = json.decode(response.body);
+      //   if (data is List) {
+      //     return data.cast<Map<String, dynamic>>();
+      //   }
+      //   return [];
+      // }
+      
+      // Dummy data for now
+      await Future.delayed(Duration(milliseconds: 500)); // Simulate API delay
+      return _getDummyRecentAchievements();
+    } catch (e) {
+      print('Error fetching recent achievements: ${ApiService.handleError(e)}');
+      return _getDummyRecentAchievements();
+    }
+  }
+
+  /// Get all achievements
+  static Future<Map<String, dynamic>?> getAllAchievements({
+    required String token,
+  }) async {
+    try {
+      // TODO: Replace with actual API call when ready
+      // final response = await http.get(
+      //   Uri.parse('$baseUrl/achievements'),
+      //   headers: ApiService.getHeaders(token: token),
+      // );
+      // if (response.statusCode == 200) {
+      //   return json.decode(response.body);
+      // }
+      
+      // Dummy data for now
+      await Future.delayed(Duration(milliseconds: 500)); // Simulate API delay
+      return _getDummyAllAchievements();
+    } catch (e) {
+      print('Error fetching achievements: ${ApiService.handleError(e)}');
+      return _getDummyAllAchievements();
+    }
+  }
+
+  static List<Map<String, dynamic>> _getDummyRecentAchievements() {
+    return [
+      {
+        'id': '1',
+        'title': 'Week Warrior',
+        'description': '7 days in a row',
+        'icon': 'week_warrior',
+        'unlocked': true,
+        'unlockedDate': DateTime.now().subtract(Duration(days: 2)).toIso8601String(),
+      },
+      {
+        'id': '2',
+        'title': 'Community Helper',
+        'description': 'Helped 5 people in forums',
+        'icon': 'community_helper',
+        'unlocked': true,
+        'unlockedDate': DateTime.now().subtract(Duration(days: 5)).toIso8601String(),
+      },
+    ];
+  }
+
+  static Map<String, dynamic> _getDummyAllAchievements() {
+    return {
+      'total': 10,
+      'unlocked': 4,
+      'achievements': [
+        {
+          'id': '1',
+          'title': 'Week Warrior',
+          'description': '7 days in a row',
+          'icon': 'week_warrior',
+          'unlocked': true,
+          'unlockedDate': DateTime.now().subtract(Duration(days: 2)).toIso8601String(),
+        },
+        {
+          'id': '2',
+          'title': 'Community Helper',
+          'description': 'Helped 5 people in forums',
+          'icon': 'community_helper',
+          'unlocked': true,
+          'unlockedDate': DateTime.now().subtract(Duration(days: 5)).toIso8601String(),
+        },
+        {
+          'id': '3',
+          'title': 'Community Helper',
+          'description': 'Helped 5 people in forums',
+          'icon': 'community_helper',
+          'unlocked': true,
+          'unlockedDate': DateTime.now().subtract(Duration(days: 7)).toIso8601String(),
+        },
+        {
+          'id': '4',
+          'title': 'Community Helper',
+          'description': 'Helped 5 people in forums',
+          'icon': 'community_helper',
+          'unlocked': true,
+          'unlockedDate': DateTime.now().subtract(Duration(days: 10)).toIso8601String(),
+        },
+        {
+          'id': '5',
+          'title': 'Mood Master',
+          'description': 'Tracked mood for 30 days',
+          'icon': 'mood_master',
+          'unlocked': false,
+        },
+        {
+          'id': '6',
+          'title': 'Step Champion',
+          'description': 'Walked 10,000 steps in a day',
+          'icon': 'step_champion',
+          'unlocked': false,
+        },
+        {
+          'id': '7',
+          'title': 'Meditation Guru',
+          'description': 'Completed 10 meditations',
+          'icon': 'meditation_guru',
+          'unlocked': false,
+        },
+        {
+          'id': '8',
+          'title': 'Journal Keeper',
+          'description': 'Wrote 20 journal entries',
+          'icon': 'journal_keeper',
+          'unlocked': false,
+        },
+        {
+          'id': '9',
+          'title': 'Wellness Warrior',
+          'description': 'Used app for 100 days',
+          'icon': 'wellness_warrior',
+          'unlocked': false,
+        },
+        {
+          'id': '10',
+          'title': 'Support Seeker',
+          'description': 'Connected with 3 specialists',
+          'icon': 'support_seeker',
+          'unlocked': false,
+        },
+      ],
+    };
+  }
+}
+
+/// Service for Weekly Moods API calls
+class WeeklyMoodsApiService extends ApiService {
+  /// Get moods for this week
+  static Future<List<Map<String, dynamic>>?> getWeeklyMoods({
+    required String token,
+  }) async {
+    try {
+      // TODO: Replace with actual API call when ready
+      // final response = await http.get(
+      //   Uri.parse('$baseUrl/mood/weekly'),
+      //   headers: ApiService.getHeaders(token: token),
+      // );
+      // if (response.statusCode == 200) {
+      //   final data = json.decode(response.body);
+      //   if (data is List) {
+      //     return data.cast<Map<String, dynamic>>();
+      //   }
+      //   return [];
+      // }
+      
+      // Dummy data for now
+      await Future.delayed(Duration(milliseconds: 500)); // Simulate API delay
+      return _getDummyWeeklyMoods();
+    } catch (e) {
+      print('Error fetching weekly moods: ${ApiService.handleError(e)}');
+      return _getDummyWeeklyMoods();
+    }
+  }
+
+  static List<Map<String, dynamic>> _getDummyWeeklyMoods() {
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    
+    return [
+      {
+        'date': startOfWeek.add(Duration(days: 0)).toIso8601String(),
+        'day': 'Mo',
+        'dayNumber': 1,
+        'mood': 'Happy',
+      },
+      {
+        'date': startOfWeek.add(Duration(days: 1)).toIso8601String(),
+        'day': 'Tu',
+        'dayNumber': 2,
+        'mood': 'Sad',
+      },
+      {
+        'date': startOfWeek.add(Duration(days: 2)).toIso8601String(),
+        'day': 'We',
+        'dayNumber': 3,
+        'mood': 'Anxious',
+      },
+      {
+        'date': startOfWeek.add(Duration(days: 3)).toIso8601String(),
+        'day': 'Th',
+        'dayNumber': 4,
+        'mood': 'Happy',
+      },
+      {
+        'date': startOfWeek.add(Duration(days: 4)).toIso8601String(),
+        'day': 'Fr',
+        'dayNumber': 5,
+        'mood': 'Anxious',
+      },
+      {
+        'date': startOfWeek.add(Duration(days: 5)).toIso8601String(),
+        'day': 'Sa',
+        'dayNumber': 6,
+        'mood': 'Angry',
+      },
+      {
+        'date': startOfWeek.add(Duration(days: 6)).toIso8601String(),
+        'day': 'Su',
+        'dayNumber': 7,
+        'mood': 'Happy',
+      },
+    ];
+  }
+}
+
+/// Service for User Profile API calls
+class UserProfileApiService extends ApiService {
+  /// Update user profile image (base64)
+  static Future<bool> updateUserImage({
+    required String token,
+    required String base64Image,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/user/profile/image'),
+        headers: ApiService.getHeaders(token: token),
+        body: json.encode({
+          'image': base64Image,
+        }),
+      );
+
+      return response.statusCode == 200 || response.statusCode == 201;
+    } catch (e) {
+      print('Error updating user image: ${ApiService.handleError(e)}');
+      return false;
     }
   }
 }

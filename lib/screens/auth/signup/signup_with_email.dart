@@ -199,45 +199,50 @@ class _UserSignUpScreenEmailState extends State<UserSignUpScreenEmail> {
                       SizedBox(height: screenHeight * 0.01),
 
                       // Email Field
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 250),
-                        height: fieldHeight,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: _emailError != null
-                                ? AppColors.errorRed
-                                : AppColors.borderLight,
-                            width: 1.3,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.03,
-                        ),
-                        child: TextFormField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: loc.emailHint,
-                            hintStyle: TextStyle(
-                              color: AppColors.textTertiary,
-                              fontSize: 17 * textScale,
-                            ),
-                          ),
-                        ),
-                      ),
+AnimatedContainer(
+  duration: const Duration(milliseconds: 250),
+  height: fieldHeight,
+  decoration: BoxDecoration(
+    border: Border.all(
+      color: _emailError != null
+          ? AppColors.errorRed
+          : AppColors.borderLight,
+      width: 1.3,
+    ),
+    borderRadius: BorderRadius.circular(8),
+  ),
+  padding: EdgeInsets.symmetric(
+    horizontal: screenWidth * 0.03,
+  ),
+  child: Center( // ⬅️ this centers the whole TextFormField vertically
+    child: TextFormField(
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        isDense: true,
+        border: InputBorder.none,
+        hintText: loc.emailHint,
+        hintStyle: TextStyle(
+          color: AppColors.textTertiary,
+          fontSize: 17 * textScale,
+        ),
+        contentPadding: EdgeInsets.zero, // no extra vertical padding
+      ),
+    ),
+  ),
+),
 
-                      if (_emailError != null) ...[
-                        SizedBox(height: screenHeight * 0.006),
-                        Text(
-                          _emailError!,
-                          style: TextStyle(
-                            color: AppColors.errorRed,
-                            fontSize: 14 * textScale,
-                          ),
-                        ),
-                      ],
+if (_emailError != null) ...[
+  SizedBox(height: screenHeight * 0.006),
+  Text(
+    _emailError!,
+    style: TextStyle(
+      color: AppColors.errorRed,
+      fontSize: 14 * textScale,
+    ),
+  ),
+],
 
                       SizedBox(height: screenHeight * 0.02),
 
@@ -269,26 +274,34 @@ class _UserSignUpScreenEmailState extends State<UserSignUpScreenEmail> {
                         padding: EdgeInsets.symmetric(
                           horizontal: screenWidth * 0.03,
                         ),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          obscureText: !_isPasswordVisible,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: loc.passwordHint,
-                            hintStyle: TextStyle(
-                              color: AppColors.textTertiary,
-                              fontSize: 17 * textScale,
+                        child: Center(
+                          child: TextFormField(
+                            controller: _passwordController,
+                            obscureText: !_isPasswordVisible,
+                            textAlignVertical: TextAlignVertical.center,
+                            style: TextStyle(
+                              height: 1.0,
                             ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _isPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
+                              hintText: loc.passwordHint,
+                              hintStyle: TextStyle(
                                 color: AppColors.textTertiary,
-                                size: 22,
+                                fontSize: 17 * textScale,
+                                height: 1.0,
                               ),
-                              onPressed: () => setState(
-                                () => _isPasswordVisible = !_isPasswordVisible,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: AppColors.textTertiary,
+                                  size: 22,
+                                ),
+                                onPressed: () => setState(
+                                  () => _isPasswordVisible = !_isPasswordVisible,
+                                ),
                               ),
                             ),
                           ),
@@ -310,7 +323,7 @@ class _UserSignUpScreenEmailState extends State<UserSignUpScreenEmail> {
 
                       // Terms
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Checkbox(
                             value: _agreeToTerms,

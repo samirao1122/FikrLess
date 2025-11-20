@@ -1,13 +1,21 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../auth/login/login_screen.dart';
 import '../../../theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../services/api_service.dart';
 
 class EducationCertificationsScreen extends StatefulWidget {
-  final Locale locale; // ✅ Accept locale from previous screen
+  final Locale locale;
+  final String token;
 
-  const EducationCertificationsScreen({super.key, required this.locale});
+  const EducationCertificationsScreen({
+    super.key,
+    required this.locale,
+    required this.token,
+  });
 
   @override
   State<EducationCertificationsScreen> createState() =>
@@ -17,16 +25,18 @@ class EducationCertificationsScreen extends StatefulWidget {
 class _EducationCertificationsScreenState
     extends State<EducationCertificationsScreen> {
   List<Map<String, String>> educationList = [
-    {'degree': '', 'institute': ''},
+    {'degree': '', 'institute_name': ''},
   ];
 
   List<Map<String, String>> certificationList = [
-    {'certTitle': '', 'provider': ''},
+    {'certificate_title': '', 'provider': ''},
   ];
+
+  bool _isLoading = false;
+  bool _isSubmitting = false;
 
   @override
   Widget build(BuildContext context) {
-    // ✅ Override localization using passed locale
     return Localizations.override(
       context: context,
       locale: widget.locale,
@@ -34,7 +44,6 @@ class _EducationCertificationsScreenState
         builder: (context) {
           final loc = AppLocalizations.of(context)!;
 
-          // ✅ Explicit Directionality for RTL/LTR
           return Directionality(
             textDirection: widget.locale.languageCode == 'ur'
                 ? TextDirection.rtl
@@ -159,7 +168,7 @@ class _EducationCertificationsScreenState
                                             setState(() {
                                               educationList.add({
                                                 'degree': '',
-                                                'institute': '',
+                                                'institute_name': '',
                                               });
                                             });
                                           },
@@ -186,7 +195,7 @@ class _EducationCertificationsScreenState
                                           onAdd: () {
                                             setState(() {
                                               certificationList.add({
-                                                'certTitle': '',
+                                                'certificate_title': '',
                                                 'provider': '',
                                               });
                                             });
@@ -199,8 +208,8 @@ class _EducationCertificationsScreenState
                                         ),
                                         const SizedBox(height: 10),
 
-                                        // Login Button
-                                        _buildLoginButton(context, loc),
+                                        // Submit Button
+                                        _buildSubmitButton(context, loc),
                                         const SizedBox(height: 15),
 
                                         // Progress Bar
@@ -227,13 +236,13 @@ class _EducationCertificationsScreenState
 
   // ----------------- UI Components -----------------
   Widget _buildSectionTitle(String title) => Text(
-    title,
-    style: const TextStyle(
-      fontSize: 25,
-      fontWeight: FontWeight.w600,
-      color: AppColors.primaryDarkBlue,
-    ),
-  );
+        title,
+        style: const TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.w600,
+          color: AppColors.primaryDarkBlue,
+        ),
+      );
 
   List<Widget> _buildDynamicSection(
     BuildContext context,
@@ -276,7 +285,11 @@ class _EducationCertificationsScreenState
                 ),
                 const SizedBox(height: 8),
                 TextField(
-                  onChanged: (val) => list[i][list[i].keys.elementAt(j)] = val,
+                  controller: TextEditingController(
+                    text: list[i][list[i].keys.elementAt(j)] ?? '',
+                  ),
+                  onChanged: (val) =>
+                      list[i][list[i].keys.elementAt(j)] = val,
                   decoration: InputDecoration(
                     hintText: "${loc.addDialogHint} ${fields[j].toLowerCase()}",
                     filled: true,
@@ -327,18 +340,11 @@ class _EducationCertificationsScreenState
     ];
   }
 
-  Widget _buildLoginButton(BuildContext context, AppLocalizations loc) {
+  Widget _buildSubmitButton(BuildContext context, AppLocalizations loc) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginScreen(locale: widget.locale),
-            ), // ✅ pass locale
-          );
-        },
+        onPressed: _isSubmitting ? null : () => _submitProfile(context, loc),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -347,14 +353,23 @@ class _EducationCertificationsScreenState
           ),
           elevation: 4,
         ),
-        child: Text(
-          loc.loginButton,
-          style: const TextStyle(
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
-            color: AppColors.white,
-          ),
-        ),
+        child: _isSubmitting
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: AppColors.white,
+                ),
+              )
+            : Text(
+                "Submit Profile",
+                style: const TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.white,
+                ),
+              ),
       ),
     );
   }
@@ -369,5 +384,135 @@ class _EducationCertificationsScreenState
         minHeight: 5,
       ),
     );
+  }
+
+  Future<void> _submitProfile(
+      BuildContext context, AppLocalizations loc) async {
+    setState(() => _isSubmitting = true);
+
+    try {
+      // Get cached basic info
+      final prefs = await SharedPreferences.getInstance();
+      final basicInfoJson = prefs.getString('specialist_basic_info');
+
+      if (basicInfoJson == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Basic information not found. Please go back and fill the form.'),
+              backgroundColor: AppColors.errorRed,
+            ),
+          );
+        }
+        setState(() => _isSubmitting = false);
+        return;
+      }
+
+      final basicInfoMap = jsonDecode(basicInfoJson) as Map<String, dynamic>;
+
+      // Prepare education list (filter out empty entries)
+      final education = educationList
+          .where((edu) =>
+              (edu['degree']?.trim().isNotEmpty ?? false) &&
+              (edu['institute_name']?.trim().isNotEmpty ?? false))
+          .map((edu) => <String, dynamic>{
+                'degree': edu['degree']?.trim() ?? '',
+                'institute_name': edu['institute_name']?.trim() ?? '',
+              })
+          .toList();
+
+      // Prepare certifications list (filter out empty entries)
+      final certifications = certificationList
+          .where((cert) =>
+              (cert['certificate_title']?.trim().isNotEmpty ?? false) &&
+              (cert['provider']?.trim().isNotEmpty ?? false))
+          .map((cert) => <String, dynamic>{
+                'certificate_title': cert['certificate_title']?.trim() ?? '',
+                'provider': cert['provider']?.trim() ?? '',
+              })
+          .toList();
+
+      // Prepare basic_info payload
+      final basicInfo = {
+        'full_name': basicInfoMap['full_name'] ?? '',
+        'designation': basicInfoMap['designation'] ?? '',
+        'location': basicInfoMap['location'] ?? '',
+        'hourly_rate': basicInfoMap['hourly_rate'] ?? 500,
+        'currency': basicInfoMap['currency'] ?? 'PKR',
+        'specializations': basicInfoMap['specializations'] ?? [],
+        'languages': basicInfoMap['languages'] ?? [],
+        'categories': basicInfoMap['categories'] ?? [],
+        'experience_years': basicInfoMap['experience_years'] ?? 0,
+        // For now, send empty string for profile_photo URL
+        // If backend requires image upload first, we'll need to handle that separately
+        'profile_photo': basicInfoMap['profile_photo_base64']?.toString().isNotEmpty == true
+            ? 'data:image/jpeg;base64,${basicInfoMap['profile_photo_base64']}'
+            : '',
+      };
+
+      // Make API call
+      final response = await SpecialistApiService.createSpecialistProfile(
+        basicInfo: basicInfo,
+        education: education.isNotEmpty ? education : null,
+        certifications: certifications.isNotEmpty ? certifications : null,
+        token: widget.token,
+      );
+
+      setState(() => _isSubmitting = false);
+
+      if (response != null && response['error'] == null) {
+        // Clear cached data
+        await prefs.remove('specialist_basic_info');
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Profile created successfully!'),
+              backgroundColor: AppColors.successGreen,
+              duration: Duration(seconds: 2),
+            ),
+          );
+
+          // Navigate to login screen
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LoginScreen(locale: widget.locale),
+            ),
+            (route) => false,
+          );
+        }
+      } else {
+        String errorMessage = 'Failed to create profile. Please try again.';
+        if (response != null && response['error'] != null) {
+          try {
+            final errorData = jsonDecode(response['error']);
+            errorMessage = errorData['message'] ?? errorData['error'] ?? errorMessage;
+          } catch (e) {
+            errorMessage = response['error'].toString();
+          }
+        }
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorMessage),
+              backgroundColor: AppColors.errorRed,
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      setState(() => _isSubmitting = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: AppColors.errorRed,
+          ),
+        );
+      }
+    }
   }
 }

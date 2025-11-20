@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fikr_less/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -32,7 +33,7 @@ class _ConsentSafetyScreenState extends State<ConsentSafetyScreen> {
 
     try {
       final url = Uri.parse(
-        'https://stalagmitical-millie-unhomiletic.ngrok-free.dev/demographics',
+        '$baseUrl/demographics',
       );
 
       final Map<String, dynamic> payload = widget.surveyData.toJson();

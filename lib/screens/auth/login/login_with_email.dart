@@ -2,10 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../services/api_service.dart';
+import '../../../services/auth_cache_service.dart';
+import '../../../services/chat_service.dart';
 import '../../before_login_signup/choose_yourself.dart';
 import '../forget_pasword/forget_password.dart';
 import 'login_screen.dart';
-import '../../userflow/user_dashboard.dart';
+import '../../userflow/dashboard/home_screen.dart';
+import '../../specialistflow/dashboard/specialist_dashboard_screen.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../theme/app_colors.dart';
 
@@ -26,8 +30,8 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
   String? _passwordError;
   bool _isLoading = false;
 
-  final String baseUrl =
-      "https://stalagmitical-millie-unhomiletic.ngrok-free.dev/login";
+  late final String baseUrl1 =
+      "$baseUrl/auth/login";
 
   bool _validateInput(AppLocalizations locale) {
     setState(() {
@@ -65,7 +69,7 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
 
     try {
       final response = await http.post(
-        Uri.parse(baseUrl),
+        Uri.parse(baseUrl1),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "email": _emailController.text.trim(),
@@ -78,6 +82,35 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
+        // Save login data to cache
+        final token = responseData['token']?.toString() ?? responseData['access_token']?.toString();
+        final userId = responseData['userId']?.toString() ?? responseData['user_id']?.toString() ?? responseData['id']?.toString();
+        final email = responseData['email']?.toString() ?? _emailController.text.trim();
+        final name = responseData['name']?.toString() ?? 
+                     responseData['username']?.toString() ??
+                     (email != null && email.isNotEmpty ? email.split('@')[0] : null); // Generate name from email if not provided
+        final role = responseData['role']?.toString() ?? responseData['user_type']?.toString();
+
+        if (token != null && userId != null) {
+          await AuthCacheService.saveLoginData(
+            token: token,
+            userId: userId,
+            email: email,
+            name: name,
+            role: role,
+          );
+          
+          // Debug: Print saved data
+          print('═══════════════════════════════════════════════════════════');
+          print('✅ LOGIN DATA SAVED:');
+          print('   User ID: $userId');
+          print('   Email: $email');
+          print('   Name: $name');
+          print('   Role: $role');
+          print('   Token: ${token.substring(0, 20)}...');
+          print('═══════════════════════════════════════════════════════════');
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -100,13 +133,36 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
           ),
         );
 
+        // Initialize FCM for push notifications (non-blocking)
+        if (userId != null) {
+          ChatService.initializeFCM(userId).catchError((error) {
+            print('⚠️ FCM initialization failed (notifications may not work): $error');
+          });
+        }
+
+        // Check user_type to navigate to appropriate dashboard
+        final userType = responseData['user_type']?.toString() ?? role ?? 'user';
+        
         Future.delayed(const Duration(seconds: 2), () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UserScreen(locale: widget.locale),
-            ),
-          );
+          if (userType.toLowerCase() != 'user') {
+            // Navigate to specialist dashboard and clear entire navigation stack
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SpecialistDashboardScreen(locale: widget.locale),
+              ),
+              (route) => false, // Remove all previous routes
+            );
+          } else {
+            // Navigate to user home and clear entire navigation stack
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(locale: widget.locale),
+              ),
+              (route) => false, // Remove all previous routes
+            );
+          }
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -216,57 +272,64 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
                               ),
                               SizedBox(height: getResponsiveHeight(0.05)),
 
-                              /// ----- Email -----
-                              Text(
-                                locale.emailHint,
-                                style: TextStyle(
-                                  fontSize: getResponsiveFont(19),
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textBlack,
-                                ),
-                              ),
-                              SizedBox(height: getResponsiveHeight(0.008)),
-                              Container(
-                                height: getResponsiveHeight(0.065),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: _emailError == null
-                                        ? AppColors.borderLight
-                                        : AppColors.errorRed,
-                                    width: 1.3,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: getResponsiveWidth(0.03),
-                                ),
-                                child: TextField(
-                                  controller: _emailController,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: locale.emailHint,
-                                    hintStyle: TextStyle(
-                                      color: AppColors.hintVeryLight,
-                                      fontSize: getResponsiveFont(16),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              if (_emailError != null)
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: getResponsiveHeight(0.005),
-                                    left: getResponsiveWidth(0.01),
-                                  ),
-                                  child: Text(
-                                    _emailError!,
-                                    style: TextStyle(
-                                      color: AppColors.errorRed,
-                                      fontSize: getResponsiveFont(13),
-                                    ),
-                                  ),
-                                ),
+/// ----- Email -----
+Text(
+  locale.emailHint,
+  style: TextStyle(
+    fontSize: getResponsiveFont(19),
+    fontWeight: FontWeight.w500,
+    color: AppColors.textBlack,
+  ),
+),
+SizedBox(height: getResponsiveHeight(0.008)),
+
+Container(
+  height: getResponsiveHeight(0.065),
+  decoration: BoxDecoration(
+    border: Border.all(
+      color: _emailError == null
+          ? AppColors.borderLight
+          : AppColors.errorRed,
+      width: 1.3,
+    ),
+    borderRadius: BorderRadius.circular(8),
+  ),
+  padding: EdgeInsets.symmetric(
+    horizontal: getResponsiveWidth(0.03),
+  ),
+
+  child: Center(   // ⬅️ This centers the whole TextField vertically
+    child: TextField(
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        isDense: true,                 // remove default top padding
+        border: InputBorder.none,
+        hintText: locale.emailHint,
+        hintStyle: TextStyle(
+          color: AppColors.hintVeryLight,
+          fontSize: getResponsiveFont(16),
+        ),
+        contentPadding: EdgeInsets.zero, // ⬅️ PERFECT vertical center
+      ),
+    ),
+  ),
+),
+
+if (_emailError != null)
+  Padding(
+    padding: EdgeInsets.only(
+      top: getResponsiveHeight(0.005),
+      left: getResponsiveWidth(0.01),
+    ),
+    child: Text(
+      _emailError!,
+      style: TextStyle(
+        color: AppColors.errorRed,
+        fontSize: getResponsiveFont(13),
+      ),
+    ),
+  ),
 
                               SizedBox(height: getResponsiveHeight(0.025)),
 
@@ -294,30 +357,38 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
                                 padding: EdgeInsets.symmetric(
                                   horizontal: getResponsiveWidth(0.03),
                                 ),
-                                child: TextField(
-                                  controller: _passwordController,
-                                  obscureText: !_isPasswordVisible,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: locale.passwordHint,
-                                    hintStyle: TextStyle(
-                                      color: AppColors.textBlack38,
-                                      fontSize: getResponsiveFont(15),
+                                child: Center(
+                                  child: TextField(
+                                    controller: _passwordController,
+                                    obscureText: !_isPasswordVisible,
+                                    textAlignVertical: TextAlignVertical.center,
+                                    style: TextStyle(
+                                      height: 1.0,
                                     ),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        _isPasswordVisible
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.zero,
+                                      hintText: locale.passwordHint,
+                                      hintStyle: TextStyle(
                                         color: AppColors.textBlack38,
-                                        size: getResponsiveFont(22),
+                                        fontSize: getResponsiveFont(15),
+                                        height: 1.0,
                                       ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isPasswordVisible =
-                                              !_isPasswordVisible;
-                                        });
-                                      },
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          _isPasswordVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: AppColors.textBlack38,
+                                          size: getResponsiveFont(22),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _isPasswordVisible =
+                                                !_isPasswordVisible;
+                                          });
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),

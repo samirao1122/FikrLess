@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:fikr_less/services/api_service.dart';
+import 'package:fikr_less/services/auth_cache_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pinput/pinput.dart';
@@ -77,7 +79,7 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
     setState(() => _isLoading = true);
 
     const String apiUrl =
-        "https://stalagmitical-millie-unhomiletic.ngrok-free.dev/email-verify";
+        "$baseUrl/auth/email-verify";
 
     final Map<String, dynamic> requestData = {
       "token": _otpController.text.trim(),
@@ -105,6 +107,8 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
       }
 
       final String? userId = responseData['user_id']?.toString();
+      final String? token = responseData['token']?.toString() ?? 
+                           responseData['access_token']?.toString();
       String message =
           responseData['message'] ??
           responseData['error'] ??
@@ -125,6 +129,19 @@ class _UserOtpVerificationScreenState extends State<UserOtpVerificationScreen>
       );
 
       if (response.statusCode == 200 && userId != null) {
+        // Save token and user data to cache if token is present
+        if (token != null) {
+          await AuthCacheService.saveLoginData(
+            token: token,
+            userId: userId,
+            email: widget.email,
+            role: widget.role,
+          );
+          debugPrint("✅ Token saved successfully for ${widget.role}");
+        } else {
+          debugPrint("⚠️ Token missing in backend response!");
+        }
+        
         Navigator.push(
           context,
           MaterialPageRoute(

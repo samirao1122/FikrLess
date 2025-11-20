@@ -1,13 +1,23 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'education_certification.dart';
 import '../../../theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 
 class BasicInformationScreen extends StatefulWidget {
-  final Locale locale; // ✅ accept locale
+  final Locale locale;
+  final String token;
 
-  const BasicInformationScreen({super.key, required this.locale});
+  const BasicInformationScreen({
+    super.key,
+    required this.locale,
+    required this.token,
+  });
 
   @override
   State<BasicInformationScreen> createState() => _BasicInformationScreenState();
@@ -19,15 +29,38 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
   final TextEditingController hourlyRateController = TextEditingController(
     text: "500",
   );
+  final TextEditingController experienceYearsController = TextEditingController();
 
   String? selectedLocation = "Karachi, Pakistan";
   String? selectedCurrency = "PKR";
   List<String> specializations = ["CBT"];
   List<String> languages = ["English"];
+  List<String> selectedCategories = [];
+  String? profilePhotoBase64;
+  File? profilePhotoFile;
+  final ImagePicker _imagePicker = ImagePicker();
+
+  // Available categories for specialists
+  final List<String> availableCategories = [
+    "Mindfulness & Meditation",
+    "Life Coaching",
+    "Cognitive Behavioral Therapy (CBT)",
+    "Anxiety & Stress Management",
+    "Depression Support",
+    "Trauma Therapy",
+    "Relationship Counseling",
+    "Addiction Recovery",
+    "Child & Adolescent Therapy",
+    "Family Therapy",
+    "Career Counseling",
+    "Grief & Loss Counseling",
+    "Eating Disorders",
+    "Sleep Disorders",
+    "Anger Management",
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // ✅ Override localization with passed locale
     return Localizations.override(
       context: context,
       locale: widget.locale,
@@ -35,7 +68,6 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
         builder: (context) {
           final loc = AppLocalizations.of(context)!;
 
-          // ✅ Explicit Directionality based on locale
           return Directionality(
             textDirection: widget.locale.languageCode == 'ur'
                 ? TextDirection.rtl
@@ -107,6 +139,12 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        // Profile Photo
+                                        _buildLabel("Profile Photo"),
+                                        const SizedBox(height: 8),
+                                        _buildProfilePhotoPicker(),
+                                        const SizedBox(height: 16),
+
                                         _buildLabel(loc.fullNameLabel),
                                         _buildTextField(
                                           fullNameController,
@@ -154,6 +192,14 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
                                         ),
                                         const SizedBox(height: 16),
 
+                                        _buildLabel("Experience (Years)"),
+                                        _buildTextField(
+                                          experienceYearsController,
+                                          "Enter years of experience",
+                                          keyboardType: TextInputType.number,
+                                        ),
+                                        const SizedBox(height: 16),
+
                                         _buildLabel(loc.specializationLabel),
                                         _buildTagSection(
                                           specializations,
@@ -166,6 +212,10 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
                                           languages,
                                           loc.addLanguage,
                                         ),
+                                        const SizedBox(height: 16),
+
+                                        _buildLabel("Categories"),
+                                        _buildCategoriesMultiSelect(),
                                         const SizedBox(height: 30),
 
                                         // Next Button
@@ -196,19 +246,24 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
 
   // ---------------- UI Components ----------------
   Widget _buildLabel(String text) => Padding(
-    padding: const EdgeInsets.only(bottom: 6),
-    child: Text(
-      text,
-      style: const TextStyle(
-        fontWeight: FontWeight.w600,
-        color: AppColors.primaryDarkBlue,
-      ),
-    ),
-  );
+        padding: const EdgeInsets.only(bottom: 6),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            color: AppColors.primaryDarkBlue,
+          ),
+        ),
+      );
 
-  Widget _buildTextField(TextEditingController controller, String hint) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String hint, {
+    TextInputType? keyboardType,
+  }) {
     return TextField(
       controller: controller,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
@@ -262,6 +317,104 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
     );
   }
 
+  Widget _buildProfilePhotoPicker() {
+    return GestureDetector(
+      onTap: _pickImage,
+      child: Container(
+        width: 120,
+        height: 120,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: AppColors.borderGrey300,
+            width: 2,
+          ),
+          color: AppColors.backgroundWhite.withOpacity(0.8),
+        ),
+        child: profilePhotoFile != null
+            ? ClipOval(
+                child: Image.file(
+                  profilePhotoFile!,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : const Icon(
+                Icons.add_a_photo,
+                size: 40,
+                color: AppColors.primaryDarkBlue,
+              ),
+      ),
+    );
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      // Request permission
+      if (Platform.isAndroid) {
+        if (!await Permission.photos.isGranted) {
+          final status = await Permission.photos.request();
+          if (!status.isGranted) {
+            if (!await Permission.storage.isGranted) {
+              final storageStatus = await Permission.storage.request();
+              if (!storageStatus.isGranted) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Permission denied. Please grant photo access in settings.'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+                return;
+              }
+            }
+          }
+        }
+      } else if (Platform.isIOS) {
+        if (!await Permission.photos.isGranted) {
+          final status = await Permission.photos.request();
+          if (!status.isGranted) {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Permission denied. Please grant photo access in settings.'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
+            return;
+          }
+        }
+      }
+
+      final XFile? pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 800,
+        maxHeight: 800,
+        imageQuality: 85,
+      );
+
+      if (pickedFile != null) {
+        setState(() {
+          profilePhotoFile = File(pickedFile.path);
+        });
+
+        // Convert to base64
+        final bytes = await pickedFile.readAsBytes();
+        profilePhotoBase64 = base64Encode(bytes);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error picking image: $e'),
+            backgroundColor: AppColors.errorRed,
+          ),
+        );
+      }
+    }
+  }
+
   Widget _buildTagSection(List<String> tags, String addLabel) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -299,6 +452,40 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
     );
   }
 
+  Widget _buildCategoriesMultiSelect() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundWhite.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.borderGrey300),
+      ),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: availableCategories.map((category) {
+          final isSelected = selectedCategories.contains(category);
+          return FilterChip(
+            label: Text(category),
+            selected: isSelected,
+            onSelected: (selected) {
+              setState(() {
+                if (selected) {
+                  selectedCategories.add(category);
+                } else {
+                  selectedCategories.remove(category);
+                }
+              });
+            },
+            selectedColor: AppColors.chipBlue,
+            checkmarkColor: AppColors.primaryDarkBlue,
+            backgroundColor: AppColors.backgroundWhite,
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   Widget _buildProgressBar(BuildContext context, double progress) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(50),
@@ -315,13 +502,29 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
+          // Validate required fields
+          if (fullNameController.text.trim().isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Please enter your full name'),
+                backgroundColor: AppColors.errorRed,
+              ),
+            );
+            return;
+          }
+
+          // Save data to cache
+          await _saveDataToCache();
+
+          // Navigate to next screen
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => EducationCertificationsScreen(
                 locale: widget.locale,
-              ), // ✅ pass locale
+                token: widget.token,
+              ),
             ),
           );
         },
@@ -343,6 +546,26 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _saveDataToCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    
+    // Save basic info as JSON
+    final basicInfo = {
+      'full_name': fullNameController.text.trim(),
+      'designation': designationController.text.trim(),
+      'location': selectedLocation ?? '',
+      'hourly_rate': int.tryParse(hourlyRateController.text.trim()) ?? 500,
+      'currency': selectedCurrency ?? 'PKR',
+      'specializations': specializations,
+      'languages': languages,
+      'categories': selectedCategories,
+      'experience_years': int.tryParse(experienceYearsController.text.trim()) ?? 0,
+      'profile_photo_base64': profilePhotoBase64 ?? '',
+    };
+
+    await prefs.setString('specialist_basic_info', jsonEncode(basicInfo));
   }
 
   Future<String?> _showAddDialog(String title) {

@@ -241,29 +241,37 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       padding: EdgeInsets.symmetric(horizontal: w(0.03)),
-                      child: TextField(
-                        controller: _passwordController,
-                        obscureText: !_isPasswordVisible,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: locale.passwordHint,
-                          hintStyle: TextStyle(
-                            color: AppColors.textBlack38,
-                            fontSize: f(15),
+                      child: Center(
+                        child: TextField(
+                          controller: _passwordController,
+                          obscureText: !_isPasswordVisible,
+                          textAlignVertical: TextAlignVertical.center,
+                          style: TextStyle(
+                            height: 1.0,
                           ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.zero,
+                            hintText: locale.passwordHint,
+                            hintStyle: TextStyle(
                               color: AppColors.textBlack38,
-                              size: f(22),
+                              fontSize: f(15),
+                              height: 1.0,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
-                            },
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: AppColors.textBlack38,
+                                size: f(22),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),

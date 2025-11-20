@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:fikr_less/screens/userflow/dashboard/home_screen.dart';
+import 'package:fikr_less/screens/specialistflow/dashboard/specialist_dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'before_login_signup/get_started_screen.dart';
+import '../services/auth_cache_service.dart';
+
 import "../theme/app_colors.dart";
 
 class SplashScreen extends StatefulWidget {
@@ -27,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
     // 🌫️ Ultra-smooth looping animation
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
 
     // ☁️ Soft horizontal/vertical cloud drift
@@ -63,16 +67,47 @@ class _SplashScreenState extends State<SplashScreen>
     final savedLang = prefs.getString('selectedLanguage') ?? 'en';
     final locale = Locale(savedLang);
 
-    // Wait for splash duration
-    Timer(const Duration(seconds: 8), () {
-      if (mounted) {
+    // Check if user is logged in
+    final isLoggedIn = await AuthCacheService.isLoggedIn();
+
+    // Wait for 3 seconds (splash duration)
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (!mounted) return;
+
+    if (isLoggedIn) {
+      // Check user_type to navigate to appropriate dashboard
+      final userRole = await AuthCacheService.getUserRole();
+      final userType = userRole?.toLowerCase() ?? 'user';
+      
+      if (userType != 'user') {
+        // Navigate to specialist dashboard
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => BeforeLogin(locale: locale)),
+          MaterialPageRoute(
+            builder: (context) => SpecialistDashboardScreen(locale: locale),
+          ),
+        );
+      } else {
+        // Navigate to user home
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(locale: locale),
+          ),
         );
       }
-    });
+    } else {
+      // User is not logged in, navigate to before login screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BeforeLogin(locale: locale),
+        ),
+      );
+    }
   }
+
 
   @override
   void dispose() {

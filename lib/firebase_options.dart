@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC4AFyvXDwAtyoxqQAfDNVinewaIAxI4V8',
-    appId: '1:687433752128:android:ccc67981cb3b1f5179c9a5',
+    apiKey: '',
+    appId: '',
     messagingSenderId: '687433752128',
     projectId: 'fikrless',
-    storageBucket: 'fikrless.firebasestorage.app',
+    storageBucket: '',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAMu7CevN-weodRXQfdsz-3VNQX_y47FT0',
-    appId: '1:687433752128:ios:41e851b1d513d7dd79c9a5',
-    messagingSenderId: '687433752128',
+    apiKey: '',
+    appId: '5',
+    messagingSenderId: '',
     projectId: 'fikrless',
-    storageBucket: 'fikrless.firebasestorage.app',
-    iosBundleId: 'com.fikerless',
+    storageBucket: 'p',
+    iosBundleId: '',
   );
 }

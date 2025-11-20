@@ -4,10 +4,12 @@ import 'package:http/http.dart' as http;
 
 import '../../../services/api_service.dart';
 import '../../../services/auth_cache_service.dart';
+import '../../../services/chat_service.dart';
 import '../../before_login_signup/choose_yourself.dart';
 import '../forget_pasword/forget_password.dart';
 import 'login_screen.dart';
-import '../../userflow/home_screen.dart';
+import '../../userflow/dashboard/home_screen.dart';
+import '../../specialistflow/dashboard/specialist_dashboard_screen.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../theme/app_colors.dart';
 
@@ -28,8 +30,8 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
   String? _passwordError;
   bool _isLoading = false;
 
-  final String baseUrl =
-      "${baseUrlSignUP}/login";
+  late final String baseUrl1 =
+      "$baseUrl/auth/login";
 
   bool _validateInput(AppLocalizations locale) {
     setState(() {
@@ -67,7 +69,7 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
 
     try {
       final response = await http.post(
-        Uri.parse(baseUrl),
+        Uri.parse(baseUrl1),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "email": _emailController.text.trim(),
@@ -83,18 +85,30 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
         // Save login data to cache
         final token = responseData['token']?.toString() ?? responseData['access_token']?.toString();
         final userId = responseData['userId']?.toString() ?? responseData['user_id']?.toString() ?? responseData['id']?.toString();
-        final email = responseData['email']?.toString();
-        final name = responseData['name']?.toString() ?? responseData['username']?.toString();
-        final role = responseData['role']?.toString();
+        final email = responseData['email']?.toString() ?? _emailController.text.trim();
+        final name = responseData['name']?.toString() ?? 
+                     responseData['username']?.toString() ??
+                     (email != null && email.isNotEmpty ? email.split('@')[0] : null); // Generate name from email if not provided
+        final role = responseData['role']?.toString() ?? responseData['user_type']?.toString();
 
         if (token != null && userId != null) {
           await AuthCacheService.saveLoginData(
             token: token,
             userId: userId,
-            email: email ?? _emailController.text.trim(),
+            email: email,
             name: name,
             role: role,
           );
+          
+          // Debug: Print saved data
+          print('═══════════════════════════════════════════════════════════');
+          print('✅ LOGIN DATA SAVED:');
+          print('   User ID: $userId');
+          print('   Email: $email');
+          print('   Name: $name');
+          print('   Role: $role');
+          print('   Token: ${token.substring(0, 20)}...');
+          print('═══════════════════════════════════════════════════════════');
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -119,13 +133,36 @@ class _LoginScreenwithEmailState extends State<LoginScreenwithEmail> {
           ),
         );
 
+        // Initialize FCM for push notifications (non-blocking)
+        if (userId != null) {
+          ChatService.initializeFCM(userId).catchError((error) {
+            print('⚠️ FCM initialization failed (notifications may not work): $error');
+          });
+        }
+
+        // Check user_type to navigate to appropriate dashboard
+        final userType = responseData['user_type']?.toString() ?? role ?? 'user';
+        
         Future.delayed(const Duration(seconds: 2), () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(locale: widget.locale),
-            ),
-          );
+          if (userType.toLowerCase() != 'user') {
+            // Navigate to specialist dashboard and clear entire navigation stack
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SpecialistDashboardScreen(locale: widget.locale),
+              ),
+              (route) => false, // Remove all previous routes
+            );
+          } else {
+            // Navigate to user home and clear entire navigation stack
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(locale: widget.locale),
+              ),
+              (route) => false, // Remove all previous routes
+            );
+          }
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

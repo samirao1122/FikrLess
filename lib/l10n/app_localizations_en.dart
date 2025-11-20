@@ -940,4 +940,153 @@ class AppLocalizationsEn extends AppLocalizations {
     currencyUSD,
     currencyGBP,
   ];
+
+  @override
+  String get about => "About";
+
+  @override
+  String get aboutHint => "Describe your experience";
+
+  @override
+  String get addAboutYourself => "Add About Yourself";
+
+  @override
+  String get addEducationCertifications => "Add Education & Certifications";
+
+  @override
+  String get addMoreCertifications => "Add More Certifications";
+
+  @override
+  String get addMoreEducation => "Add More Education";
+
+  @override
+  String get basicInfo => "Basic Info";
+
+  @override
+  String get certifications => "Certifications";
+
+  @override
+  String get changePhoto => "Change Photo";
+
+  @override
+  String get editProfile => "Edit Profile";
+
+  @override
+  String get education => "Education";
+
+  @override
+  String get hourlyRate => "Hourly Rate";
+
+  @override
+  String get logOut => "Log out";
+
+  @override
+  String get logoutConfirm => "Are you sure you want to log out?";
+
+  @override
+  String get profileUpdateFailed => "Failed to update profile";
+
+  @override
+  String get profileUpdated => "Profile updated successfully";
+
+  @override
+  String get ratings => "Ratings";
+
+  @override
+  String get saveChanges => "Save Changes";
+
+  @override
+  String get specializations => "Specializations";
+
+  @override
+  String get yes => "Yes";
+
+  @override
+  String get appointmentReminders => 'Appointment reminders';
+
+  @override
+  String get crisisSupport => 'Crisis Support';
+
+  @override
+  get currency => 'Currency';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  get deleteMyAccount => 'Delete My Account';
+
+  @override
+  String get emailNotifications => 'Email notifications';
+
+  @override
+  String get feedbackSession => 'Feedback Session';
+
+  @override
+  String get getNotifiedAboutPaymentsReceived =>
+      'Get notified about payments received';
+
+  @override
+  String get getRemindersForUpcomingSessions =>
+      'Get reminders for upcoming sessions';
+
+  @override
+  String get initialConsultation => 'Initial Consultation';
+
+  @override
+  String get licenseNumber => 'License Number';
+
+  @override
+  String get notificationSettings => 'Notification Settings';
+
+  @override
+  String get others => 'Others';
+
+  @override
+  String get paymentNotifications => 'Payment notifications';
+
+  @override
+  String get professionalStatus => 'Professional Status';
+
+  @override
+  String get receiveNotificationsViaEmail =>
+      'Receive notifications via email';
+
+  @override
+  String get receiveNotificationsViaSMS =>
+      'Receive notifications via SMS';
+
+  @override
+  String get sessions => 'Sessions';
+
+  @override
+  String get smsNotifications => 'SMS notifications';
+
+  @override
+  String get todaysAppointments => 'Today\'s Appointments';
+
+  @override
+  String get totalEarnings => 'Total Earnings';
+
+  @override
+  String get upcoming => 'Upcoming';
+
+  @override
+  String get verificationStatus => 'Verification Status';
+
+  @override
+  String get verified => 'Verified';
+
+  @override
+  String get view => 'View';
+
+  @override
+  String get viewAll => 'View All';
+
+  @override
+  String get wallet => 'Wallet';
+
+  @override
+  String get yourProfessionalCredentials =>
+      'Your professional credentials';
 }

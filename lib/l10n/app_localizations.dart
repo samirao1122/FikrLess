@@ -1880,6 +1880,102 @@ abstract class AppLocalizations {
   List<String> get currencyOptions;
 
   List<String> get locationOptions;
+
+  String  get addMoreCertifications ;
+
+  String get saveChanges ;
+
+  String get addMoreEducation ;
+
+  String get aboutHint ;
+
+  String get about ;
+
+  String get basicInfo ;
+
+  String get changePhoto ;
+
+  String get editProfile ;
+
+  String get profileUpdateFailed ;
+
+  String get profileUpdated ;
+
+  String get ratings ;
+
+  String get hourlyRate ;
+
+  String get addAboutYourself ;
+
+  String get specializations ;
+
+  String get education ;
+
+  String get certifications ;
+
+  String get addEducationCertifications ;
+
+  String get logoutConfirm ;
+
+  String get logOut ;
+
+  String get yes ;
+
+  get currency ;
+
+  get deleteMyAccount ;
+
+  String get sessions ;
+
+  String get upcoming ;
+
+  String get wallet ;
+
+  String get totalEarnings ;
+
+  String get todaysAppointments ;
+
+  String get viewAll ;
+
+  String get initialConsultation ;
+
+  String get feedbackSession ;
+
+  String get crisisSupport ;
+
+  String get view ;
+
+  String get dashboard ;
+
+  String get others ;
+
+  String get notificationSettings ;
+
+  String get emailNotifications ;
+
+  String get receiveNotificationsViaEmail ;
+
+  String get smsNotifications ;
+
+  String get receiveNotificationsViaSMS ;
+
+  String get appointmentReminders ;
+
+  String get getRemindersForUpcomingSessions ;
+
+  String get paymentNotifications ;
+
+  String get getNotifiedAboutPaymentsReceived ;
+
+  String get professionalStatus ;
+
+  String get verificationStatus ;
+
+  String get yourProfessionalCredentials ;
+
+  String get verified ;
+
+  String get licenseNumber ;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Users collection - allow read/write for now
+    // In production, you should add proper validation
+    match /users/{userId} {
+      allow read, write: if true; // TODO: Add proper security in production
+    }
+    
+    // Chat Rooms collection
+    match /chatRooms/{chatRoomId} {
+      // Allow read/write for participants
+      // Since we're using custom auth, we allow access based on document data
+      allow read, write: if true; // TODO: Add participant validation in production
+      
+      // Messages subcollection
+      match /messages/{messageId} {
+        // Allow read/write for chat participants
+        allow read, write: if true; // TODO: Add sender/receiver validation in production
+      }
+    }
+    
+    // Default deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

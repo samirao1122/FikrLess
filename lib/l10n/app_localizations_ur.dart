@@ -940,4 +940,154 @@ class AppLocalizationsUr extends AppLocalizations {
     currencyUSD,
     currencyGBP,
   ];
+
+  @override
+  String get about => "کے بارے میں";
+
+  @override
+  String get aboutHint => "اپنے تجربے کی وضاحت کریں";
+
+  @override
+  String get addAboutYourself => "اپنے بارے میں شامل کریں";
+
+  @override
+  String get addEducationCertifications => "تعلیم اور سرٹیفیکیشنز شامل کریں";
+
+  @override
+  String get addMoreCertifications => "مزید سرٹیفیکیشنز شامل کریں";
+
+  @override
+  String get addMoreEducation => "مزید تعلیم شامل کریں";
+
+  @override
+  String get basicInfo => "بنیادی معلومات";
+
+  @override
+  String get certifications => "سرٹیفیکیشنز";
+
+  @override
+  String get changePhoto => "تصویر تبدیل کریں";
+
+  @override
+  String get editProfile => "پروفائل میں ترمیم کریں";
+
+  @override
+  String get education => "تعلیم";
+
+  @override
+  String get hourlyRate => "فی گھنٹہ شرح";
+
+  @override
+  String get logOut => "لاگ آؤٹ";
+
+  @override
+  String get logoutConfirm => "کیا آپ واقعی لاگ آؤٹ کرنا چاہتے ہیں؟";
+
+  @override
+  String get profileUpdateFailed => "پروفائل اپ ڈیٹ کرنے میں ناکام";
+
+  @override
+  String get profileUpdated => "پروفائل کامیابی سے اپ ڈیٹ ہو گیا";
+
+  @override
+  String get ratings => "ریٹنگز";
+
+  @override
+  String get saveChanges => "تبدیلیاں محفوظ کریں";
+
+  @override
+  String get specializations => "تخصص";
+
+  @override
+  String get yes => "ہاں";
+
+
+  @override
+  String get appointmentReminders => 'ملاقات کی یاد دہانیاں';
+
+  @override
+  String get crisisSupport => 'بحران کی مدد';
+
+  @override
+  get currency => 'کرنسی';
+
+  @override
+  String get dashboard => 'ڈیش بورڈ';
+
+  @override
+  get deleteMyAccount => 'میرا اکاؤنٹ حذف کریں';
+
+  @override
+  String get emailNotifications => 'ای میل کی اطلاعات';
+
+  @override
+  String get feedbackSession => 'فیڈبیک سیشن';
+
+  @override
+  String get getNotifiedAboutPaymentsReceived =>
+      'موصول شدہ ادائیگیوں کی اطلاع حاصل کریں';
+
+  @override
+  String get getRemindersForUpcomingSessions =>
+      'آنے والے سیشنز کے لیے یاد دہانیاں حاصل کریں';
+
+  @override
+  String get initialConsultation => 'ابتدائی مشاورت';
+
+  @override
+  String get licenseNumber => 'لائسنس نمبر';
+
+  @override
+  String get notificationSettings => 'اطلاعات کی ترتیبات';
+
+  @override
+  String get others => 'دیگر';
+
+  @override
+  String get paymentNotifications => 'ادائیگی کی اطلاعات';
+
+  @override
+  String get professionalStatus => 'پیشہ ورانہ حیثیت';
+
+  @override
+  String get receiveNotificationsViaEmail =>
+      'ای میل کے ذریعے اطلاعات حاصل کریں';
+
+  @override
+  String get receiveNotificationsViaSMS =>
+      'SMS کے ذریعے اطلاعات حاصل کریں';
+
+  @override
+  String get sessions => 'سیشنز';
+
+  @override
+  String get smsNotifications => 'SMS کی اطلاعات';
+
+  @override
+  String get todaysAppointments => 'آج کی ملاقاتیں';
+
+  @override
+  String get totalEarnings => 'کل آمدنی';
+
+  @override
+  String get upcoming => 'آنے والے';
+
+  @override
+  String get verificationStatus => 'تصدیق کی حیثیت';
+
+  @override
+  String get verified => 'تصدیق شدہ';
+
+  @override
+  String get view => 'دیکھیں';
+
+  @override
+  String get viewAll => 'سب دیکھیں';
+
+  @override
+  String get wallet => 'پرس';
+
+  @override
+  String get yourProfessionalCredentials =>
+      'آپ کی پیشہ ورانہ اسناد';
 }

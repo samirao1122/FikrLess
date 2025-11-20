@@ -33,7 +33,7 @@ class _ConsentSafetyScreenState extends State<ConsentSafetyScreen> {
 
     try {
       final url = Uri.parse(
-        '$baseUrlSignUP/demographics',
+        '$baseUrl/demographics',
       );
 
       final Map<String, dynamic> payload = widget.surveyData.toJson();

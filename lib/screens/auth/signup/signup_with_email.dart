@@ -72,7 +72,7 @@ class _UserSignUpScreenEmailState extends State<UserSignUpScreenEmail> {
     if (!valid) return;
 
     final url = Uri.parse(
-      "$baseUrlSignUP/signup",
+      "$baseUrl/auth/signup",
     );
 
     try {

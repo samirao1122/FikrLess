@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'l10n/app_localizations.dart';
+import 'services/auth_cache_service.dart';
 
 // Splash & Before Login
 import 'screens/splash_screen.dart';
@@ -19,7 +20,7 @@ import 'screens/auth/forget_pasword/pasword_reset_screen.dart';
 import 'screens/auth/forget_pasword/reset_sucessfully.dart';
 
 // User Flow
-import 'screens/userflow/home_screen.dart';
+import 'screens/userflow/dashboard/home_screen.dart';
 import 'screens/userflow/Demographies/basic_info_screen.dart';
 import 'screens/userflow/Demographies/Consent&Safety.dart';
 import 'screens/userflow/Demographies/current_mental_health_status.dart';
@@ -156,11 +157,47 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     // Specialist Flow
     case '/basicInformation':
       return MaterialPageRoute(
-        builder: (_) => BasicInformationScreen(locale: locale),
+        builder: (_) => FutureBuilder<String?>(
+          future: AuthCacheService.getAuthToken(),
+          builder: (context, snapshot) {
+            final token = args?['token'] as String? ?? snapshot.data;
+            if (token == null) {
+              return Scaffold(
+                body: Center(
+                  child: Text(
+                    AppLocalizations.of(context)?.networkError ?? 'Token not found',
+                  ),
+                ),
+              );
+            }
+            return BasicInformationScreen(
+              locale: locale,
+              token: token,
+            );
+          },
+        ),
       );
     case '/educationCertification':
       return MaterialPageRoute(
-        builder: (_) => EducationCertificationsScreen(locale: locale),
+        builder: (_) => FutureBuilder<String?>(
+          future: AuthCacheService.getAuthToken(),
+          builder: (context, snapshot) {
+            final token = args?['token'] as String? ?? snapshot.data;
+            if (token == null) {
+              return Scaffold(
+                body: Center(
+                  child: Text(
+                    AppLocalizations.of(context)?.networkError ?? 'Token not found',
+                  ),
+                ),
+              );
+            }
+            return EducationCertificationsScreen(
+              locale: locale,
+              token: token,
+            );
+          },
+        ),
       );
 
     // Default route

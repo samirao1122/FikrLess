@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:fikr_less/screens/userflow/home_screen.dart';
+import 'package:fikr_less/screens/userflow/dashboard/home_screen.dart';
+import 'package:fikr_less/screens/specialistflow/dashboard/specialist_dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'before_login_signup/get_started_screen.dart';
@@ -75,13 +76,27 @@ class _SplashScreenState extends State<SplashScreen>
     if (!mounted) return;
 
     if (isLoggedIn) {
-      // User is logged in, navigate to home
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(locale: locale),
-        ),
-      );
+      // Check user_type to navigate to appropriate dashboard
+      final userRole = await AuthCacheService.getUserRole();
+      final userType = userRole?.toLowerCase() ?? 'user';
+      
+      if (userType != 'user') {
+        // Navigate to specialist dashboard
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SpecialistDashboardScreen(locale: locale),
+          ),
+        );
+      } else {
+        // Navigate to user home
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(locale: locale),
+          ),
+        );
+      }
     } else {
       // User is not logged in, navigate to before login screen
       Navigator.pushReplacement(

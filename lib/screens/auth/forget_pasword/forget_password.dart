@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fikr_less/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../otp/otp_reset_pasword.dart' show OtpForPaswordReset;
@@ -34,7 +35,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     });
 
     final url = Uri.parse(
-      'https://stalagmitical-millie-unhomiletic.ngrok-free.dev/forgot-password',
+      '$baseUrl/auth/forgot-password',
     );
 
     try {

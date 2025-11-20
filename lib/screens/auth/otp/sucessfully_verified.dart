@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../theme/app_colors.dart';
+import '../../../services/auth_cache_service.dart';
 
 import "../../userflow/Demographies/basic_info_screen.dart";
 import "../../userflow/Demographies/user_survey_data.dart" show UserSurveyData;
@@ -105,7 +106,7 @@ class UserVerifiedScreen extends StatelessWidget {
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (role.toLowerCase() == "user") {
                                 Navigator.push(
                                   context,
@@ -119,13 +120,26 @@ class UserVerifiedScreen extends StatelessWidget {
                                   ),
                                 );
                               } else if (role.toLowerCase() == "specialist") {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) =>
-                                        BasicInformationScreen(locale: locale),
-                                  ),
-                                );
+                                // Get token from cache
+                                final token = await AuthCacheService.getAuthToken();
+                                if (token != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => BasicInformationScreen(
+                                        locale: locale,
+                                        token: token,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(local.networkError),
+                                      backgroundColor: AppColors.errorRed,
+                                    ),
+                                  );
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(

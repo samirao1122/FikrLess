@@ -6,22 +6,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api_service.dart';
 import 'auth_cache_service.dart';
 
-/// Service for step counting functionality
+/// Service for step counting functionality with batch sync
 class StepCounterService {
   late Stream<StepCount> _stepCountStream;
   late Stream<PedestrianStatus> _pedestrianStatusStream;
   int _steps = 0;
   int _initialSteps = 0; // Store initial steps to calculate daily steps
-  int _lastSyncedSteps = 0; // Last synced step count
-  int _lastSavedSteps = 0; // Last saved step count (for 25 interval tracking)
+  int _lastRecordedSteps = 0; // Last recorded step count for incremental tracking
   bool _isListening = false;
-  Timer? _midnightSyncTimer;
-  Timer? _intervalCheckTimer;
+  Timer? _periodicSyncTimer; // Timer for syncing every 2 minutes
   
   static const String _keyInitialSteps = 'initial_steps';
   static const String _keyStepsDate = 'steps_date';
-  static const String _keyPendingSteps = 'pending_steps'; // JSON array of unsynced steps
-  static const int _syncInterval = 25; // Sync every 25 steps
+  static const String _keyPendingSteps = 'pending_steps'; // JSON array of unsynced step entries
+  static const Duration _syncInterval = Duration(minutes: 2); // Sync every 2 minutes
 
   StreamSubscription<StepCount>? _stepCountSubscription;
   StreamSubscription<PedestrianStatus>? _pedestrianStatusSubscription;
@@ -55,11 +53,11 @@ class StepCounterService {
 
       _isListening = true;
       
-      // Start midnight sync timer
-      _startMidnightSyncTimer();
+      // Sync any pending steps on app open
+      await _syncPendingSteps();
       
-      // Start interval check timer (check every second for step changes)
-      _startIntervalCheckTimer();
+      // Start periodic sync timer (every 2 minutes)
+      _startPeriodicSyncTimer();
       
       return true;
     } catch (e) {
@@ -88,92 +86,93 @@ class StepCounterService {
         await prefs.setInt(_keyInitialSteps, _initialSteps);
         await prefs.setString(_keyStepsDate, todayKey);
         _steps = 0;
+        _lastRecordedSteps = 0;
         print('New day - Initial steps set to: $_initialSteps');
       } else {
         // Same day - use saved initial steps
         _initialSteps = savedInitialSteps;
         _steps = (currentStepCount.steps - _initialSteps).clamp(0, double.infinity).toInt();
+        _lastRecordedSteps = _steps;
         print('Same day - Steps today: $_steps (cumulative: ${currentStepCount.steps}, initial: $_initialSteps)');
       }
     } catch (e) {
       print('Error getting initial step count: $e');
       _initialSteps = savedInitialSteps;
       _steps = 0;
+      _lastRecordedSteps = 0;
     }
   }
 
   void _onStepCount(StepCount event) {
     // Calculate daily steps by subtracting initial steps
-    _steps = (event.steps - _initialSteps).clamp(0, double.infinity).toInt();
+    final newSteps = (event.steps - _initialSteps).clamp(0, double.infinity).toInt();
+    
+    if (newSteps > _steps) {
+      // Steps increased - record the increment
+      final stepsIncrement = newSteps - _steps;
+      _steps = newSteps;
+      
+      // Save the increment to pending steps
+      _recordStepIncrement(stepsIncrement);
+    }
+    
     print('Steps updated: $_steps (cumulative: ${event.steps}, initial: $_initialSteps)');
   }
 
-  /// Start timer to check for midnight sync
-  void _startMidnightSyncTimer() {
-    // Cancel existing timer if any
-    _midnightSyncTimer?.cancel();
+  /// Record step increment in the required format
+  Future<void> _recordStepIncrement(int stepsIncrement) async {
+    if (stepsIncrement <= 0) return;
     
-    // Calculate time until 11:59 PM
     final now = DateTime.now();
-    final tomorrow = DateTime(now.year, now.month, now.day + 1);
-    final syncTime = DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 23, 59);
-    final durationUntilSync = syncTime.difference(now);
+    final date = now.toIso8601String().split('T')[0]; // YYYY-MM-DD
     
-    _midnightSyncTimer = Timer(durationUntilSync, () async {
-      await _syncPendingSteps();
-      // Restart timer for next day
-      _startMidnightSyncTimer();
-    });
+    // Format timestamp as ISO 8601 UTC without milliseconds (e.g., "2025-12-17T10:02:24Z")
+    final utcNow = now.toUtc();
+    final timestamp = '${utcNow.year}-${utcNow.month.toString().padLeft(2, '0')}-${utcNow.day.toString().padLeft(2, '0')}T'
+        '${utcNow.hour.toString().padLeft(2, '0')}:${utcNow.minute.toString().padLeft(2, '0')}:${utcNow.second.toString().padLeft(2, '0')}Z';
     
-    print('Midnight sync timer set for: $syncTime');
+    // Calculate calories and distance (approximate)
+    final caloriesBurned = (stepsIncrement * 0.04).round();
+    final distanceKm = double.parse((stepsIncrement * 0.0008).toStringAsFixed(2));
+    
+    // Create entry in the exact format required
+    final entry = {
+      'steps': stepsIncrement,
+      'date': date,
+      'timestamp': timestamp,
+      'calories_burned': caloriesBurned,
+      'distance_km': distanceKm,
+    };
+    
+    // Add to pending steps
+    await _addPendingStepEntry(entry);
+    
+    print('Recorded step increment: $stepsIncrement steps at $timestamp');
   }
 
-  /// Start timer to check step intervals
-  void _startIntervalCheckTimer() {
-    _intervalCheckTimer?.cancel();
-    
-    _intervalCheckTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
-      final stepsSinceLastSave = _steps - _lastSavedSteps;
-      
-      if (stepsSinceLastSave >= _syncInterval) {
-        await _saveStepsInterval();
-      }
-    });
-  }
-
-  /// Save steps every 25 intervals
-  Future<void> _saveStepsInterval() async {
-    if (_steps <= _lastSavedSteps) return;
-    
-    final stepsToSave = _steps - _lastSavedSteps;
-    final timestamp = DateTime.now().toIso8601String();
-    
-    // Format time as ISO (e.g., "2024-01-15T22:02:24.000Z")
-    final timeFormatted = timestamp;
-    
-    // Save to pending steps
-    await _addPendingStep(stepsToSave.toString(), timeFormatted);
-    
-    _lastSavedSteps = _steps;
-    
-    print('Saved step interval: $stepsToSave steps at $timeFormatted');
-    
-    // Try to sync immediately
-    await _syncPendingSteps();
-  }
-
-  /// Add step entry to pending list
-  Future<void> _addPendingStep(String steps, String time) async {
+  /// Add step entry to pending list (in the exact format)
+  Future<void> _addPendingStepEntry(Map<String, dynamic> entry) async {
     final prefs = await SharedPreferences.getInstance();
     final pendingJson = prefs.getString(_keyPendingSteps) ?? '[]';
     final pendingList = (json.decode(pendingJson) as List).cast<Map<String, dynamic>>();
     
-    pendingList.add({
-      'steps': steps,
-      'time': time,
-    });
+    pendingList.add(entry);
     
     await prefs.setString(_keyPendingSteps, json.encode(pendingList));
+  }
+
+  /// Start periodic sync timer (every 2 minutes)
+  void _startPeriodicSyncTimer() {
+    _periodicSyncTimer?.cancel();
+    
+    _periodicSyncTimer = Timer.periodic(_syncInterval, (timer) async {
+      if (_isListening) {
+        print('Periodic sync triggered (every 2 minutes)');
+        await _syncPendingSteps();
+      }
+    });
+    
+    print('Periodic sync timer started (every 2 minutes)');
   }
 
   /// Sync all pending steps to API
@@ -193,29 +192,24 @@ class StepCounterService {
       return;
     }
     
-    // Sync each pending step
-    final List<Map<String, dynamic>> failedSyncs = [];
+    // Prepare entries for batch sync (already in correct format)
+    final List<Map<String, dynamic>> entries = List.from(pendingList);
     
-    for (final stepEntry in pendingList) {
-      final success = await StepsApiService.syncSteps(
-        steps: stepEntry['steps'] as String,
-        time: stepEntry['time'] as String,
-        token: token,
-      );
-      
-      if (!success) {
-        failedSyncs.add(stepEntry);
-      }
-    }
+    print('Syncing ${entries.length} step entries...');
     
-    // Update pending list with only failed syncs
-    await prefs.setString(_keyPendingSteps, json.encode(failedSyncs));
+    // Batch sync all entries
+    final success = await StepsApiService.batchSyncSteps(
+      entries: entries,
+      token: token,
+    );
     
-    if (failedSyncs.isEmpty) {
-      print('All pending steps synced successfully');
-      _lastSyncedSteps = _steps;
+    if (success) {
+      // Clear pending steps on successful sync
+      await prefs.setString(_keyPendingSteps, '[]');
+      print('✅ All ${entries.length} step entries synced successfully');
     } else {
-      print('${failedSyncs.length} step entries failed to sync');
+      // Keep failed entries in cache for retry
+      print('❌ Failed to sync step entries. Will retry on next sync.');
     }
   }
 
@@ -241,16 +235,22 @@ class StepCounterService {
     await _syncPendingSteps();
   }
 
+  /// Get pending steps count (for debugging)
+  Future<int> getPendingStepsCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    final pendingJson = prefs.getString(_keyPendingSteps) ?? '[]';
+    final pendingList = (json.decode(pendingJson) as List);
+    return pendingList.length;
+  }
+
   /// Dispose resources
   void dispose() {
     _isListening = false;
     _stepCountSubscription?.cancel();
     _pedestrianStatusSubscription?.cancel();
-    _midnightSyncTimer?.cancel();
-    _intervalCheckTimer?.cancel();
+    _periodicSyncTimer?.cancel();
     
     // Sync pending steps before disposing
     _syncPendingSteps();
   }
 }
-

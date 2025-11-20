@@ -87,9 +87,10 @@ class MoodHelper {
     return moodImages.containsKey(mood.toUpperCase()) || moodImages.containsKey(mood);
   }
 
-  /// Convert mood to API format (uppercase)
+  /// Convert mood to API format (lowercase)
+  /// API expects: happy, sad, anxious, tired, angry, calm
   static String toApiFormat(String mood) {
-    return mood.toUpperCase();
+    return mood.toLowerCase();
   }
 
   /// Convert API mood format to display format
